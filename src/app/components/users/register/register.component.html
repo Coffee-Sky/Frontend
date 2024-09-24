@@ -1,71 +1,96 @@
 <div class="min-h-screen bg-color2 text-gray-900 flex justify-center">
-    <div class="max-w-screen-xl m-0 sm:m-10 bg-color4 shadow sm:rounded-lg flex justify-center flex-1">
-        <div class="lg:w-3/4 xl:w-2/3 p-6 sm:p-12 mx-0">
-            <div>
-                <img src="Nombre.png" alt="" class="w-48 mx-auto" />
-            </div>
-            <form class="px-8 pt-6 pb-8 mb-4">
-                <div class="mb-4 md:flex md:justify-between">
-                    <div class="mb-4 md:mr-2 md:mb-0 w-full">
-                        <label class="block mb-2 text-sm font-bold text-color1-shade" for="nombres">Nombres</label>
-                        <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Nombres"/>
-                    </div>
-                    <div class="mb-4 md:mr-2 md:mb-0 w-full">
-                        <label class="block mb-2 text-sm font-bold text-color1-shade" for="apellidos">Apellidos</label>
-                        <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Apellidos"/>
-                    </div>
-                    <div class="mb-4 w-full">
-                        <label class="block mb-2 text-sm font-bold text-color1-shade" for="genero">Género</label>
-                        <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Seleccione"/>
-                    </div>
-                </div>
-                <div class="mb-2 md:flex md:justify-between">
-                    <div class="mb-4 md:mr-2 md:mb-0 w-full">
-                        <label class="block mb-2 text-sm font-bold text-color1-shade" for="DNI">Documento de identidad</label>
-                        <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Documento de identidad"/>
-                    </div>
-                    <div class="mb-4 md:mr-2 md:mb-0 w-full">
-                        <label class="block mb-2 text-sm font-bold text-color1-shade" for="ciudad">Ciudad de nacimiento</label>
-                        <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Ciudad de nacimiento"/>
-                    </div>
-                    <div class="mb-4 w-full">
-                        <label class="block mb-2 text-sm font-bold text-color1-shade" for="fecha">Fecha de nacimiento</label>
-                        <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="date" placeholder=""/>
-                    </div>
-                </div>
-                <div class="mb-2 md:flex md:justify-between">
-                    <div class="mb-4 md:mr-2 md:mb-0 w-full">
-                        <label class="block mb-2 text-sm font-bold text-color1-shade" for="direccion">Dirección de facturación</label>
-                        <input class="w-full px-3 py-3 mb-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Dirección de facturación"/>
-                    </div>
-                    <div class="mb-4 md:ml-2 w-full">
-                        <label class="block mb-2 text-sm font-bold text-color1-shade" for="usuario">Nombre de usuario</label>
-                        <input class="w-full px-3 py-3 mb-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Nombre de usuario"/>
-                    </div>
-                </div>
-                <div class="mb-4 md:flex md:justify-between">
-                    <div class="mb-4 md:mr-2 md:mb-0 w-full">
-                        <label class="block mb-2 text-sm font-bold text-color1-shade" for="correo">Correo electrónico</label>
-                        <input class="w-full px-3 py-3 mb-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Correo electrónico"/>
-                    </div>
-                    <div class="mb-4 md:ml-2 w-full">
-                        <label class="block mb-2 text-sm font-bold text-color1-shade" for="Contraseña">Contraseña</label>
-                        <input class="w-full px-3 py-3 mb-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="password" placeholder="Contraseña"/>
-                    </div>
-                </div>
-                <div class="mb-6 text-center">
-                    <button class="w-full px-4 py-2 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade focus:outline-none focus:shadow-outline" type="button">
-                        Registrarse
-                    </button>
-                </div>
-                <hr class="mb-3 border-t" />
-                <div class="text-center">
-                    <p class="text-sm text-color1"> ¿Ya tienes una cuenta? 
-                        <a class="inline-block text-sm text-color1 font-bold" href="/login">
-                            Iniciar sesión
-                        </a>
-                </div>
-            </form>
+  <div class="max-w-screen-xl m-0 sm:m-10 bg-color4 shadow sm:rounded-lg flex justify-center flex-1">
+    <div class="lg:w-3/4 xl:w-2/3 p-6 sm:p-6 mx-0">
+      <div>
+          <img src="Nombre2.png" alt="" class="w-48 mx-auto" />
+      </div>
+      <form class="px-8 pt-4 pb-8 mb-4" [formGroup]="registerForm" (ngSubmit)="save()">
+
+        <div class="mb-0 md:flex md:justify-between">
+          <div class="mb-1 md:mr-2 md:mb-0 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Primer nombre</label>
+            <input class="w-full px-3 py-3 mb-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Primer nombre" formControlName="firstname"/>
+          </div>
+          <div class="mb-1 md:ml-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Segundo nombre</label>
+            <input class="w-full px-3 py-3 mb-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Segundo nombre" formControlName="secondname"/>
+          </div>
         </div>
+
+        <div class="mb-2 md:flex md:justify-between">
+          <div class="mb-2 md:mr-2 md:mb-0 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Primer apellido</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Primer apellido" formControlName="firstlastname"/>
+          </div>
+          <div class="mb-2 md:ml-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Segundo apellido</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Segundo apellido" formControlName="secondlastname"/>
+          </div>
+        </div>
+
+        <div class="mb-2 md:flex md:justify-between">
+          <div class="mb-2 md:mr-2 md:mb-0 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">País de nacimiento</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="País de nacimiento" formControlName="borncountry"/>
+          </div>
+
+          <div class="mb-2 md:mr-2 md:mb-0 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Estado de nacimiento</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Estado de nacimiento" formControlName="bornstate"/>
+          </div>
+          
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Ciudad de nacimiento</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Ciudad de nacimiento" formControlName="borncity"/>
+          </div>
+        </div>
+
+        <div class="mb-2 md:flex md:justify-between">
+          <div class="mb-2 md:mr-2 md:mb-0 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Género</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Seleccione género" formControlName="genderID"/>
+          </div>
+
+          <div class="mb-2 md:mr-2 md:mb-0 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Documento de identidad</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Documento de identidad" formControlName="identificationnumber"/>
+          </div>
+          
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de nacimiento</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="date" placeholder="" formControlName=bornDate/>
+          </div>
+        </div>
+
+        <div class="mb-4 md:flex md:justify-between">
+          <div class="mb-2 md:mr-2 md:mb-0 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Nombre de usuario</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Nombre de usuario" formControlName="username"/>
+          </div>
+
+          <div class="mb-2 md:mr-2 md:mb-0 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Correo</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Correo electrónico" formControlName="email"/>
+          </div>
+          
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Contraseña</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="password" placeholder="Contraseña" formControlName="password"/>
+          </div>
+        </div>
+        <div class="mb-6 text-center">
+          <button class="w-full px-4 py-2 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade focus:outline-none focus:shadow-outline" type="submit">
+            Registrarse
+          </button>
+        </div>
+        <hr class="mb-3 border-t" />
+        <div class="text-center">
+          <p class="text-sm text-color1"> ¿Ya tienes una cuenta? 
+            <a class="inline-block text-sm text-color1 font-bold" href="/login">
+              Iniciar sesión
+            </a>
+        </div>
+      </form>
     </div>
+  </div>
 </div>
