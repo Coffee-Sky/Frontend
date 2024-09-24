@@ -14,7 +14,7 @@ module.exports = {
           DEFAULT: "#B8B5AF", // Silver
           shade: "#868A88", // Battleship Gray
         },
-        color3: "#5E503F", // Almond
+        color3: "#EAE0D5", // Almond
         color4: {
           DEFAULT: "#D8C6B2", // Dun
           shade: "#C6AC8F", // Khaki
