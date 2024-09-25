@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { EmailValidator, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { threadId } from 'node:worker_threads';
@@ -5,16 +6,16 @@ import { threadId } from 'node:worker_threads';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
 export class RegisterComponent {
 
   registerForm = new FormGroup({
-    firstname: new FormControl('', Validators.required),
+    firstname: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]),
     secondname: new FormControl(''),
-    firstlastname: new FormControl('', Validators.required),
+    firstlastname: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]),
     secondlastname: new FormControl(''),
     genderID: new FormControl('', Validators.required),
     identificationnumber: new FormControl('', Validators.required),
