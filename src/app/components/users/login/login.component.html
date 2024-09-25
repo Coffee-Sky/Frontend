@@ -12,8 +12,17 @@
           <div class="mx-auto max-w-xs">
             <form [formGroup]="loginForm" (ngSubmit)="save()">
               <input
-                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-color3 focus:bg-white"
+                class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-color3 focus:bg-white invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
                 type="email" placeholder="Correo electrónico" formControlName="email" />
+              <div NgIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched) text-red-500 text-xs">
+                <div>
+                  <div NgIf="loginForm.get('email')?.errors?.('required')"><p>El correo es requerido</p></div>
+                  <div NgIf="loginForm.get('email')?.errors?('email')"><p>El correo es inválido</p></div>
+                </div>
+              </div>
+              <!-- <span NgIf="loginForm.hasError('required','email') && loginForm.controls['email'].dirty" class="hidden text-red-500 text-xs peer-[&:not(:placeholder-shown):not(:focus):invalid]:block">El correo es requerido</span> -->
+              <!-- <span NgIf="loginForm.hasError('required','email') && loginForm.controls['email'].dirty" class="text-red-500 text-xs">El correo es requerido</span>
+              <span NgIf="loginForm.hasError('email','email')" class="text-red-500 text-xs">El correo es inválido</span> -->
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-color3 focus:bg-white mt-6"
                 type="password" placeholder="Contraseña" formControlName="password" />
