@@ -11,11 +11,12 @@ export class ErrorHandlerService {
 
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'An error occurred';
-    if (error.error instanceof ErrorEvent) {
-      // Cliente-side error
+
+    // Verificar si error.error es un objeto con la propiedad 'message'
+    if (error.error && error.error.message) {
       errorMessage = `Client-side error: ${error.error.message}`;
-    } else {
-      // Servidor-side error
+    } else if (error.status) {
+      // Caso de error del lado del servidor
       errorMessage = `Server-side error: ${error.status} - ${error.message}`;
     }
 

@@ -4,6 +4,7 @@ import { EmailValidator, FormControl, FormGroup, ReactiveFormsModule, Validators
 import { threadId } from 'node:worker_threads';
 import { LocationService } from '../../../services/location.service';
 import { HttpClient } from '@angular/common/http';
+import { ApiService } from '../../../services/api.service';
 
 interface Country {
   country_name: string;
@@ -17,6 +18,11 @@ interface State {
 
 interface City {
   city_name: string;
+}
+
+interface Gender {
+  genderID: number;
+  name: string;
 }
 
 @Component({
@@ -34,10 +40,28 @@ export class RegisterComponent implements OnInit{
   countries: Country[] = [];
   states: State[] = [];
   cities: City[] = [];
+  genders: Gender[] = [];
 
-  constructor(private locationService: LocationService) { }
+  constructor(private locationService: LocationService, private apiService: ApiService) { }
 
   ngOnInit() {
+    this.getGenders();
+    // this.getAccessToken();
+  }
+
+  getGenders() {
+    this.apiService.getData("sign-up/get-genders").subscribe(
+      (response) => {
+        this.genders = response;
+        // console.log(this.genders);
+      },
+      (error) => {
+        console.error('Error obteniendo los géneros:', error);
+      }
+    )
+  }
+
+  getAccessToken() {
     this.locationService.getAccessToken().subscribe(
       (response) => {
         this.accessToken = response.auth_token;
@@ -116,8 +140,16 @@ export class RegisterComponent implements OnInit{
   });
 
   save() {
-    if ( this.registerForm.valid) {
+    if (this.registerForm.valid) {
       console.log(this.registerForm.value);
+      this.apiService.postData("sign-up/register-client", this.registerForm.value).subscribe(
+        (response) => {
+          console.log('Usuario registrado:', response);
+        },
+        (error) => {
+          console.error('Error registrando el usuario:', error);
+        }
+      );
     } else {
       console.log('Formulario invalido');
     }
