@@ -9,7 +9,7 @@ import { RootHomeComponent } from "./components/users/root/root-home/root-home.c
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RegisterComponent, LoginComponent, HeaderComponent, PageComponent, RootHomeComponent],
+  imports: [RouterOutlet, RegisterComponent, LoginComponent, HeaderComponent, PageComponent, RootHomeComponent ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
