@@ -2,7 +2,9 @@
   <div class="max-w-screen-xl m-0 sm:m-10 bg-color4 shadow sm:rounded-lg flex justify-center flex-1">
     <div class="lg:w-3/4 xl:w-2/3 p-6 sm:p-6 mx-0">
       <div>
+        <a href="">
           <img src="Nombre2.png" alt="" class="w-48 mx-auto" />
+        </a>
       </div>
       <form class="px-8 pt-4 pb-8 mb-4" [formGroup]="registerForm" (ngSubmit)="save()">
 
@@ -35,34 +37,41 @@
         <div class="mb-2 md:flex md:justify-between">
           <div class="mb-2 md:mr-2 md:mb-0 w-full">
             <label class="block mt-3 mb-2 text-sm font-bold text-color1-shade">País de nacimiento</label>
-            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="País de nacimiento" formControlName="borncountry"/>
-            <span *ngIf="registerForm.hasError('required','borncountry') && registerForm.controls['borncountry'].dirty" class="text-red-500 text-xs">El campo es requerido</span>
+            <select class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" formControlName="borncountry">
+              <option value="" disabled selected>País de nacimiento</option>
+            </select>
           </div>
 
           <div class="mb-2 md:mr-2 md:mb-0 w-full">
             <label class="block mt-3 mb-2 text-sm font-bold text-color1-shade">Estado de nacimiento</label>
-            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Estado de nacimiento" formControlName="bornstate"/>
-            <span *ngIf="registerForm.hasError('required','bornstate') && registerForm.controls['bornstate'].dirty" class="text-red-500 text-xs">El campo es requerido</span>
+            <select class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" formControlName="bornstate">
+              <option value="" disabled selected>Estado de nacimiento</option>
+            </select>
           </div>
           
           <div class="mb-2 w-full">
             <label class="block mt-3 mb-2 text-sm font-bold text-color1-shade">Ciudad de nacimiento</label>
-            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Ciudad de nacimiento" formControlName="borncity"/>
-            <span *ngIf="registerForm.hasError('required','borncity') && registerForm.controls['borncity'].dirty" class="text-red-500 text-xs">El campo es requerido</span>
+            <select class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" formControlName="borncity">
+              <option value="" disabled selected>Ciudad de nacimiento</option>
+            </select>
           </div>
         </div>
 
         <div class="mb-2 md:flex md:justify-between">
           <div class="mb-2 md:mr-2 md:mb-0 w-full">
             <label class="block mt-3 mb-2 text-sm font-bold text-color1-shade">Género</label>
-            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Seleccione género" formControlName="genderID"/>
-            <span *ngIf="registerForm.hasError('required','genderID') && registerForm.controls['genderID'].dirty" class="text-red-500 text-xs">El campo es requerido</span>
+            <select class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" formControlName="genderID">
+              <option value="" disabled selected>Seleccione un género</option>
+              <option value="1">Masculino</option>
+              <option value="2">Femenino</option>
+            </select>
           </div>
 
           <div class="mb-2 md:mr-2 md:mb-0 w-full">
             <label class="block mt-3 mb-2 text-sm font-bold text-color1-shade">Documento de identidad</label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Documento de identidad" formControlName="identificationnumber"/>
             <span *ngIf="registerForm.hasError('required','identificationnumber') && registerForm.controls['identificationnumber'].dirty" class="text-red-500 text-xs">El campo es requerido</span>
+            <span *ngIf="registerForm.hasError('pattern','identificationnumber')" class="text-red-500 text-xs">El documento es inválido</span>
           </div>
           
           <div class="mb-2 w-full">
@@ -83,7 +92,7 @@
             <label class="block mt-3 mb-2 text-sm font-bold text-color1-shade">Correo</label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="Correo electrónico" formControlName="email"/>
             <span *ngIf="registerForm.hasError('required','email') && registerForm.controls['email'].dirty" class="text-red-500 text-xs">El correo es requerido</span>
-            <span *ngIf="registerForm.hasError('email','email')" class="text-red-500 text-xs">El correo es inválido</span>
+            <span *ngIf="registerForm.hasError('pattern','email')" class="text-red-500 text-xs">El correo es inválido</span>
           </div>
           
           <div class="mb-2 w-full">

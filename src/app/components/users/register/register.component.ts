@@ -18,13 +18,13 @@ export class RegisterComponent {
     firstlastname: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]),
     secondlastname: new FormControl(''),
     genderID: new FormControl('', Validators.required),
-    identificationnumber: new FormControl('', Validators.required),
+    identificationnumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\d{9}|[1-9]\d{7})$/)]),
     borncountry: new FormControl('', Validators.required),
     bornstate: new FormControl('', Validators.required),
     borncity: new FormControl('', Validators.required),
     bornDate: new FormControl('', Validators.required),
     username: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required, Validators.pattern(/^[a-z]([a-z0-9.-]+)?@[a-z0-9]+.[a-z]{2,3}(.([a-z]{2}))?$/)]),
     password: new FormControl('', [Validators.required, Validators.minLength(8)]),
   });
 

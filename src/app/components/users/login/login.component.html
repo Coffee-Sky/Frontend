@@ -17,7 +17,7 @@
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-color3 focus:bg-white invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
                 type="email" placeholder="Correo electrónico" formControlName="email" />
               <span *ngIf="loginForm.hasError('required','email') && loginForm.controls['email'].dirty" class="text-red-500 text-xs">El correo es requerido</span>
-              <span *ngIf="loginForm.hasError('email','email')" class="text-red-500 text-xs">El correo es inválido</span>
+              <span *ngIf="loginForm.hasError('pattern','email')" class="text-red-500 text-xs">El correo es inválido</span>
               <input
                 class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-color3 focus:bg-white mt-6 invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
                 type="password" placeholder="Contraseña" formControlName="password" />
