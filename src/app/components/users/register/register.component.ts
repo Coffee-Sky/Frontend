@@ -46,7 +46,7 @@ export class RegisterComponent implements OnInit{
 
   ngOnInit() {
     this.getGenders();
-    // this.getAccessToken();
+    this.getAccessToken();
   }
 
   getGenders() {
