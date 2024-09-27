@@ -5,6 +5,7 @@ import { threadId } from 'node:worker_threads';
 import { LocationService } from '../../../services/location.service';
 import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../../services/api.service';
+import { RouterModule } from '@angular/router';
 
 interface Country {
   country_name: string;
@@ -28,7 +29,7 @@ interface Gender {
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
@@ -125,9 +126,9 @@ export class RegisterComponent implements OnInit{
 
   registerForm = new FormGroup({
     firstname: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]),
-    secondname: new FormControl(''),
+    secondname: new FormControl('', Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)),
     firstlastname: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]),
-    secondlastname: new FormControl(''),
+    secondlastname: new FormControl('', Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)),
     genderID: new FormControl('', Validators.required),
     identificationnumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\d{9}|[1-9]\d{7})$/)]),
     borncountry: new FormControl('', Validators.required),
