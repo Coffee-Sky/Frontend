@@ -145,9 +145,12 @@ export class RegisterComponent implements OnInit{
       this.apiService.postData("sign-up/register-client", this.registerForm.value).subscribe(
         (response) => {
           console.log('Usuario registrado:', response);
+          window.alert('Usuario registrado exitosamente');
+          window.location.href = '/login';
         },
         (error) => {
           console.error('Error registrando el usuario:', error);
+          window.alert('Error registrando el usuario');
         }
       );
     } else {
