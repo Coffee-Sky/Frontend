@@ -117,7 +117,9 @@
             <label class="block mt-3 mb-2 text-sm font-bold text-color1-shade">Contraseña <span class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="password" placeholder="Contraseña" formControlName="password"/>
             <span *ngIf="registerForm.hasError('required','password') && registerForm.controls['password'].dirty" class="text-red-500 text-xs">La contraseña es requerida</span>
-              <span *ngIf="registerForm.get('password')?.hasError('minlength')" class="text-red-500 text-xs">La contraseña debe tener 8 caracteres</span>
+            <span *ngIf="registerForm.get('password')?.hasError('minlength')" class="text-red-500 text-xs mt-1 block">La contraseña debe tener 8 caracteres.</span>
+            <span *ngIf="registerForm.get('password')?.hasError('maxlength')" class="text-red-500 text-xs mt-1 block">La contraseña no debe tener más de 20 caracteres.</span>
+            <span *ngIf="registerForm.get('password')?.hasError('pattern')" class="text-red-500 text-xs mt-1 block">La contraseña debe tener al menos una letra mayúscula, una letra minúscula, un número y un carácter especial.</span>
           </div>
         </div>
         <div class="mb-6 text-center">
