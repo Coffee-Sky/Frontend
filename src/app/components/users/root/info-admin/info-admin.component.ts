@@ -2,12 +2,12 @@ import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-root-home',
+  selector: 'app-info-admin',
   standalone: true,
   imports: [RouterModule],
-  templateUrl: './root-home.component.html',
-  styleUrl: './root-home.component.css'
+  templateUrl: './info-admin.component.html',
+  styleUrl: './info-admin.component.css'
 })
-export class RootHomeComponent {
+export class InfoAdminComponent {
 
 }
