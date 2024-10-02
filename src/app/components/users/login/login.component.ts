@@ -29,7 +29,7 @@ export class LoginComponent {
         console.log('Token:', response.token);
         const token = this.jwtService.decodeToken();
         console.log('Token decodificado:', token);
-        // window.location.href = '';
+        window.location.href = '';
       },
       (error) => {
         console.error('Error iniciando sesión:', error);
