@@ -1,17 +1,22 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { JwtService } from '../../../services/jwt.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [RouterModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
-  constructor(private jwtService: JwtService) { }
+  constructor(public jwtService: JwtService) { }
+
+  ngOnInit(): void {
+    console.log(this.jwtService.tokenExistsAndValid());
+  }
 
   logout() {
     this.jwtService.removeToken();
