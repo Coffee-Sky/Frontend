@@ -77,6 +77,38 @@
           </tbody>
         </table>
       </div>
+
+      <!-- <div class="bg-color3 px-3 py-3 flex justify-center shadow-md sm:rounded-lg">
+        <table class="w-full text-center text-md rtl:text-right text-color1-shade">
+          <thead class="uppercase px-6 py-3">
+            <tr class="border-b border-color4">
+              <th class="py-2 px-5">Correo</th>
+              <th class="py-2 px-5">Usuario</th>
+              <th class="py-2 px-5">Nombre</th>
+              <th class="py-2 px-5">Estado</th>
+              <th class="py-2 px-5">Acciones</th>
+            </tr>
+          </thead>
+  
+          <tbody>
+            <tr *ngFor="let user of users" routerLink="/info" class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
+              <td class="py-3 px-5">{{ user.email }}</td>
+              <td class="py-3 px-5">{{ user.username }}</td>
+              <td class="py-3 px-5">{{ user.name }}</td>
+              <td class="py-3 px-5">{{ user.status }}</td>
+              <td class="flex justify-center gap-4 px-5 py-3">
+                <button [routerLink]="['/info', user.id]" class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                  <span>Ver</span>
+                </button>
+                <button class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                  <span>Eliminar</span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div> -->
+
     </div>
   </div>
 </div>
