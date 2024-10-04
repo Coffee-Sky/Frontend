@@ -15,7 +15,6 @@ export class HeaderComponent implements OnInit {
   constructor(public jwtService: JwtService) { }
 
   ngOnInit(): void {
-    console.log(this.jwtService.tokenExistsAndValid());
   }
 
   logout() {
