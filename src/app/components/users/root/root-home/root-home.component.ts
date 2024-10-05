@@ -4,26 +4,35 @@ import { CreationAdminComponent } from '../creation-admin/creation-admin.compone
 import { InfoAdminComponent } from '../info-admin/info-admin.component';
 import { CommonModule } from '@angular/common';
 import { CreateAdminService } from '../../../../services/create-admin.service';
+import { PasswordRootService } from '../../../../services/password-root.service';
+import { PasswordRootComponent } from '../password-root/password-root.component';
 
 @Component({
   selector: 'app-root-home',
   standalone: true,
-  imports: [RouterModule, CommonModule, CreationAdminComponent, InfoAdminComponent],
+  imports: [RouterModule, CommonModule, CreationAdminComponent, InfoAdminComponent, PasswordRootComponent],
   templateUrl: './root-home.component.html',
   styleUrl: './root-home.component.css'
 })
 
 export class RootHomeComponent implements OnInit{
   creationAdmin: boolean = false;
+  changePassword: boolean = false;
   
-  constructor(private createAdminService: CreateAdminService){
+  constructor(private createAdminService: CreateAdminService, private passwordService: PasswordRootService){
   }
 
   ngOnInit(): void {
     this.createAdminService.$create.subscribe((value)=>{this.creationAdmin = value})
+    this.passwordService.$password.subscribe((value)=>{this.changePassword = value})
   }
 
   createAdmin(){
     this.creationAdmin = true;
   }
+
+  changePasswordRoot(){
+    this.changePassword = true;
+  }
+
 }
