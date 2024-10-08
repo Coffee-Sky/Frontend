@@ -5,11 +5,12 @@ import { LoginComponent } from "./components/users/login/login.component";
 import { HeaderComponent } from "./components/home/header/header.component";
 import { PageComponent } from "./components/home/page/page.component";
 import { RootHomeComponent } from "./components/users/root/root-home/root-home.component";
+import { ProfileComponent } from "./components/users/profile/profile.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RegisterComponent, LoginComponent, HeaderComponent, PageComponent, RootHomeComponent ],
+  imports: [RouterOutlet, RegisterComponent, LoginComponent, HeaderComponent, PageComponent, RootHomeComponent, ProfileComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
