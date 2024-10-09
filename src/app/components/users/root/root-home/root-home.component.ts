@@ -19,7 +19,7 @@ interface Admins {
   secondlastname: string;
   username: string;
   email: string;
-  statusName: number;
+  statusID: number;
 }
 
 @Component({
