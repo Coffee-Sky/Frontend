@@ -9,6 +9,7 @@ import { PasswordRootComponent } from '../password-root/password-root.component'
 import { DeleteAdminComponent } from '../delete-admin/delete-admin.component';
 import { DeleteAdminService } from '../../../../services/modal/delete-admin.service';
 import { ApiService } from '../../../../services/api.service';
+import { JwtService } from '../../../../services/jwt.service';
 
 interface Admins {
   userID: number;
@@ -39,7 +40,8 @@ export class RootHomeComponent implements OnInit{
   constructor(private createAdminService: CreateAdminService, 
               private passwordService: PasswordRootService, 
               private deleteAdminService: DeleteAdminService,
-              private apiService: ApiService
+              private apiService: ApiService,
+              private jwtService: JwtService
             ){}
 
   ngOnInit(): void {
@@ -71,6 +73,11 @@ export class RootHomeComponent implements OnInit{
         console.error('Error obteniendo los administradores:', error);
       }
     )
+  }
+
+  logout() {
+    this.jwtService.removeToken();
+    window.location.href = '';
   }
 
 }

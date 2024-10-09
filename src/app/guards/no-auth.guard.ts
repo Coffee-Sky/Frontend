@@ -7,12 +7,19 @@ export const noAuthGuard: CanActivateFn = (route, state) => {
   const jwtService = inject(JwtService);
   const router = inject(Router);
 
-  // Si el token es válido, redirige al dashboard (u otra página)
   if (jwtService.tokenExistsAndValid()) {
-    router.navigate(['']);  // Redirigir a una ruta protegida si está autenticado
-    return false;  // Bloquea el acceso a la página de login
-  } else {
-    return true;  // Permite el acceso a la página de login si no está autenticado
-  }
-};
+    const decodeToken = jwtService.decodeToken();
 
+    // Si es root o admin, redirige a sus respectivas áreas
+    if (decodeToken && decodeToken.role === 'ROLE_ROOT') {
+      router.navigate(['/root']);
+    } else if (decodeToken && decodeToken.role === 'ROLE_ADMIN') {
+      router.navigate(['/info']);
+    } else {
+      router.navigate(['/']);  // Redirige a la página principal si está autenticado
+    }
+    return false;
+  }
+  
+  return true;  // Permite el acceso a la página de login si no está autenticado
+};
