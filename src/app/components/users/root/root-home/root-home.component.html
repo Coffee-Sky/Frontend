@@ -57,7 +57,8 @@
                     Ver
                   </span>
                 </button>
-                <button class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                <button (click)="deleteAdminFunction()"
+                class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
                   <span>
                     Eliminar
                   </span>
@@ -75,7 +76,8 @@
                     Ver
                   </span>
                 </button>
-                <button class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                <button (click)="deleteAdminFunction()"
+                class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
                   <span>
                     Eliminar
                   </span>
@@ -84,6 +86,10 @@
             </tr>
           </tbody>
         </table>
+      </div>
+
+      <div class="" *ngIf="deleteAdmin==true">
+        <app-delete-admin />
       </div>
 
       <!-- <div class="bg-color3 px-3 py-3 flex justify-center shadow-md sm:rounded-lg">
@@ -108,13 +114,18 @@
                 <button [routerLink]="['/info', user.id]" class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
                   <span>Ver</span>
                 </button>
-                <button class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                <button (click)="deleteAdminFunction()"
+                class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
                   <span>Eliminar</span>
                 </button>
               </td>
             </tr>
           </tbody>
         </table>
+      </div> 
+    
+      <div class="" *ngIf="deleteAdmin==true">
+        <app-delete-admin />
       </div> -->
 
     </div>
