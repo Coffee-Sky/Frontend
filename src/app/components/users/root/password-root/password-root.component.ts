@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PasswordRootService } from '../../../../services/password-root.service';
+import { PasswordRootService } from '../../../../services/modal/password-root.service';
 
 @Component({
   selector: 'app-password-root',

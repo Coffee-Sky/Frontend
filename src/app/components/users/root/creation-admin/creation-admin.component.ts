@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CreateAdminService } from '../../../../services/create-admin.service';
+import { CreateAdminService } from '../../../../services/modal/create-admin.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
