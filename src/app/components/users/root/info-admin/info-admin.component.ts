@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { DeleteAdminService } from '../../../../services/delete-admin.service';
+import { DeleteAdminService } from '../../../../services/modal/delete-admin.service';
 import { CommonModule } from '@angular/common';
 import { DeleteAdminComponent } from '../delete-admin/delete-admin.component';
 
