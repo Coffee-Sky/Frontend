@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { DeleteAdminService } from '../../../../services/delete-admin.service';
+import { DeleteAdminService } from '../../../../services/modal/delete-admin.service';
 
 @Component({
   selector: 'app-delete-admin',
