@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { CloudinaryService } from '../../../services/cloudinary.service';
 
 @Component({
   selector: 'app-profile',
@@ -14,9 +15,17 @@ export class ProfileComponent implements OnInit{
   isEditing: boolean = false;
   originalValues: any;
   editProfileForm!: FormGroup;
+  imageUrl: string = '';
+  changingPicture: boolean = false;
+  selectedFile: File | null = null;
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef) { 
+  genders = [
+    { id: 1, name: 'Masculino' },
+    { id: 2, name: 'Femenino' },
+    { id: 3, name: 'Otro' }
+  ];
 
+  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService) { 
   }
 
   ngOnInit(): void {
@@ -25,18 +34,17 @@ export class ProfileComponent implements OnInit{
       secondname: ['jjjjjj', Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)],
       firstlastname: ['Suarez', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]],
       secondlastname: ['', Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)],
-      genderID: [{value: '1', disabled: true}, Validators.required],
+      genderID: [1, Validators.required],
       identificationnumber: [{value: '12345678', disabled: true}],
-      borncountry: [{value: 'Colombia', disabled: true}, Validators.required],
-      bornstate: [{value: 'Risaralda', disabled: true}, Validators.required],
-      borncity: [{value: 'Pereira', disabled: true}, Validators.required],
+      borncountry: ['Colombia', Validators.required],
+      bornstate: ['Risaralda', Validators.required],
+      borncity: ['Pereira', Validators.required],
       bornDate: ['2000-06-06', Validators.required],
       username: ['Suarez123', [Validators.required, Validators.minLength(5), Validators.maxLength(12), Validators.pattern(/^[A-Za-z0-9_]+$/)]],
       email: [{value: 'Suarez123@gmail.com', disabled: true}],
       password: ['12w@waR4', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)]],
     });
     this.originalValues = this.editProfileForm.getRawValue();
-    
   }
 
   toggleEdit() {
@@ -46,10 +54,12 @@ export class ProfileComponent implements OnInit{
     console.log('el valor es: ', this.isEditing);
     if (this.isEditing) {
       this.editProfileForm.controls['genderID'].enable();
-      this.editProfileForm.controls['borncountry'].enable();
-      this.editProfileForm.controls['bornstate'].enable();
-      this.editProfileForm.controls['borncity'].enable();
     }
+  }
+
+  getGenderName(genderID: number): string {
+    const gender = this.genders.find(g => g.id === genderID);
+    return gender ? gender.name : 'Desconocido'; // Si no encuentra el género, devuelve 'Desconocido'
   }
 
   save() {
@@ -57,9 +67,6 @@ export class ProfileComponent implements OnInit{
       console.log(this.editProfileForm.value);
       this.isEditing = false;
       this.editProfileForm.controls['genderID'].disable();
-      this.editProfileForm.controls['borncountry'].disable();
-      this.editProfileForm.controls['bornstate'].disable();
-      this.editProfileForm.controls['borncity'].disable();
     } else {
       console.log('Formulario invalido');
     }
@@ -70,12 +77,36 @@ export class ProfileComponent implements OnInit{
     this.editProfileForm.reset(this.originalValues);
     console.log('el valor en cancelar es: ', this.isEditing);
     this.editProfileForm.controls['genderID'].disable();
-    this.editProfileForm.controls['borncountry'].disable();
-    this.editProfileForm.controls['bornstate'].disable();
-    this.editProfileForm.controls['borncity'].disable();
   }
 
-  changePicture() {
-    console.log('Cambiar imagen');
+  changeImage(){
+    this.changingPicture = true;
+  }
+
+  close(){
+    this.changingPicture = false;
+  }
+
+  // Método para manejar la selección del archivo
+  onFileSelected(event: any) {
+    if (event.target.files && event.target.files[0]) {
+      this.selectedFile = event.target.files[0];
+    }
+  }
+
+  // Método para subir la imagen
+  uploadImage() {
+    if (this.selectedFile) {
+      this.cloudinary.uploadImage(this.selectedFile).subscribe(
+        (response) => {
+          console.log('Imagen subida correctamente', response);
+          this.imageUrl = response.secure_url;
+          this.changingPicture = false;
+        },
+        (error) => {
+          console.error('Error al subir la imagen', error);
+        }
+      );
+    }
   }
 }
