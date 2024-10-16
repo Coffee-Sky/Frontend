@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../environments/environment';
 import { ErrorHandlerService } from './error-handler.service';
+import { JwtService } from './jwt.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class ApiService {
 
   private url = environment.url;
 
-  constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService) { }
+  constructor(private http: HttpClient, private errorHandlerService: ErrorHandlerService, private jwtService: JwtService) { }
 
   /**
    * Get data from a specified endpoint.
@@ -33,6 +34,18 @@ export class ApiService {
    */
   postData(endpoint: string, data: any): Observable<any> {
     return this.http.post<any>(`${this.url}/${endpoint}`, data).pipe(
+      catchError(this.errorHandlerService.handleError)
+    );
+  }
+
+  postDataWithHeaders(endpoint: string, data: any): Observable<any> {
+    const token = this.jwtService.getToken();
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.post<any>(`${this.url}/${endpoint}`, data, { headers }).pipe(
       catchError(this.errorHandlerService.handleError)
     );
   }
