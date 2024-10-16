@@ -8,13 +8,15 @@ import { noAuthGuard } from './guards/no-auth.guard';
 import { InfoAdminComponent } from './components/users/root/info-admin/info-admin.component';
 import { RootHomeComponent } from './components/users/root/root-home/root-home.component';
 import { rootGuard } from './guards/root.guard';
+import { ProfileComponent } from './components/users/profile/profile.component';
 
 export const routes: Routes = [
   { path: '', component: PageComponent, canActivate: [authGuard] }, 
   { path: 'login', component: LoginComponent, canActivate: [noAuthGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [noAuthGuard] },
   { path: 'root', component: RootHomeComponent, canActivate: [rootGuard]},
-  { path: 'info', component: InfoAdminComponent}
+  { path: 'info', component: InfoAdminComponent},
+  { path: 'profile', component: ProfileComponent }
 ];
 
 @NgModule({
