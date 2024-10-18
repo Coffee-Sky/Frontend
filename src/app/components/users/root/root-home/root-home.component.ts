@@ -59,8 +59,16 @@ export class RootHomeComponent implements OnInit{
     this.changePassword = true;
   }
 
-  deleteAdminFunction(){
-    this.deleteAdmin = true;
+  deleteAdminFunction(id: number){
+    this.apiService.putData("update/delete-admin?userID="+id, {}).subscribe(
+      (response) => {
+        console.log(response);
+        this.getAdmins();
+      },
+      (error) => {
+        console.error('Error eliminando el administrador:', error);
+      }
+    )
   }
 
   getAdmins() {
