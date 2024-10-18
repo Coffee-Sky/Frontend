@@ -24,6 +24,7 @@ export class PasswordRestoreComponent {
 
   save() {
     if (this.emailForm.valid) {
+      window.alert("Se ha enviado el correo para recuperar tu contraseña.")
       console.log(this.emailForm.value);
     } else {
       console.log('Formulario inválido');
