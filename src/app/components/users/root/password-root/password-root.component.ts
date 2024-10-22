@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PasswordRootService } from '../../../../services/modal/password-root.service';
+import { ModalService } from '../../../../services/modal/modal.service';
 
 @Component({
   selector: 'app-password-root',
@@ -11,7 +11,7 @@ import { PasswordRootService } from '../../../../services/modal/password-root.se
   styleUrl: './password-root.component.css'
 })
 export class PasswordRootComponent implements OnInit{
-  constructor(private passwordService: PasswordRootService){}
+  constructor(private passwordService: ModalService){}
 
   ngOnInit(): void {
     

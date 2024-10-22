@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { DeleteAdminService } from '../../../../services/modal/delete-admin.service';
 import { CommonModule } from '@angular/common';
 import { DeleteAdminComponent } from '../delete-admin/delete-admin.component';
+import { ModalService } from '../../../../services/modal/modal.service';
 
 @Component({
   selector: 'app-info-admin',
@@ -15,7 +15,7 @@ export class InfoAdminComponent implements OnInit{
 
   deleteAdmin: boolean = false;
 
-  constructor(private deleteAdminService: DeleteAdminService){
+  constructor(private deleteAdminService: ModalService){
 
   }
 

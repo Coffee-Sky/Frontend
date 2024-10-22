@@ -7,11 +7,12 @@ import { PageComponent } from "./components/home/page/page.component";
 import { RootHomeComponent } from "./components/users/root/root-home/root-home.component";
 import { CloudinaryService } from './services/cloudinary.service';
 import { ProfileComponent } from "./components/users/profile/profile.component";
+import { AdminHomeComponent } from "./components/users/admin/admin-home/admin-home.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RegisterComponent, LoginComponent, HeaderComponent, PageComponent, RootHomeComponent, ProfileComponent],
+  imports: [RouterOutlet, RegisterComponent, LoginComponent, HeaderComponent, PageComponent, RootHomeComponent, ProfileComponent, AdminHomeComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

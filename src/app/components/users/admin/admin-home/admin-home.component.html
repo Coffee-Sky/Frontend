@@ -1,0 +1,98 @@
+<div class="min-h-screen bg-color2 text-gray-900 flex justify-center">
+    <div class="max-w-screen-xl m-0 sm:m-10 bg-color4 shadow sm:rounded-lg flex justify-center flex-1 relative">
+      <div class="lg:w-full p-6 sm:p-6 ">
+        <div class="flex justify-center relative">
+          <img src="Nombre2.png" alt="" class="w-48 mx-auto" />
+          <button (click)="toggleDropdown()" class="">
+            <img [src]="'Logo2.png'" src="Logo2.png" alt="Imagen de usuario" class="w-16 h-16 rounded-full">
+          </button>
+
+          <div *ngIf="isDropdownOpen" class="absolute right-0 mt-20 w-48 bg-white rounded-md shadow-lg z-20 divide-y divide-gray-100 text-center">
+            <div class="py-2">
+              <p class="block text-gray-800">USERNAME</p>
+              <p class="block mb-2 text-gray-800">Correo.com</p>
+              <!-- <p class="block text-gray-800">{{Admins.username}}</p>
+              <p class="block mb-2 text-gray-800">{{Admins.email}}</p> -->
+            </div>
+            <div>
+              <a href="/perfil" class="block py-2 text-gray-800 hover:bg-gray-100">Ver perfil</a>
+            </div>
+            <div class="py-1">
+              <a href="#" class="block py-2 text-gray-800 hover:bg-gray-100">Cerrar sesión</a>
+            </div>
+          </div>
+        </div>
+
+        
+
+        <div class="flex flex-wrap pt-4 pb-4 w-fit">
+          <button [routerLink]="'/creation'" class="flex-1 sm:w-1/3 tracking-wide rounded-full font-semibold bg-color1 text-gray-100 px-6 py-3 hover:bg-color1-shade transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none" type="submit">
+            <span class="sm:mt-0">Crear Vuelo</span>
+          </button>
+        </div>
+  
+        <!-- <div class="" *ngIf="creationAdmin==true">
+          <app-creation-admin />
+        </div>
+  
+        <div class="" *ngIf="changePassword==true">
+          <app-password-root />
+        </div> -->
+  
+        <div class="bg-color3 px-3 py-3 flex justify-center shadow-md sm:rounded-lg">
+          <table class="w-full text-center text-md rtl:text-right text-color1-shade">
+            <thead class="uppercase px-6 py-3">
+              <tr class="border-b border-color4">
+                <th class="py-2 px-5">Código</th>
+                <th class="py-2 px-5">Origen</th>
+                <th class="py-2 px-5">Destino</th>
+                <th class="py-2 px-5">Fecha</th>
+                <th class="py-2 px-5">Tiquetes vendidos</th>
+                <th class="py-2 px-5">Estado</th>
+                <th class="py-2 px-5">Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr *ngFor="let vuelo of vuelos" routerLink="/-vuelo" class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
+                <td class="py-3 px-5">{{ vuelo.vueloID }}</td>
+                <td class="py-3 px-5">{{ vuelo.origin }}</td>
+                <td class="py-3 px-5">{{ vuelo.destination }}</td>
+                <td class="py-3 px-5"> {{ vuelo.departureDate }}</td>
+                <td class="py-3 px-5">{{ vuelo.TiquetesVendidos }}</td>
+                <td class="py-3 px-5">
+                  {{ vuelo.statusID === 1 ? 'Sin realizar' : vuelo.statusID === 2 ? 'Realizado' : 'Desconocido' }}
+                </td>              
+                <td class="flex justify-center gap-4 px-5 py-3">
+                  <!-- <button [routerLink]="['/info-vuelo', vuelo.vueloID]" class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                    <span>Ver</span>
+                  </button> -->
+                  <button [routerLink]="['/info-vuelo']" class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                    <span>Ver</span>
+                  </button>
+                  <button *ngIf="vuelo.TiquetesVendidos === 0" (click)="editFlight()" [routerLink]="['/info-vuelo']"
+                  class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                    <span>Editar</span>
+                  </button>
+                  <button *ngIf="vuelo.TiquetesVendidos > 0" (click)="createPromo()"
+                  class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                    <span>Promo</span>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div> 
+        
+        <div class="" *ngIf="creationPromo==true">
+          <app-promotion/>
+        </div>
+        
+        <div class="" *ngIf="cancelFlight==true">
+          <!-- <app-delete-admin /> -->
+          <p>Cancelar</p>
+        </div>
+  
+      </div>
+    </div>
+  </div>

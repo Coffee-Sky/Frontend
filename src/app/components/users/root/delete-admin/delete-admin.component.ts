@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { DeleteAdminService } from '../../../../services/modal/delete-admin.service';
+import { ModalService } from '../../../../services/modal/modal.service';
 
 @Component({
   selector: 'app-delete-admin',
@@ -10,7 +10,7 @@ import { DeleteAdminService } from '../../../../services/modal/delete-admin.serv
   styleUrl: './delete-admin.component.css'
 })
 export class DeleteAdminComponent implements OnInit{
-  constructor(private deleteAdminService: DeleteAdminService){
+  constructor(private deleteAdminService: ModalService){
 
   }
 
