@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../services/api.service';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-creation-admin',

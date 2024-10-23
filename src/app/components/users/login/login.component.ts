@@ -4,7 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { RouterModule } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { JwtService } from '../../../services/jwt.service';
-import { PasswordRootService } from '../../../services/modal/password-root.service';
+import { ModalService } from '../../../services/modal.service';
 import { PasswordRestoreComponent } from '../password-restore/password-restore.component';
 
 @Component({
@@ -24,7 +24,7 @@ export class LoginComponent {
 
   passwordRestore: boolean = false;
 
-  constructor(private apiService: ApiService, private jwtService: JwtService, private passwordService: PasswordRootService) { }
+  constructor(private apiService: ApiService, private jwtService: JwtService, private passwordService: ModalService) { }
 
   ngOnInit(): void {
     this.passwordService.$password.subscribe((value)=>{this.passwordRestore = value})

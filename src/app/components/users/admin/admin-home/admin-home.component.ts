@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CreationFlightComponent } from '../creation-flight/creation-flight.component';
 import { PromotionComponent } from '../promotion/promotion.component';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-admin-home',

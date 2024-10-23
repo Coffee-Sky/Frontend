@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../../services/modal.service';
 import { PromotionComponent } from "../promotion/promotion.component";
 
 @Component({

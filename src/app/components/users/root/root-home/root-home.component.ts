@@ -7,7 +7,7 @@ import { PasswordRootComponent } from '../password-root/password-root.component'
 import { DeleteAdminComponent } from '../delete-admin/delete-admin.component';
 import { ApiService } from '../../../../services/api.service';
 import { JwtService } from '../../../../services/jwt.service';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../../services/modal.service';
 
 interface Admins {
   userID: number;
