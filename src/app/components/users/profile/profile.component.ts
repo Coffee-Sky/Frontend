@@ -7,6 +7,31 @@ import { HeaderComponent } from '../../home/header/header.component';
 import { FooterComponent } from '../../home/footer/footer.component';
 import { ApiService } from '../../../services/api.service';
 import { LocationService } from '../../../services/location.service';
+import { JwtService } from '../../../services/jwt.service';
+
+interface Role {
+  roleID: number;
+  name: string;
+}
+
+interface User {
+  userID: number;
+  firstname: string;
+  secondname: string;
+  firstlastname: string;
+  secondlastname: string;
+  identificationnumber: string;
+  bornDate: string;
+  borncountry: string;
+  bornstate: string;
+  borncity: string;
+  genderID: number;
+  image: string;
+  username: string;
+  email: string;
+  role: Role;
+  statusID: number;
+}
 
 interface Country {
   country_name: string;
@@ -22,7 +47,6 @@ interface City {
   city_name: string;
 }
 
-
 interface Gender {
   genderID: number;
   name: string;
@@ -36,6 +60,7 @@ interface Gender {
   styleUrl: './profile.component.css'
 })
 export class ProfileComponent implements OnInit{
+  code: string = '';
   isEditing: boolean = false;
   originalValues: any;
   editProfileForm!: FormGroup;
@@ -50,29 +75,67 @@ export class ProfileComponent implements OnInit{
   cities: City[] = [];
   genders: Gender[] = [];
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService, private apiService: ApiService, private locationService: LocationService) { 
+  user: User = {
+    userID: 0,
+    firstname: '',
+    secondname: '',
+    firstlastname: '',
+    secondlastname: '',
+    identificationnumber: '',
+    bornDate: '',
+    borncountry: '',
+    bornstate: '',
+    borncity: '',
+    genderID: 0,
+    image: '',
+    username: '',
+    email: '',
+    role: {
+      roleID: 0,
+      name: ''
+    },
+    statusID: 0
+  };
+
+  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService, private apiService: ApiService, private locationService: LocationService, private jwtService: JwtService) { 
   }
 
   ngOnInit(): void {
+    this.getUserInfo();
     this.editProfileForm = this.fb.group({
-      firstname: ['Pedro', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]],
-      secondname: ['jjjjjj', Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)],
-      firstlastname: ['Suarez', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]],
-      secondlastname: ['', Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)],
-      genderID: [1, Validators.required],
-      identificationnumber: [{value: '12345678', disabled: true}],
-      borncountry: ['Colombia', Validators.required],
-      bornstate: ['Risaralda', Validators.required],
-      borncity: ['Pereira', Validators.required],
-      bornDate: ['2000-06-06', Validators.required],
-      username: ['Suarez123', [Validators.required, Validators.minLength(5), Validators.maxLength(12), Validators.pattern(/^[A-Za-z0-9_]+$/)]],
-      email: [{value: 'Suarez123@gmail.com', disabled: true}],
-      password: ['12w@waR4', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)]],
+      firstname: [this.user.firstname, [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]],
+      secondname: [this.user.secondname, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)],
+      firstlastname: [this.user.firstlastname, [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]],
+      secondlastname: [this.user.secondlastname, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)],
+      genderID: [this.user.genderID, Validators.required],
+      identificationnumber: [{value: this.user.identificationnumber, disabled: true}],
+      borncountry: [this.user.borncountry, Validators.required],
+      bornstate: [this.user.bornstate, Validators.required],
+      borncity: [this.user.borncity, Validators.required],
+      bornDate: [this.user.bornDate, Validators.required],
+      username: [this.user.username, [Validators.required, Validators.minLength(5), Validators.maxLength(12), Validators.pattern(/^[A-Za-z0-9_]+$/)]],
+      email: [{value: this.user.email, disabled: true}],
+      // password: ['12w@waR4', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)]],
     });
     this.originalValues = this.editProfileForm.getRawValue();
 
     this.getGenders();
     this.getAccessToken();
+  }
+
+  getUserInfo() {
+    this.code = this.jwtService.getCode() ?? '';
+    this.apiService.getData('data/get-user-info?userID='+this.code).subscribe(
+      (response: User) => {
+        const user = response;
+        this.editProfileForm.patchValue(user);
+        this.originalValues = this.editProfileForm.getRawValue();
+        this.imageUrl = user.image ? '' : '';
+      },
+      (error) => {
+        console.error('Error obteniendo la información del usuario:', error);
+      }
+    );
   }
 
   getGenders() {
@@ -169,9 +232,27 @@ export class ProfileComponent implements OnInit{
       console.log(this.editProfileForm.value);
       this.isEditing = false;
       this.editProfileForm.controls['genderID'].disable();
+      this.submitUserInfo();
     } else {
       console.log('Formulario invalido');
     }
+  }
+
+  submitUserInfo(){
+    const { email, identificationnumber, ...userInfo } = this.editProfileForm.getRawValue();
+    userInfo.userID = Number(this.code);
+    userInfo.image = this.imageUrl;
+    console.log('Información del usuario a enviar:', userInfo);
+    this.apiService.putData('update/update-client-info', userInfo).subscribe(
+      (response) => {
+        console.log(response)
+        this.getUserInfo();
+      },
+      (error) => {
+        console.error('Error obteniendo la información del usuario:', error);
+        this.cancel();
+      }
+    );
   }
 
   cancel() {
