@@ -38,6 +38,24 @@ export class ApiService {
     );
   }
 
+  /**
+   * Put data to a specified endpoint.
+   * @param {string} endpoint - The endpoint to put data to.
+   * @param {any} data - The data to put.
+   * @returns {Observable<any>} An Observable of the HTTP response.
+   */
+  putData(endpoint: string, data: any): Observable<any> {
+    return this.http.put<any>(`${this.url}/${endpoint}`, data).pipe(
+      catchError(this.errorHandlerService.handleError)
+    );
+  }
+
+  /**
+   * Post data to a specified endpoint with headers.
+   * @param {string} endpoint - The endpoint to post data to.
+   * @param {any} data - The data to post.
+   * @returns {Observable<any>} An Observable of the HTTP response.
+   */
   postDataWithHeaders(endpoint: string, data: any): Observable<any> {
     const token = this.jwtService.getToken();
 

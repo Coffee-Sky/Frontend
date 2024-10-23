@@ -3,11 +3,35 @@ import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { CloudinaryService } from '../../../services/cloudinary.service';
+import { HeaderComponent } from '../../home/header/header.component';
+import { FooterComponent } from '../../home/footer/footer.component';
+import { ApiService } from '../../../services/api.service';
+import { LocationService } from '../../../services/location.service';
+
+interface Country {
+  country_name: string;
+  country_short_name: string;
+  country_phone_code: number;
+}
+
+interface State {
+  state_name: string;
+}
+
+interface City {
+  city_name: string;
+}
+
+
+interface Gender {
+  genderID: number;
+  name: string;
+}
 
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent, FooterComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -19,13 +43,14 @@ export class ProfileComponent implements OnInit{
   changingPicture: boolean = false;
   selectedFile: File | null = null;
 
-  genders = [
-    { id: 1, name: 'Masculino' },
-    { id: 2, name: 'Femenino' },
-    { id: 3, name: 'Otro' }
-  ];
+  accessToken: string = '';
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService) { 
+  countries: Country[] = [];
+  states: State[] = [];
+  cities: City[] = [];
+  genders: Gender[] = [];
+
+  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService, private apiService: ApiService, private locationService: LocationService) { 
   }
 
   ngOnInit(): void {
@@ -45,6 +70,83 @@ export class ProfileComponent implements OnInit{
       password: ['12w@waR4', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)]],
     });
     this.originalValues = this.editProfileForm.getRawValue();
+
+    this.getGenders();
+    this.getAccessToken();
+  }
+
+  getGenders() {
+    this.apiService.getData("sign-up/get-genders").subscribe(
+      (response) => {
+        this.genders = response;
+        // console.log(this.genders);
+      },
+      (error) => {
+        console.error('Error obteniendo los géneros:', error);
+      }
+    )
+  }
+
+  getAccessToken() {
+    this.locationService.getAccessToken().subscribe(
+      (response) => {
+        this.accessToken = response.auth_token;
+        // console.log('Access Token:', this.accessToken);
+        this.getCountries();
+        // this.getStates('Colombia');
+        // this.getCities('Antioquia');
+      },
+      (error) => {
+        console.error('Error obteniendo el token de acceso:', error);
+      }
+    );
+  }
+
+  getCountries() {
+    this.locationService.getCountries(this.accessToken).subscribe(
+      (response) => {
+        this.countries = response;
+        // console.log(this.countries);
+      },
+      (error) => {
+        console.error('Error obteniendo los países:', error);
+      }
+    );
+  }
+
+  getStates(event: Event) {
+    const selectedCountry = (event.target as HTMLSelectElement).value;
+
+    console.log('Selected Country:', selectedCountry);
+
+    this.states = [];
+    this.cities = [];
+
+    this.locationService.getStates(this.accessToken, selectedCountry).subscribe(
+      (response) => {
+        this.states = response;
+        // console.log(this.states);
+      },
+      (error) => {
+        console.error('Error obteniendo los estados:', error);
+      }
+    );
+  }
+
+  getCities(event: Event) {
+    const selectedState = (event.target as HTMLSelectElement).value;
+
+    // console.log('Selected Country:', selectedState);
+
+    this.locationService.getCities(this.accessToken, selectedState).subscribe(
+      (response) => {
+        this.cities = response;
+        // console.log(this.cities);
+      },
+      (error) => {
+        console.error('Error obteniendo las ciudades:', error);
+      }
+    );
   }
 
   toggleEdit() {
@@ -58,7 +160,7 @@ export class ProfileComponent implements OnInit{
   }
 
   getGenderName(genderID: number): string {
-    const gender = this.genders.find(g => g.id === genderID);
+    const gender = this.genders.find(g => g.genderID === genderID);
     return gender ? gender.name : 'Desconocido'; // Si no encuentra el género, devuelve 'Desconocido'
   }
 

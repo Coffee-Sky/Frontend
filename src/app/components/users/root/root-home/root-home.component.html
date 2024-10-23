@@ -46,7 +46,7 @@
           </thead>
   
           <tbody>
-            <tr *ngFor="let admin of admins" routerLink="/info" class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
+            <tr *ngFor="let admin of admins" class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
               <td class="py-3 px-5">{{ admin.email }}</td>
               <td class="py-3 px-5">{{ admin.username }}</td>
               <td class="py-3 px-5">{{ admin.firstname }} {{ admin.secondname }} {{ admin.firstlastname }} {{ admin.secondlastname }}</td>
@@ -54,13 +54,13 @@
                 {{ admin.statusID === 1 ? 'Activo' : admin.statusID === 2 ? 'Inactivo' : 'Desconocido' }}
               </td>              
               <td class="flex justify-center gap-4 px-5 py-3">
-                <button [routerLink]="['/info', admin.userID]" class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                <button [routerLink]="['/info/'+admin.userID]" class="bg-color1 text-gray-100 w-24 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
                   <span>Ver</span>
                 </button>
-                <button (click)="deleteAdminFunction()"
-                class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
-                  <span>Eliminar</span>
-                </button>
+                <!-- <button (click)="deleteAdminFunction(admin.userID)"
+                class="bg-color1 text-gray-100 w-24 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                  <span>Desactivar</span>
+                </button> -->
               </td>
             </tr>
           </tbody>
