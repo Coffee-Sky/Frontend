@@ -108,7 +108,7 @@
         <button routerLink="" class="w-30 mt-4 bg-color1 hover:bg-color1-shade transition-all duration-300 ease-in-out text-white px-4 py-2 rounded">Cerrar</button>
       </div>
 
-      <div class="" *ngIf="deleteAdmin==true">
-        <app-delete-admin />
+      <div class="" *ngIf="statusAdmin==true">
+        <app-status-admin [adminID]=code [adminName]=infoAdmin.firstname [status]=infoAdmin.statusID />
       </div>
     </div>

@@ -3,7 +3,7 @@ import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../../services/modal.service';
 import { ApiService } from '../../../../services/api.service';
-import { DeleteAdminComponent } from '../delete-admin/delete-admin.component';
+import { StatusAdminComponent } from '../status-admin/status-admin.component';
 import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -39,13 +39,13 @@ interface Gender {
 @Component({
   selector: 'app-info-admin',
   standalone: true,
-  imports: [RouterModule, CommonModule, DeleteAdminComponent],
+  imports: [RouterModule, CommonModule, StatusAdminComponent],
   templateUrl: './info-admin.component.html',
   styleUrl: './info-admin.component.css'
 })
 export class InfoAdminComponent implements OnInit {
 
-  deleteAdmin: boolean = false;
+  statusAdmin: boolean = false;
   code: string = '3';
   genders: Gender[] = [];
   genderName: string = '';
@@ -73,7 +73,7 @@ export class InfoAdminComponent implements OnInit {
   };
 
   constructor(
-    private deleteAdminService: ModalService,
+    private statusAdminService: ModalService,
     private apiService: ApiService,
     private route: ActivatedRoute,
     private router: Router
@@ -86,7 +86,7 @@ export class InfoAdminComponent implements OnInit {
     });
 
     this.loadInfoAndGenders();
-    this.deleteAdminService.$delete.subscribe(value => this.deleteAdmin = value);
+    this.statusAdminService.$status.subscribe(value => this.statusAdmin = value);
   }
 
   // Encadenar las llamadas a los servicios
@@ -120,6 +120,6 @@ export class InfoAdminComponent implements OnInit {
   }
 
   deleteAdminFunction() {
-    this.deleteAdmin = true;
+    this.statusAdmin = true;
   }
 }

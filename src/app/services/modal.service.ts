@@ -7,7 +7,7 @@ export class ModalService {
 
   constructor() { }
   $create = new EventEmitter<any>();
-  $delete = new EventEmitter<any>();
+  $status = new EventEmitter<any>();
   $password = new EventEmitter<any>();
   $promotion = new EventEmitter<any>();
 }
