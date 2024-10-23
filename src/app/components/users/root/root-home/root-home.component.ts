@@ -3,13 +3,11 @@ import { RouterModule } from '@angular/router';
 import { CreationAdminComponent } from '../creation-admin/creation-admin.component';
 import { InfoAdminComponent } from '../info-admin/info-admin.component';
 import { CommonModule } from '@angular/common';
-import { CreateAdminService } from '../../../../services/modal/create-admin.service';
-import { PasswordRootService } from '../../../../services/modal/password-root.service';
 import { PasswordRootComponent } from '../password-root/password-root.component';
 import { DeleteAdminComponent } from '../delete-admin/delete-admin.component';
-import { DeleteAdminService } from '../../../../services/modal/delete-admin.service';
 import { ApiService } from '../../../../services/api.service';
 import { JwtService } from '../../../../services/jwt.service';
+import { ModalService } from '../../../../services/modal/modal.service';
 
 interface Admins {
   userID: number;
@@ -37,9 +35,9 @@ export class RootHomeComponent implements OnInit{
 
   admins: Admins[] = [];
   
-  constructor(private createAdminService: CreateAdminService, 
-              private passwordService: PasswordRootService, 
-              private deleteAdminService: DeleteAdminService,
+  constructor(private createAdminService: ModalService, 
+              private passwordService: ModalService, 
+              private deleteAdminService: ModalService,
               private apiService: ApiService,
               private jwtService: JwtService
             ){}

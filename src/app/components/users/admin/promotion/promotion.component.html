@@ -1,0 +1,30 @@
+<div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true">
+  <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
+    <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+      <div class="modal relative transform overflow-hidden rounded-lg p-6 w-full bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+        <div class="modal_body">
+          <h2 class="mb-4 text-lg font-semibold">Crear Promoción</h2>
+          <div class="mx-auto max-w-md text-left">
+            <span class="text-sm">Ingrese el procentaje de la promoción a crear</span>
+            <form [formGroup]="promotionForm" (ngSubmit)="save()">
+              <div class="text-center">
+                <input
+                class="w-fit px-2 py-2 mt-2 rounded-lg text-right font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-color1 focus:bg-white invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
+                type="number" placeholder="" formControlName="promotion" min="0" max="100" /> <span class="text-color1-shade text-base"> % </span>
+                <div>
+                  <span *ngIf="promotionForm.hasError('required','promotion') && promotionForm.controls['promotion'].dirty" class="text-red-500 text-xs">El porcentaje es requerido</span>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="mt-4 sm:flex sm:flex-row-reverse sm:px-6">
+            <button (click)="close()" class="inline-flex w-full justify-center rounded-md bg-color1 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-color1-shade sm:ml-3 sm:w-auto">Cancelar</button>
+            <button [disabled]="promotionForm.invalid" type="submit" 
+            class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-color1 hover:bg-gray-300 sm:mt-0 sm:w-auto
+            disabled:opacity-40 disabled:cursor-not-allowed">Crear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

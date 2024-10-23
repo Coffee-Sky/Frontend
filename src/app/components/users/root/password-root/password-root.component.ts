@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PasswordRootService } from '../../../../services/modal/password-root.service';
+import { ModalService } from '../../../../services/modal/modal.service';
 import { JwtService } from '../../../../services/jwt.service';
 import { ApiService } from '../../../../services/api.service';
 
@@ -13,7 +13,7 @@ import { ApiService } from '../../../../services/api.service';
   styleUrl: './password-root.component.css'
 })
 export class PasswordRootComponent implements OnInit{
-  constructor(private passwordService: PasswordRootService, private jwtService: JwtService, private apiService: ApiService){}
+  constructor(private passwordService: ModalService, private jwtService: JwtService, private apiService: ApiService){}
 
   ngOnInit(): void {
     

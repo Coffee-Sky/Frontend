@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { DeleteAdminService } from '../../../../services/modal/delete-admin.service';
 import { CommonModule } from '@angular/common';
-import { DeleteAdminComponent } from '../delete-admin/delete-admin.component';
+import { ModalService } from '../../../../services/modal/modal.service';
 import { ApiService } from '../../../../services/api.service';
 
 interface Role {
@@ -70,7 +70,7 @@ export class InfoAdminComponent implements OnInit{
     statusID: 0
   };
 
-  constructor(private deleteAdminService: DeleteAdminService, private apiService: ApiService, private route: ActivatedRoute, private router: Router){
+  constructor(private deleteAdminService: ModalService, private apiService: ApiService, private route: ActivatedRoute, private router: Router){
 
   }
 
