@@ -27,6 +27,12 @@
       </span>
       <p>Inicio</p>
     </button>
+    <button *ngIf="jwtService.tokenExistsAndValid()" routerLink="/profile">
+      <span class="material-symbols-outlined" translate="no">
+        person
+      </span>
+      <p>Perfil</p>
+    </button>
     <button *ngIf="jwtService.tokenExistsAndValid()" (click)="logout()">
       <span class="material-symbols-outlined" translate="no">
         logout

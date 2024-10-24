@@ -33,6 +33,17 @@ export class JwtService {
     return null;
   }
 
+  getCode(): string | null {
+    if (this.isLocalStorageAvailable()) {
+      const token = this.getToken();
+      if (token) {
+        const decoded: any = jwtDecode(token);
+        return decoded.sub;
+      }
+    }
+    return null;
+  }
+
   removeToken(): void {
     if (this.isLocalStorageAvailable()) {
       localStorage.removeItem(this.TOKEN_KEY);

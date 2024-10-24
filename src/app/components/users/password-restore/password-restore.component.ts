@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { PasswordRootService } from '../../../services/modal/password-root.service';
+import { ModalService } from '../../../services/modal.service';
 import { ApiService } from '../../../services/api.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { ApiService } from '../../../services/api.service';
   styleUrl: './password-restore.component.css'
 })
 export class PasswordRestoreComponent {
-  constructor(private passwordService: PasswordRootService, private apiService: ApiService){}
+  constructor(private passwordService: ModalService, private apiService: ApiService){}
 
   ngOnInit(): void {
     

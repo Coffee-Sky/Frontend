@@ -18,7 +18,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent, canActivate: [noAuthGuard] },
   { path: 'root', component: RootHomeComponent, canActivate: [rootGuard]},
   { path: 'info-vuelo', component: InfoFlightComponent},
-  { path: 'creation', component: CreationFlightComponent}
+  { path: 'creation', component: CreationFlightComponent},
   { path: 'info/:code', component: InfoAdminComponent},
   { path: 'profile', component: ProfileComponent }
 ];

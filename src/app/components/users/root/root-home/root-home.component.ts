@@ -4,10 +4,10 @@ import { CreationAdminComponent } from '../creation-admin/creation-admin.compone
 import { InfoAdminComponent } from '../info-admin/info-admin.component';
 import { CommonModule } from '@angular/common';
 import { PasswordRootComponent } from '../password-root/password-root.component';
-import { DeleteAdminComponent } from '../delete-admin/delete-admin.component';
+import { StatusAdminComponent } from '../status-admin/status-admin.component';
 import { ApiService } from '../../../../services/api.service';
 import { JwtService } from '../../../../services/jwt.service';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../../services/modal.service';
 
 interface Admins {
   userID: number;
@@ -23,7 +23,7 @@ interface Admins {
 @Component({
   selector: 'app-root-home',
   standalone: true,
-  imports: [RouterModule, CommonModule, CreationAdminComponent, InfoAdminComponent, PasswordRootComponent, DeleteAdminComponent],
+  imports: [RouterModule, CommonModule, CreationAdminComponent, InfoAdminComponent, PasswordRootComponent, StatusAdminComponent],
   templateUrl: './root-home.component.html',
   styleUrl: './root-home.component.css'
 })
@@ -31,13 +31,13 @@ interface Admins {
 export class RootHomeComponent implements OnInit{
   creationAdmin: boolean = false;
   changePassword: boolean = false;
-  deleteAdmin: boolean = false;
+  statusAdmin: boolean = false;
 
   admins: Admins[] = [];
   
   constructor(private createAdminService: ModalService, 
               private passwordService: ModalService, 
-              private deleteAdminService: ModalService,
+              private statusAdminService: ModalService,
               private apiService: ApiService,
               private jwtService: JwtService
             ){}
@@ -45,7 +45,7 @@ export class RootHomeComponent implements OnInit{
   ngOnInit(): void {
     this.createAdminService.$create.subscribe((value)=>{this.creationAdmin = value})
     this.passwordService.$password.subscribe((value)=>{this.changePassword = value})
-    this.deleteAdminService.$delete.subscribe((value)=>{this.deleteAdmin = value})
+    this.statusAdminService.$status.subscribe((value)=>{this.statusAdmin = value})
     this.getAdmins();
   }
 

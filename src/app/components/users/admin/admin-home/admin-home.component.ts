@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CreationFlightComponent } from '../creation-flight/creation-flight.component';
 import { PromotionComponent } from '../promotion/promotion.component';
-import { ModalService } from '../../../../services/modal/modal.service';
-import { EditFlightService } from '../../../../services/modal/edit-flight.service';
+import { ModalService } from '../../../../services/modal.service';
+import { EditFlightService } from '../../../../services/edit-flight.service';
 import { CancelFlightComponent } from '../cancel-flight/cancel-flight.component';
 
 @Component({
