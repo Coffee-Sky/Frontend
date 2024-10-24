@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-color2 text-gray-900 flex justify-center">
-    <div class="max-w-screen-xl m-0 sm:m-10 bg-color4 shadow sm:rounded-lg flex justify-center flex-1 relative">
-      <div class="lg:w-full p-6 sm:p-6 ">
+    <div class="max-w-fit mx-auto m-0 sm:m-10 bg-color4 shadow sm:rounded-lg flex justify-center flex-1 relative">
+      <div class="p-6">
         <div class="flex justify-center relative">
           <img src="Nombre2.png" alt="" class="w-48 mx-auto" />
           <button (click)="toggleDropdown()" class="">
@@ -11,8 +11,6 @@
             <div class="py-2">
               <p class="block text-gray-800">USERNAME</p>
               <p class="block mb-2 text-gray-800">Correo.com</p>
-              <!-- <p class="block text-gray-800">{{Admins.username}}</p>
-              <p class="block mb-2 text-gray-800">{{Admins.email}}</p> -->
             </div>
             <div>
               <a href="/perfil" class="block py-2 text-gray-800 hover:bg-gray-100">Ver perfil</a>
@@ -23,21 +21,14 @@
           </div>
         </div>
 
-        
-
-        <div class="flex flex-wrap pt-4 pb-4 w-fit">
-          <button [routerLink]="'/creation'" class="flex-1 sm:w-1/3 tracking-wide rounded-full font-semibold bg-color1 text-gray-100 px-6 py-3 hover:bg-color1-shade transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none" type="submit">
-            <span class="sm:mt-0">Crear Vuelo</span>
+        <div class="flex justify-end py-6">
+          <button [routerLink]="'/creation'" class="flex flex-row tracking-wide rounded-full font-semibold bg-color1 text-gray-100 px-4 py-3 hover:bg-color1-shade transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none" type="submit">
+            <span class="material-symbols-outlined" translate="no">
+              add
+            </span>
+            <p class="px-2">Crear vuelo</p>
           </button>
         </div>
-  
-        <!-- <div class="" *ngIf="creationAdmin==true">
-          <app-creation-admin />
-        </div>
-  
-        <div class="" *ngIf="changePassword==true">
-          <app-password-root />
-        </div> -->
   
         <div class="bg-color3 px-3 py-3 flex justify-center shadow-md sm:rounded-lg">
           <table class="w-full text-center text-md rtl:text-right text-color1-shade">
@@ -48,6 +39,8 @@
                 <th class="py-2 px-5">Destino</th>
                 <th class="py-2 px-5">Fecha</th>
                 <th class="py-2 px-5">Tiquetes vendidos</th>
+                <th class="py-2 px-5">Precio primera clase</th>
+                <th class="py-2 px-5">Precio economy</th>
                 <th class="py-2 px-5">Estado</th>
                 <th class="py-2 px-5">Acciones</th>
               </tr>
@@ -58,25 +51,36 @@
                 <td class="py-3 px-5">{{ vuelo.vueloID }}</td>
                 <td class="py-3 px-5">{{ vuelo.origin }}</td>
                 <td class="py-3 px-5">{{ vuelo.destination }}</td>
-                <td class="py-3 px-5"> {{ vuelo.departureDate }}</td>
+                <td class="py-3 px-5">{{ vuelo.departureDate }}</td>
                 <td class="py-3 px-5">{{ vuelo.TiquetesVendidos }}</td>
+                <td class="py-3 px-5">{{ vuelo.priceFirstClass | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+                <td class="py-3 px-5">{{ vuelo.priceEconomy | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
                 <td class="py-3 px-5">
                   {{ vuelo.statusID === 1 ? 'Sin realizar' : vuelo.statusID === 2 ? 'Realizado' : 'Desconocido' }}
                 </td>              
                 <td class="flex justify-center gap-4 px-5 py-3">
-                  <!-- <button [routerLink]="['/info-vuelo', vuelo.vueloID]" class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
-                    <span>Ver</span>
-                  </button> -->
-                  <button [routerLink]="['/info-vuelo']" class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
-                    <span>Ver</span>
+                  <button [routerLink]="['/info-vuelo']" class="bg-color1 text-gray-100 w-14 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                    <span class="material-symbols-outlined" translate="no">
+                      visibility
+                    </span>
                   </button>
                   <button *ngIf="vuelo.TiquetesVendidos === 0" (click)="editFlight()" [routerLink]="['/info-vuelo']"
-                  class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
-                    <span>Editar</span>
+                  class="bg-color1 text-gray-100 w-14 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                  <span class="material-symbols-outlined" translate="no">
+                    edit
+                  </span>
                   </button>
                   <button *ngIf="vuelo.TiquetesVendidos > 0" (click)="createPromo()"
-                  class="bg-color1 text-gray-100 w-20 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
-                    <span>Promo</span>
+                  class="bg-color1 text-gray-100 w-14 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                    <span class="material-symbols-outlined" translate="no">
+                      price_change
+                    </span>
+                  </button>
+                  <button (click)="cancel()"
+                  class="bg-red-500 text-gray-100 w-14 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                  <span class="material-symbols-outlined" translate="no">
+                    delete
+                  </span>
                   </button>
                 </td>
               </tr>
@@ -89,10 +93,115 @@
         </div>
         
         <div class="" *ngIf="cancelFlight==true">
-          <!-- <app-delete-admin /> -->
-          <p>Cancelar</p>
+          <app-cancel-flight />
         </div>
   
       </div>
     </div>
   </div>
+
+  <!-- <div class="min-h-screen bg-color2 text-gray-900 flex justify-center">
+    <div class="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+      
+      <div class="flex justify-between items-center mb-6">
+        <img src="Nombre2.png" alt="" class="w-32 sm:w-48" />
+        <div class="relative">
+          <button class="relative">
+            <img src="Logo2.png" alt="Imagen de usuario" class="w-12 h-12 sm:w-16 sm:h-16 rounded-full">
+          </button>
+        </div>
+      </div>
+  
+      
+      <div class="flex justify-end mb-6">
+        <button class="flex items-center space-x-2 bg-color1 text-gray-100 px-4 py-2 rounded-full hover:bg-color1-shade transition-all">
+          <span class="material-symbols-outlined">add</span>
+          <span class="hidden sm:inline">Crear vuelo</span>
+        </button>
+      </div>
+  
+      
+      <div class="bg-color3 rounded-lg shadow-md overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-color1-shade">
+            <thead class="uppercase bg-color3-shade">
+              <tr>
+                <th class="p-4 whitespace-nowrap">Código</th>
+                <th class="p-4 whitespace-nowrap">Origen</th>
+                <th class="p-4 whitespace-nowrap">Destino</th>
+                <th class="p-4 whitespace-nowrap hidden md:table-cell">Fecha</th>
+                <th class="p-4 whitespace-nowrap hidden lg:table-cell">Tiquetes</th>
+                <th class="p-4 whitespace-nowrap hidden xl:table-cell">Primera Clase</th>
+                <th class="p-4 whitespace-nowrap hidden xl:table-cell">Economy</th>
+                <th class="p-4 whitespace-nowrap hidden sm:table-cell">Estado</th>
+                <th class="p-4">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let vuelo of vuelos" class="border-t border-color4 hover:bg-color3-shade transition-all">
+                <td class="p-4 whitespace-nowrap">{{vuelo.vueloID}}</td>
+                <td class="p-4 whitespace-nowrap">{{vuelo.origin}}</td>
+                <td class="p-4 whitespace-nowrap">{{vuelo.destination}}</td>
+                <td class="p-4 whitespace-nowrap hidden md:table-cell">{{vuelo.departureDate}}</td>
+                <td class="p-4 whitespace-nowrap hidden lg:table-cell">{{vuelo.TiquetesVendidos}}</td>
+                <td class="p-4 whitespace-nowrap hidden xl:table-cell">{{vuelo.priceFirstClass | currency:'COP':'symbol-narrow':'1.0-0'}}</td>
+                <td class="p-4 whitespace-nowrap hidden xl:table-cell">{{vuelo.priceEconomy | currency:'COP':'symbol-narrow':'1.0-0'}}</td>
+                <td class="p-4 whitespace-nowrap hidden sm:table-cell">
+                  {{vuelo.statusID === 1 ? 'Sin realizar' : vuelo.statusID === 2 ? 'Realizado' : 'Desconocido'}}
+                </td>
+                <td class="p-4">
+                  <div class="flex space-x-2">
+                    <button class="bg-color1 text-gray-100 p-2 rounded-lg hover:bg-color1-shade transition-all">
+                      <span class="material-symbols-outlined">visibility</span>
+                    </button>
+                    <button *ngIf="vuelo.TiquetesVendidos === 0" class="bg-color1 text-gray-100 p-2 rounded-lg hover:bg-color1-shade transition-all">
+                      <span class="material-symbols-outlined">edit</span>
+                    </button>
+                    <button *ngIf="vuelo.TiquetesVendidos > 0" class="bg-color1 text-gray-100 p-2 rounded-lg hover:bg-color1-shade transition-all">
+                      <span class="material-symbols-outlined">price_change</span>
+                    </button>
+                    <button class="bg-red-500 text-gray-100 p-2 rounded-lg hover:bg-red-600 transition-all">
+                      <span class="material-symbols-outlined">delete</span>
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+  
+        
+        <div class="block sm:hidden">
+          <div *ngFor="let vuelo of vuelos" class="p-4 border-t border-color4">
+            <div class="flex justify-between items-center mb-2">
+              <span class="font-bold">{{vuelo.vueloID}}</span>
+              <span class="text-sm">{{vuelo.departureDate}}</span>
+            </div>
+            <div class="mb-2">
+              <div>{{vuelo.origin}} → {{vuelo.destination}}</div>
+              <div class="text-sm text-gray-600">Tiquetes: {{vuelo.TiquetesVendidos}}</div>
+            </div>
+            <div class="flex justify-between items-center">
+              <div class="text-sm">
+                {{vuelo.statusID === 1 ? 'Sin realizar' : vuelo.statusID === 2 ? 'Realizado' : 'Desconocido'}}
+              </div>
+              <div class="flex space-x-2">
+                <button class="bg-color1 text-gray-100 p-1.5 rounded-lg hover:bg-color1-shade transition-all">
+                  <span class="material-symbols-outlined text-sm">visibility</span>
+                </button>
+                <button *ngIf="vuelo.TiquetesVendidos === 0" class="bg-color1 text-gray-100 p-1.5 rounded-lg hover:bg-color1-shade transition-all">
+                  <span class="material-symbols-outlined text-sm">edit</span>
+                </button>
+                <button *ngIf="vuelo.TiquetesVendidos > 0" class="bg-color1 text-gray-100 p-1.5 rounded-lg hover:bg-color1-shade transition-all">
+                  <span class="material-symbols-outlined text-sm">price_change</span>
+                </button>
+                <button class="bg-red-500 text-gray-100 p-1.5 rounded-lg hover:bg-red-600 transition-all">
+                  <span class="material-symbols-outlined text-sm">delete</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->

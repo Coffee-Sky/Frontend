@@ -1,4 +1,4 @@
-<div class="min-h-screen bg-color2 text-gray-900 flex justify-center">
+<div class="bg-color2 text-gray-900 flex justify-center">
     <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
       <div class="lg:w-5/6 xl:w-5/6 p-6 sm:p-6 mx-0">
         <div>
@@ -9,40 +9,43 @@
         <form class="px-8 pt-4 pb-8 mb-4" [formGroup]="creationForm" (ngSubmit)="save()">
           
           <div class="text-center font-semibold">
-            <p>Información de origen</p>
+            <p>Información de origen y destino</p>
             <hr class="mb-5 mt-2 border-t" />
           </div>
 
           <div class="mb-6 md:flex md:justify-between gap-4">
             <div class="mb-2 w-full">
+              <label class="block mb-2 text-sm font-bold text-color1-shade">Tipo de vuelo <span class="text-red-500">*</span></label>
+              <select class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="type">
+                <option value="" disabled selected>Tipo de vuelo </option>
+                <option value="1">Nacional</option>
+                <option value="2">Internacional</option>
+              </select>
+            </div>
+            <div class="mb-2 w-full">
               <label class="block mb-2 text-sm font-bold text-color1-shade">Origen <span class="text-red-500">*</span></label>
               <select class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="origin">
                 <option value="" disabled selected>Ciudad de origen</option>
+                <option *ngFor="let city of availableOriginCities" [value]="city">{{city}}</option>
+                <option *ngIf="availableOriginCities.length === 0" disabled>
+                  Seleccione primero el tipo de vuelo
+                </option>
               </select>
-              <!-- <span *ngIf="creationForm.hasError('required','origin') && creationForm.controls['origin'].dirty" class="text-red-500 text-xs">La ciudad de origen es requerida</span> -->
             </div>
+          </div>
+
+          <div class="mb-6 md:flex md:justify-between gap-4">
             <div class="mb-2 w-full">
               <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de salida <span class="text-red-500">*</span></label>
-              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="date" [min]="minDate" placeholder="" formControlName="departureDate"/>
+              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="date" [min]="minDepartureDate" placeholder="" formControlName="departureDate"/>
               <span *ngIf="creationForm.hasError('required','departureDate') && creationForm.controls['departureDate'].dirty" class="text-red-500 text-xs">La fecha de salida es requerida</span>
             </div>
             <div class="mb-2 w-full">
               <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de salida <span class="text-red-500">*</span></label>
               <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="time" placeholder="" formControlName="departureTime"/>
               <span *ngIf="creationForm.hasError('required','departureTime') && creationForm.controls['departureTime'].dirty" class="text-red-500 text-xs">La hora de salida es requerida</span>
+              <span *ngIf="creationForm.get('departureTime')?.errors?.['invalidTime'] && creationForm.get('departureTime')?.touched" class="text-red-500 text-xs">{{ getTimeErrorMessage() }}</span>
             </div>
-            <div class="mb-2 w-full">
-              <label class="block mb-2 text-sm font-bold text-color1-shade">Tipo de vuelo <span class="text-red-500">*</span></label>
-              <select class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="type">
-                <option value="" disabled selected>Tipo de vuelo </option>
-              </select>
-              <!-- <span *ngIf="creationForm.hasError('required','type') && creationForm.controls['type'].dirty" class="text-red-500 text-xs">La ciudad de origen es requerida</span> -->
-            </div>
-          </div>
-          
-          <div class="text-center font-semibold">
-            <p>Información de destino</p>
-            <hr class="mb-5 mt-2 border-t" />
           </div>
 
           <div class="mb-6 md:flex md:justify-between gap-4">
@@ -50,83 +53,56 @@
               <label class="block mb-2 text-sm font-bold text-color1-shade">Destino <span class="text-red-500">*</span></label>
               <select class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="destination">
                 <option value="" disabled selected>Ciudad de destino</option>
+                <option *ngFor="let city of availableDestinationCities" [value]="city">{{city}}</option>
+                <option *ngIf="availableDestinationCities.length === 0" disabled>
+                  Seleccione primero la ciudad de origen
               </select>
-              <!-- <span *ngIf="creationForm.hasError('required','destination') && creationForm.controls['destination'].dirty" class="text-red-500 text-xs">La ciudad de destino es requerida</span> -->
             </div>
             <div class="mb-2 w-full">
-              <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de llegada <span class="text-red-500">*</span></label>
-              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="date" placeholder="" formControlName="arrivalDateDestination"/>
-              <span *ngIf="creationForm.hasError('required','arrivalDateDestination') && creationForm.controls['arrivalDateDestination'].dirty" class="text-red-500 text-xs">La fecha de salida es requerida</span>
-              <span *ngIf="creationForm.hasError('afterDepartureDateValidator','arrivalDateDestination')" class="text-red-500 text-xs">La fecha de salida es incorrecta</span>
-            </div>
-            <div class="mb-2 w-full">
-              <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de llegada <span class="text-red-500">*</span></label>
-              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="time" placeholder="" formControlName="arrivalTimeDestination"/>
-              <span *ngIf="creationForm.hasError('required','arrivalTimeDestination') && creationForm.controls['arrivalTimeDestination'].dirty" class="text-red-500 text-xs">La hora de salida es requerida</span>
-            </div>
-            <div class="mb-2 w-full">
-              <label class="block mb-2 text-sm font-bold text-color1-shade">Duración del vuelo <span class="text-red-500">*</span></label>
-              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="text" placeholder="" formControlName="duration"/>
-              <span *ngIf="creationForm.hasError('required','duration') && creationForm.controls['duration'].dirty" class="text-red-500 text-xs">La duración del vuelo es requerida</span>
             </div>
           </div>
 
-          <div class="text-center font-semibold">
-            <p>Información de regreso</p>
-            <hr class="mb-5 mt-2 border-t" />
-          </div>
-  
-          <div class="mb-6 md:flex md:justify-between gap-4">
-            <div class="mb-2 w-full">
-              <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de salida <span class="text-red-500">*</span></label>
-              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="date" placeholder="" formControlName="departureDateDestination"/>
-              <span *ngIf="creationForm.hasError('required','departureDateDestination') && creationForm.controls['departureDateDestination'].dirty" class="text-red-500 text-xs">La fecha de salida es requerida</span>
-            </div>
-            <div class="mb-2 w-full">
-              <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de salida <span class="text-red-500">*</span></label>
-              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="time" placeholder="" formControlName="departureTimeDestination"/>
-              <span *ngIf="creationForm.hasError('required','departureTimeDestination') && creationForm.controls['departureTimeDestination'].dirty" class="text-red-500 text-xs">La hora de salida es requerida</span>
-            </div>
-            <div class="mb-2 w-full">
-              <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de llegada <span class="text-red-500">*</span></label>
-              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="date" placeholder="" formControlName="arrivalDateOrigin"/>
-              <span *ngIf="creationForm.hasError('required','arrivalDateOrigin') && creationForm.controls['arrivalDateOrigin'].dirty" class="text-red-500 text-xs">La fecha de llegada es requerida</span>
-            </div>
-            <div class="mb-2 w-full">
-              <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de llegada <span class="text-red-500">*</span></label>
-              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" type="time" placeholder="" formControlName="arrivalTimeOrigin"/>
-              <span *ngIf="creationForm.hasError('required','arrivalTimeOrigin') && creationForm.controls['arrivalTimeOrigin'].dirty" class="text-red-500 text-xs">La hora de llegada es requerida</span>
-            </div>
-          </div>
-  
           <div class="text-center font-semibold">
             <p>Costo de tiquetes por persona</p>
             <hr class="mb-5 mt-2 border-t" />
           </div>
 
           <div class="mb-6 md:flex md:justify-between gap-4">
-            <div class="mb-2 w-full">
+            <div class="mb-2 w-full relative">
               <label class="block mb-2 text-sm font-bold text-color1-shade">Primera clase <span class="text-red-500">*</span></label>
-              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-              type="number" min="0" placeholder="" formControlName="priceFirstClass"/>
+              <div class="absolute top-9 left-2 flex items-center text-gray-500">
+                <span class="material-symbols-outlined" translate="no">
+                  attach_money
+                </span>
+              </div>
+              <input class="w-full px-7 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+              type="text" [value]="creationForm.get('priceFirstClass')?.value | number:'1.0-0'" (input)="onPriceInput($event, 'priceFirstClass')" formControlName="priceFirstClass"/>
               <span *ngIf="creationForm.hasError('required','priceFirstClass') && creationForm.controls['priceFirstClass'].dirty" class="text-red-500 text-xs">El precio es requerido</span>
+              <span *ngIf="creationForm.hasError('pattern','priceFirstClass') && creationForm.controls['priceFirstClass'].dirty" class="text-red-500 text-xs">Solo puede ingresar números</span>
             </div>
-            <div class="mb-2 w-full">
+            <div class="mb-2 w-full relative">
               <label class="block mb-2 text-sm font-bold text-color1-shade">Clase económica <span class="text-red-500">*</span></label>
-              <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-              type="number" min="0" placeholder="" formControlName="priceEconomy"/>
+              <div class="absolute top-9 left-2 flex items-center text-gray-500">
+                <span class="material-symbols-outlined" translate="no">
+                  attach_money
+                </span>
+              </div>
+              <input class="w-full px-7 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+              type="text" [value]="creationForm.get('priceEconomy')?.value | number:'1.0-0'" (input)="onPriceInput($event, 'priceEconomy')" formControlName="priceEconomy"/>
               <span *ngIf="creationForm.hasError('required','priceEconomy') && creationForm.controls['priceEconomy'].dirty" class="text-red-500 text-xs">El precio es requerido</span>
+              <span *ngIf="creationForm.hasError('pattern','priceEconomy') && creationForm.controls['priceEconomy'].dirty" class="text-red-500 text-xs">Solo puede ingresar números</span>
+              <span *ngIf="creationForm.hasError('invalidPrice') && creationForm.controls['priceEconomy'].dirty" class="text-red-500 text-xs">El precio de la clase económica debe ser menor al de la primera clase</span>
             </div>
           </div>
 
           <div class="flex flex-row justify-center gap-4">
             <button [disabled]="creationForm.invalid"
-              class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade focus:outline-none focus:shadow-outline
+              class="w-32 px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade focus:outline-none focus:shadow-outline
               disabled:opacity-50 disabled:cursor-not-allowed" type="submit">
               Crear vuelo
             </button>
             <button routerLink=""
-              class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade focus:outline-none focus:shadow-outline
+              class="w-32 px-4 py-2 mt-3 font-bold text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline
               disabled:opacity-50 disabled:cursor-not-allowed">
               Cancelar
             </button>

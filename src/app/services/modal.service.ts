@@ -10,4 +10,5 @@ export class ModalService {
   $status = new EventEmitter<any>();
   $password = new EventEmitter<any>();
   $promotion = new EventEmitter<any>();
+  $cancel = new EventEmitter<any>();
 }

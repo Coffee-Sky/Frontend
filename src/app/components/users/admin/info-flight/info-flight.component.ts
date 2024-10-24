@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { RouterModule } from '@angular/router';
 import { ModalService } from '../../../../services/modal.service';
 import { PromotionComponent } from "../promotion/promotion.component";
+import { EditFlightService } from '../../../../services/edit-flight.service';
 
 @Component({
   selector: 'app-info-flight',
@@ -17,12 +18,14 @@ export class InfoFlightComponent implements OnInit{
   originalValues: any;
   editFlightForm!: FormGroup;
   creationPromo: boolean = false;
-  tickets: number = 24;
+  // tickets: number = 24;
+  tickets: number = 0;
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private createPromoService: ModalService) { }
+  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private createPromoService: ModalService, private editFlightService: EditFlightService) { }
 
   ngOnInit(): void {
     this.createPromoService.$promotion.subscribe((value)=>{this.creationPromo = value})
+    this.isEditing = this.editFlightService.isEditing;
     this.editFlightForm = this.fb.group({
       origin: ['', [Validators.required]],
       departureDate: ['', [Validators.required]],
