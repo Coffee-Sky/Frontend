@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ModalService } from '../../../../services/modal/modal.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-cancel-flight',

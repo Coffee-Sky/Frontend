@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } 
 import { RouterModule } from '@angular/router';
 import { ModalService } from '../../../../services/modal.service';
 import { PromotionComponent } from "../promotion/promotion.component";
-import { EditFlightService } from '../../../../services/modal/edit-flight.service';
+import { EditFlightService } from '../../../../services/edit-flight.service';
 
 @Component({
   selector: 'app-info-flight',
