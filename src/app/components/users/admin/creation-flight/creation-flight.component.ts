@@ -1,6 +1,6 @@
 import { CommonModule, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { time } from 'console';
 
@@ -11,43 +11,154 @@ import { time } from 'console';
   templateUrl: './creation-flight.component.html',
   styleUrl: './creation-flight.component.css'
 })
+
 export class CreationFlightComponent implements OnInit{
-  minDate: string;
+  minDepartureDate = new Date().toISOString().split('T')[0];  // Fecha actual como mínima para ida
+
+  cities: { [key: string]: string[] } = {
+    national: ['Bogotá', 'Cali', 'Cartagena', 'Medellín', 'Pererira'],
+    international: ['Buenos Aires', 'Londres', 'Madrid', 'Miami', 'New York']
+  };
+
+  availableOriginCities: string[] = [];
+  availableDestinationCities: string[] = [];
 
   constructor() {
-    const today = new Date();
-    this.minDate = formatDate(today, 'yyyy-MM-dd', 'en'); // El día actual permitido
   }
 
   ngOnInit(): void {
-    
+    this.creationForm.get('type')?.valueChanges.subscribe(type => {
+      if (type) {
+        this.updateOriginCities(type);
+        this.creationForm.patchValue({
+          origin: '',
+          destination: ''
+        }
+      )}
+    });
+    this.creationForm.get('origin')?.valueChanges.subscribe(origin => {
+      if (origin) {
+        this.updateDestinationCities();
+        this.creationForm.patchValue({
+          destination: ''
+        })
+      }
+    });
+    this.creationForm.get('departureDate')?.valueChanges.subscribe(() => {
+      this.creationForm.get('departureTime')?.updateValueAndValidity();
+    });
+    this.creationForm.get('type')?.valueChanges.subscribe(() => {
+      this.creationForm.get('departureTime')?.updateValueAndValidity();
+    });
+
   }
 
   creationForm = new FormGroup({
     origin: new FormControl('', [Validators.required]),
-    departureDate: new FormControl('', [Validators.required, this.dateValidator.bind(this)]),
-    departureTime: new FormControl('', [Validators.required]),
+    departureDate: new FormControl('', [Validators.required]),
+    departureTime: new FormControl('', [Validators.required, this.departureTimeValidator.bind(this)]),
     type: new FormControl('', [Validators.required]),
     destination: new FormControl('', [Validators.required]),
-    duration: new FormControl('', [Validators.required]),
-    arrivalDateDestination: new FormControl('', [Validators.required]),
-    arrivalTimeDestination: new FormControl('', [Validators.required]),
-    departureDateDestination: new FormControl('', [Validators.required]),
-    departureTimeDestination: new FormControl('', [Validators.required]),
-    arrivalDateOrigin: new FormControl('', [Validators.required]),
-    arrivalTimeOrigin: new FormControl('', [Validators.required]),
-    priceFirstClass: new FormControl('', [Validators.required]),
-    priceEconomy: new FormControl('', [Validators.required]),
+    //duration: new FormControl('', [Validators.required]),
+    priceFirstClass: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]),
+    priceEconomy: new FormControl('', [Validators.required, Validators.pattern(/^\d+$/)]),
+  }, { validators: this.priceValidator });
 
-  });
-
-  dateValidator(control: any) {
-    const selectedDate = new Date(control.value);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return selectedDate >= today ? null : { invalidDate: true };
+  onPriceInput(event: Event, controlName: string) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/[^\d]/g, ''); // Remover todo excepto números
+    if (value) {
+      this.creationForm.get(controlName)?.setValue(Number(value), {emitEvent: false});
+    }
   }
 
+  priceValidator(group: AbstractControl): ValidationErrors | null {
+    const firstClass = group.get('priceFirstClass')?.value;
+    const economy = group.get('priceEconomy')?.value;
+    if (firstClass && economy && Number(economy) >= Number(firstClass)) {
+      return { invalidPrice: true };
+    }
+    return null;
+  }
+
+  updateOriginCities(type: string) {
+    if (type === '1') { // Nacional
+      this.availableOriginCities = this.cities['national'];
+    } else if (type === '2') { // Internacional
+      this.availableOriginCities = [...this.cities['national'], ...this.cities['international']];
+    }
+  }
+
+  updateDestinationCities() {
+    const type = this.creationForm.get('type')?.value;
+    const origin = this.creationForm.get('origin')?.value;
+    if (!type || !origin) {
+      this.availableDestinationCities = [];
+      return;
+    }
+    if (type === '1') { // Nacional
+      // Si es vuelo nacional, solo mostrar ciudades nacionales excepto la de origen
+      this.availableDestinationCities = this.cities['national'].filter(city => city !== origin);
+    } else { // Internacional
+      // Si el origen es nacional, mostrar solo ciudades internacionales
+      if (this.cities['national'].includes(origin)) {
+        this.availableDestinationCities = this.cities['international'];
+      } 
+      // Si el origen es internacional, mostrar solo ciudades nacionales
+      else if (this.cities['international'].includes(origin)) {
+        this.availableDestinationCities = this.cities['national'];
+      }
+    }
+  }
+
+  departureTimeValidator(control: FormControl): ValidationErrors | null {
+    if (!control.value) return null;
+    const type = this.creationForm.get('type')?.value;
+    const selectedDate = this.creationForm.get('departureDate')?.value;
+    if (!type || !selectedDate) return null;
+    // Convertir la fecha y hora seleccionada a un objeto Date
+    const [hours, minutes] = control.value.split(':');
+    const selectedDateTime = new Date(selectedDate);
+    selectedDateTime.setHours(parseInt(hours), parseInt(minutes));
+    const now = new Date();
+    // Si la fecha seleccionada es posterior a hoy, no aplicar validación de hora
+    if (selectedDateTime.toDateString() !== now.toDateString()) {
+      return null;
+    }
+    // Crear fecha límite según el tipo de vuelo
+    const minDateTime = new Date();
+    if (type === '1') { // Nacional
+      minDateTime.setMinutes(minDateTime.getMinutes() + 90); // 1 hora y 30 minutos
+    } else { // Internacional
+      minDateTime.setMinutes(minDateTime.getMinutes() + 210); // 3 horas y 30 minutos
+    }
+    if (selectedDateTime < minDateTime) {
+      const formattedMinTime = this.formatTime(minDateTime);
+      return {
+        invalidTime: {
+          minTime: formattedMinTime,
+          type: type === '1' ? 'nacional' : 'internacional'
+        }
+      };
+    }
+    return null;
+  }
+
+  formatTime(date: Date): string {
+    return date.toLocaleTimeString('es-ES', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+
+  getTimeErrorMessage(): string {
+    const errors = this.creationForm.get('departureTime')?.errors;
+    if (errors?.['invalidTime']) {
+      return `Para vuelos ${errors['invalidTime'].type}es, la hora de salida debe ser después de ${errors['invalidTime'].minTime}`;
+    }
+    return '';
+  }
 
   save() {
     if (this.creationForm.valid) {
@@ -57,129 +168,3 @@ export class CreationFlightComponent implements OnInit{
     }
   }
 }
-
-// import { CommonModule, formatDate } from '@angular/common';
-// import { Component, OnInit } from '@angular/core';
-// import { FormBuilder, FormGroup, ReactiveFormsModule, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
-// import { RouterModule } from '@angular/router';
-
-// @Component({
-//   selector: 'app-creation-flight',
-//   standalone: true,
-//   imports: [ReactiveFormsModule, RouterModule, CommonModule],
-//   templateUrl: './creation-flight.component.html',
-//   styleUrl: './creation-flight.component.css'
-// })
-// export class CreationFlightComponent implements OnInit {
-//   minDate: string;
-//   creationForm: FormGroup;
-
-//   constructor(private fb: FormBuilder) {
-//     const today = new Date();
-//     this.minDate = formatDate(today, 'yyyy-MM-dd', 'en');
-
-//     this.creationForm = this.fb.group({
-//       origin: ['', ],
-//       departureDate: ['', [Validators.required, this.dateValidator()]],
-//       departureTime: ['', ],
-//       type: ['', ],
-//       destination: ['', ],
-//       duration: ['', ],
-//       arrivalDateDestination: ['', [Validators.required]],
-//       arrivalTimeDestination: ['', ],
-//       departureDateDestination: ['', [Validators.required]],
-//       departureTimeDestination: ['', ],
-//       arrivalDateOrigin: ['', [Validators.required]],
-//       arrivalTimeOrigin: ['', ],
-//       priceFirstClass: ['', ],
-//       priceEconomy: ['', ],
-//     });
-//   }
-
-//   ngOnInit(): void {
-//     // Aplicar validadores después de la inicialización del formulario
-//     this.creationForm.get('arrivalDateDestination')?.addValidators(this.afterDepartureDateValidator());
-//     this.creationForm.get('departureDateDestination')?.addValidators(this.afterDepartureDateValidator());
-//     this.creationForm.get('arrivalDateOrigin')?.addValidators(this.afterDepartureDateValidator());
-//     this.creationForm.get('departureTime')?.addValidators(this.departureTimeValidator());
-
-//     // Actualizar validaciones cuando cambie la fecha de salida o el tipo
-//     this.creationForm.get('departureDate')?.valueChanges.subscribe(() => {
-//       this.creationForm.get('arrivalDateDestination')?.updateValueAndValidity();
-//       this.creationForm.get('departureDateDestination')?.updateValueAndValidity();
-//       this.creationForm.get('arrivalDateOrigin')?.updateValueAndValidity();
-//     });
-
-//     this.creationForm.get('type')?.valueChanges.subscribe(() => {
-//       this.creationForm.get('departureTime')?.updateValueAndValidity();
-//     });
-//   }
-
-//   dateValidator(): ValidatorFn {
-//     return (control: AbstractControl): {[key: string]: any} | null => {
-//       const selectedDate = new Date(control.value);
-//       const today = new Date();
-//       today.setHours(0, 0, 0, 0);
-//       return selectedDate >= today ? null : { invalidDate: true };
-//     };
-//   }
-
-//   afterDepartureDateValidator(): ValidatorFn {
-//     return (control: AbstractControl): {[key: string]: any} | null => {
-//       if (!control.parent) return null;
-//       const selectedDate = new Date(control.value);
-//       const departureDateControl = control.parent.get('departureDate');
-//       if (!departureDateControl) return null;
-//       const departureDate = new Date(departureDateControl.value);
-
-//       if (isNaN(selectedDate.getTime()) || isNaN(departureDate.getTime())) {
-//         return null; // Si alguna de las fechas no es válida, no validamos
-//       }
-
-//       return selectedDate >= departureDate ? null : { dateBeforeDeparture: true };
-//     };
-//   }
-
-//   departureTimeValidator(): ValidatorFn {
-//     return (control: AbstractControl): {[key: string]: any} | null => {
-//       if (!control.parent) return null;
-//       if (!control.value) return null;
-
-//       const [hours, minutes] = control.value.split(':').map(Number);
-//       const selectedTime = new Date();
-//       selectedTime.setHours(hours, minutes, 0, 0);
-
-//       const now = new Date();
-//       const minTime = new Date(now);
-      
-//       const typeControl = control.parent.get('type');
-//       const type = typeControl?.value;
-//       if (type === '2') {
-//         minTime.setHours(now.getHours() + 3, now.getMinutes() + 30, 0, 0);
-//       } else {
-//         minTime.setHours(now.getHours() + 1, now.getMinutes() + 30, 0, 0);
-//       }
-
-//       if (selectedTime < minTime) {
-//         return { invalidDepartureTime: true };
-//       }
-
-//       return null;
-//     };
-//   }
-
-//   save() {
-//     if (this.creationForm.valid) {
-//       console.log(this.creationForm.value);
-//     } else {
-//       console.log("Error");
-//       console.log(this.creationForm.errors);
-//       Object.keys(this.creationForm.controls).forEach(key => {
-//         const control = this.creationForm.get(key);
-//         if (control?.errors) {
-//           console.log(key, control.errors);
-//         }
-//       });
-//     }
-//   }
-// }

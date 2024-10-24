@@ -15,34 +15,28 @@
 
         <div class="mb-6 md:flex md:justify-between gap-4">
           <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Origen <span *ngIf="isEditing" class="text-red-500">*</span></label>
-            <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="origin">
-              <option value="" disabled selected>Ciudad de origen</option>
-            </select>
-            <!-- <span *ngIf="editFlightForm.hasError('required','origin') && editFlightForm.controls['origin'].dirty" class="text-red-500 text-xs">La ciudad de origen es requerida</span> -->
-            <input  *ngIf="!isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Ciudad de origen" formControlName="origin" [readOnly]="!isEditing"/>
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Origen</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Ciudad de origen" formControlName="origin" [readOnly]="true"/>
           </div>
           <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de salida <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de salida</label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="date" placeholder="" formControlName="departureDate" [readOnly]="!isEditing"/>
+            type="text" placeholder="" formControlName="departureDate" [readOnly]="true"/>
             <span *ngIf="editFlightForm.hasError('required','departureDate') && editFlightForm.controls['departureDate'].dirty" class="text-red-500 text-xs">La fecha de salida es requerida</span>
           </div>
+        </div>
+        <div class="mb-6 md:flex md:justify-between gap-4">
           <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de salida <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de salida</label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="time" placeholder="" formControlName="departureTime" [readOnly]="!isEditing"/>
+            type="text" placeholder="" formControlName="departureTime" [readOnly]="true"/>
             <span *ngIf="editFlightForm.hasError('required','departureTime') && editFlightForm.controls['departureTime'].dirty" class="text-red-500 text-xs">La hora de salida es requerida</span>
           </div>
           <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Tipo de vuelo <span *ngIf="isEditing" class="text-red-500">*</span></label>
-            <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="type">
-              <option value="" disabled selected>Tipo de vuelo </option>
-            </select>
-            <!-- <span *ngIf="editFlightForm.hasError('required','type') && editFlightForm.controls['type'].dirty" class="text-red-500 text-xs">La ciudad de origen es requerida</span> -->
-            <input  *ngIf="!isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Tipo de vuelo" formControlName="type" [readOnly]="!isEditing"/>
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Tipo de vuelo</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Tipo de vuelo" formControlName="type" [readOnly]="true"/>
           </div>
         </div>
         
@@ -53,63 +47,29 @@
 
         <div class="mb-6 md:flex md:justify-between gap-4">
           <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Destino <span *ngIf="isEditing" class="text-red-500">*</span></label>
-            <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="destination">
-              <option value="" disabled selected>Ciudad de destino</option>
-            </select>
-            <!-- <span *ngIf="editFlightForm.hasError('required','destination') && editFlightForm.controls['destination'].dirty" class="text-red-500 text-xs">La ciudad de destino es requerida</span> -->
-            <input  *ngIf="!isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Destino" formControlName="destination" [readOnly]="!isEditing"/>
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Destino</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Destino" formControlName="destination" [readOnly]="true"/>
           </div>
           <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de llegada <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de llegada</label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="date" placeholder="" formControlName="arrivalDateDestination" [readOnly]="!isEditing"/>
+            type="text" placeholder="" formControlName="arrivalDateDestination" [readOnly]="true"/>
             <span *ngIf="editFlightForm.hasError('required','arrivalDateDestination') && editFlightForm.controls['arrivalDateDestination'].dirty" class="text-red-500 text-xs">La fecha de salida es requerida</span>
           </div>
+        </div>
+        <div class="mb-6 md:flex md:justify-between gap-4">
           <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de llegada <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de llegada</label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="time" placeholder="" formControlName="arrivalTimeDestination" [readOnly]="!isEditing"/>
+            type="text" placeholder="" formControlName="arrivalTimeDestination" [readOnly]="true"/>
             <span *ngIf="editFlightForm.hasError('required','arrivalTimeDestination') && editFlightForm.controls['arrivalTimeDestination'].dirty" class="text-red-500 text-xs">La hora de salida es requerida</span>
           </div>
           <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Duración del vuelo <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Duración del vuelo</label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="time" placeholder="" formControlName="duration" [readOnly]="!isEditing"/>
+            type="text" placeholder="" formControlName="duration" [readOnly]="true"/>
             <span *ngIf="editFlightForm.hasError('required','duration') && editFlightForm.controls['duration'].dirty" class="text-red-500 text-xs">La duración del vuelo es requerida</span>
-          </div>
-        </div>
-
-        <div class="text-center font-semibold">
-          <p>Información de regreso</p>
-          <hr class="mb-5 mt-2 border-t" />
-        </div>
-
-        <div class="mb-6 md:flex md:justify-between gap-4">
-          <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de salida <span *ngIf="isEditing" class="text-red-500">*</span></label>
-            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="date" placeholder="" formControlName="departureDateDestination" [readOnly]="!isEditing"/>
-            <span *ngIf="editFlightForm.hasError('required','departureDateDestination') && editFlightForm.controls['departureDateDestination'].dirty" class="text-red-500 text-xs">La fecha de salida es requerida</span>
-          </div>
-          <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de salida <span *ngIf="isEditing" class="text-red-500">*</span></label>
-            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="time" placeholder="" formControlName="departureTimeDestination" [readOnly]="!isEditing"/>
-            <span *ngIf="editFlightForm.hasError('required','departureTimeDestination') && editFlightForm.controls['departureTimeDestination'].dirty" class="text-red-500 text-xs">La hora de salida es requerida</span>
-          </div>
-          <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de llegada <span *ngIf="isEditing" class="text-red-500">*</span></label>
-            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="date" placeholder="" formControlName="arrivalDateOrigin" [readOnly]="!isEditing"/>
-            <span *ngIf="editFlightForm.hasError('required','arrivalDateOrigin') && editFlightForm.controls['arrivalDateOrigin'].dirty" class="text-red-500 text-xs">La fecha de llegada es requerida</span>
-          </div>
-          <div class="mb-2 w-full">
-            <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de llegada <span *ngIf="isEditing" class="text-red-500">*</span></label>
-            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="time" placeholder="" formControlName="arrivalTimeOrigin" [readOnly]="!isEditing"/>
-            <span *ngIf="editFlightForm.hasError('required','arrivalTimeOrigin') && editFlightForm.controls['arrivalTimeOrigin'].dirty" class="text-red-500 text-xs">La hora de llegada es requerida</span>
           </div>
         </div>
 
@@ -119,15 +79,25 @@
         </div>
 
         <div class="mb-6 md:flex md:justify-between gap-4">
-          <div class="mb-2 w-full">
+          <div class="mb-2 w-full relative">
             <label class="block mb-2 text-sm font-bold text-color1-shade">Primera clase <span *ngIf="isEditing" class="text-red-500">*</span></label>
-            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            <div class="absolute top-9 left-2 flex items-center text-gray-500">
+              <span class="material-symbols-outlined" translate="no">
+                attach_money
+              </span>
+            </div>
+            <input class="w-full px-7 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
             type="number" placeholder="" formControlName="priceFirstClass" [readOnly]="!isEditing"/>
             <span *ngIf="editFlightForm.hasError('required','priceFirstClass') && editFlightForm.controls['priceFirstClass'].dirty" class="text-red-500 text-xs">El precio es requerido</span>
           </div>
-          <div class="mb-2 w-full">
+          <div class="mb-2 w-full relative">
             <label class="block mb-2 text-sm font-bold text-color1-shade">Clase económica <span *ngIf="isEditing" class="text-red-500">*</span></label>
-            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            <div class="absolute top-9 left-2 flex items-center text-gray-500">
+              <span class="material-symbols-outlined" translate="no">
+                attach_money
+              </span>
+            </div>
+            <input class="w-full px-7 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
             type="number" placeholder="" formControlName="priceEconomy" [readOnly]="!isEditing"/>
             <span *ngIf="editFlightForm.hasError('required','priceEconomy') && editFlightForm.controls['priceEconomy'].dirty" class="text-red-500 text-xs">El precio es requerido</span>
           </div>
