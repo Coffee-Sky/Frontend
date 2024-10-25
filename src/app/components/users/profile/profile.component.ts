@@ -130,7 +130,10 @@ export class ProfileComponent implements OnInit{
         const user = response;
         this.editProfileForm.patchValue(user);
         this.originalValues = this.editProfileForm.getRawValue();
-        this.imageUrl = user.image ? '' : '';
+        console.log(user);
+        if(user.image !== ''){
+          this.imageUrl = user.image;
+        }
       },
       (error) => {
         console.error('Error obteniendo la información del usuario:', error);
@@ -232,16 +235,17 @@ export class ProfileComponent implements OnInit{
       console.log(this.editProfileForm.value);
       this.isEditing = false;
       this.editProfileForm.controls['genderID'].disable();
-      this.submitUserInfo();
+      this.submitUserInfo(this.editProfileForm.getRawValue());
     } else {
       console.log('Formulario invalido');
     }
   }
 
-  submitUserInfo(){
-    const { email, identificationnumber, ...userInfo } = this.editProfileForm.getRawValue();
+  submitUserInfo(info: any) {
+    const { email, identificationnumber, ...userInfo } = info;
     userInfo.userID = Number(this.code);
     userInfo.image = this.imageUrl;
+    userInfo.username = userInfo.username;
     console.log('Información del usuario a enviar:', userInfo);
     this.apiService.putData('update/update-client-info', userInfo).subscribe(
       (response) => {
@@ -284,6 +288,7 @@ export class ProfileComponent implements OnInit{
         (response) => {
           console.log('Imagen subida correctamente', response);
           this.imageUrl = response.secure_url;
+          this.submitUserInfo(this.originalValues);
           this.changingPicture = false;
         },
         (error) => {
