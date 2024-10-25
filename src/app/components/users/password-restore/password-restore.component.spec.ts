@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeleteAdminComponent } from './delete-admin.component';
+import { PasswordRestoreComponent } from './password-restore.component';
 
-describe('DeleteAdminComponent', () => {
-  let component: DeleteAdminComponent;
-  let fixture: ComponentFixture<DeleteAdminComponent>;
+describe('PasswordRestoreComponent', () => {
+  let component: PasswordRestoreComponent;
+  let fixture: ComponentFixture<PasswordRestoreComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DeleteAdminComponent]
+      imports: [PasswordRestoreComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DeleteAdminComponent);
+    fixture = TestBed.createComponent(PasswordRestoreComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

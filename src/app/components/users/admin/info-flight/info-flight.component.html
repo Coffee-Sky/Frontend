@@ -1,0 +1,145 @@
+<div class="min-h-screen bg-color2 text-gray-900 flex justify-center">
+  <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+    <div class="lg:w-5/6 xl:w-5/6 p-6 sm:p-6 mx-0">
+      <div>
+        <a href="">
+          <img src="Nombre2.png" alt="" class="w-48 mx-auto" />
+        </a>
+      </div>
+      <form class="px-8 pt-4 pb-8 mb-4" [formGroup]="editFlightForm" (ngSubmit)="save()">
+        
+        <div class="text-center font-semibold">
+          <p>Información de origen</p>
+          <hr class="mb-5 mt-2 border-t" />
+        </div>
+
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Origen</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Ciudad de origen" formControlName="origin" [readOnly]="true"/>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de salida</label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="" formControlName="departureDate" [readOnly]="true"/>
+            <span *ngIf="editFlightForm.hasError('required','departureDate') && editFlightForm.controls['departureDate'].dirty" class="text-red-500 text-xs">La fecha de salida es requerida</span>
+          </div>
+        </div>
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de salida</label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="" formControlName="departureTime" [readOnly]="true"/>
+            <span *ngIf="editFlightForm.hasError('required','departureTime') && editFlightForm.controls['departureTime'].dirty" class="text-red-500 text-xs">La hora de salida es requerida</span>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Tipo de vuelo</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Tipo de vuelo" formControlName="type" [readOnly]="true"/>
+          </div>
+        </div>
+        
+        <div class="text-center font-semibold">
+          <p>Información de destino</p>
+          <hr class="mb-5 mt-2 border-t" />
+        </div>
+
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Destino</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Destino" formControlName="destination" [readOnly]="true"/>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de llegada</label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="" formControlName="arrivalDateDestination" [readOnly]="true"/>
+            <span *ngIf="editFlightForm.hasError('required','arrivalDateDestination') && editFlightForm.controls['arrivalDateDestination'].dirty" class="text-red-500 text-xs">La fecha de salida es requerida</span>
+          </div>
+        </div>
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Hora de llegada</label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="" formControlName="arrivalTimeDestination" [readOnly]="true"/>
+            <span *ngIf="editFlightForm.hasError('required','arrivalTimeDestination') && editFlightForm.controls['arrivalTimeDestination'].dirty" class="text-red-500 text-xs">La hora de salida es requerida</span>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Duración del vuelo</label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="" formControlName="duration" [readOnly]="true"/>
+            <span *ngIf="editFlightForm.hasError('required','duration') && editFlightForm.controls['duration'].dirty" class="text-red-500 text-xs">La duración del vuelo es requerida</span>
+          </div>
+        </div>
+
+        <div class="text-center font-semibold">
+          <p>Costo de tiquetes por persona</p>
+          <hr class="mb-5 mt-2 border-t" />
+        </div>
+
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full relative">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Primera clase <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <div class="absolute top-9 left-2 flex items-center text-gray-500">
+              <span class="material-symbols-outlined" translate="no">
+                attach_money
+              </span>
+            </div>
+            <input class="w-full px-7 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="number" placeholder="" formControlName="priceFirstClass" [readOnly]="!isEditing"/>
+            <span *ngIf="editFlightForm.hasError('required','priceFirstClass') && editFlightForm.controls['priceFirstClass'].dirty" class="text-red-500 text-xs">El precio es requerido</span>
+          </div>
+          <div class="mb-2 w-full relative">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Clase económica <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <div class="absolute top-9 left-2 flex items-center text-gray-500">
+              <span class="material-symbols-outlined" translate="no">
+                attach_money
+              </span>
+            </div>
+            <input class="w-full px-7 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="number" placeholder="" formControlName="priceEconomy" [readOnly]="!isEditing"/>
+            <span *ngIf="editFlightForm.hasError('required','priceEconomy') && editFlightForm.controls['priceEconomy'].dirty" class="text-red-500 text-xs">El precio es requerido</span>
+          </div>
+        </div>
+
+        <div *ngIf="!isEditing" class="flex flex-row justify-center gap-4">
+          <button *ngIf="tickets > 0" (click)="createPromo()"
+            class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade focus:outline-none focus:shadow-outline
+            disabled:opacity-50 disabled:cursor-not-allowed">
+            Crear promoción
+          </button>
+          <button *ngIf="tickets === 0" (click)="toggleEdit()"
+            class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade focus:outline-none focus:shadow-outline
+            disabled:opacity-50 disabled:cursor-not-allowed">
+            Editar información
+          </button>
+          <button 
+            class="w-fit px-4 py-2 mt-3 font-bold text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline">
+            Cancelar vuelo
+          </button>
+          <button routerLink=""
+            class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade focus:outline-none focus:shadow-outline
+            disabled:opacity-50 disabled:cursor-not-allowed">
+            Regresar
+          </button>
+        </div>
+
+        <div class="" *ngIf="creationPromo==true">
+          <app-promotion/>
+        </div>
+
+        <div class="flex flex-1 items-center justify-center gap-4" *ngIf="isEditing">
+          <button type="submit" [disabled]="editFlightForm.invalid"
+            class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline
+            disabled:opacity-50 disabled:cursor-not-allowed">
+            Guardar
+          </button>
+          <button (click)="cancel()" class="w-fit px-4 py-2 mt-3 font-bold text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline">
+            Cancelar
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

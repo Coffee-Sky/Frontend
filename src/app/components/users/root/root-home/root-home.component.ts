@@ -3,13 +3,11 @@ import { RouterModule } from '@angular/router';
 import { CreationAdminComponent } from '../creation-admin/creation-admin.component';
 import { InfoAdminComponent } from '../info-admin/info-admin.component';
 import { CommonModule } from '@angular/common';
-import { CreateAdminService } from '../../../../services/modal/create-admin.service';
-import { PasswordRootService } from '../../../../services/modal/password-root.service';
 import { PasswordRootComponent } from '../password-root/password-root.component';
-import { DeleteAdminComponent } from '../delete-admin/delete-admin.component';
-import { DeleteAdminService } from '../../../../services/modal/delete-admin.service';
+import { StatusAdminComponent } from '../status-admin/status-admin.component';
 import { ApiService } from '../../../../services/api.service';
 import { JwtService } from '../../../../services/jwt.service';
+import { ModalService } from '../../../../services/modal.service';
 
 interface Admins {
   userID: number;
@@ -25,7 +23,7 @@ interface Admins {
 @Component({
   selector: 'app-root-home',
   standalone: true,
-  imports: [RouterModule, CommonModule, CreationAdminComponent, InfoAdminComponent, PasswordRootComponent, DeleteAdminComponent],
+  imports: [RouterModule, CommonModule, CreationAdminComponent, InfoAdminComponent, PasswordRootComponent, StatusAdminComponent],
   templateUrl: './root-home.component.html',
   styleUrl: './root-home.component.css'
 })
@@ -33,13 +31,13 @@ interface Admins {
 export class RootHomeComponent implements OnInit{
   creationAdmin: boolean = false;
   changePassword: boolean = false;
-  deleteAdmin: boolean = false;
+  statusAdmin: boolean = false;
 
   admins: Admins[] = [];
   
-  constructor(private createAdminService: CreateAdminService, 
-              private passwordService: PasswordRootService, 
-              private deleteAdminService: DeleteAdminService,
+  constructor(private createAdminService: ModalService, 
+              private passwordService: ModalService, 
+              private statusAdminService: ModalService,
               private apiService: ApiService,
               private jwtService: JwtService
             ){}
@@ -47,7 +45,7 @@ export class RootHomeComponent implements OnInit{
   ngOnInit(): void {
     this.createAdminService.$create.subscribe((value)=>{this.creationAdmin = value})
     this.passwordService.$password.subscribe((value)=>{this.changePassword = value})
-    this.deleteAdminService.$delete.subscribe((value)=>{this.deleteAdmin = value})
+    this.statusAdminService.$status.subscribe((value)=>{this.statusAdmin = value})
     this.getAdmins();
   }
 
@@ -59,8 +57,16 @@ export class RootHomeComponent implements OnInit{
     this.changePassword = true;
   }
 
-  deleteAdminFunction(){
-    this.deleteAdmin = true;
+  deleteAdminFunction(id: number){
+    this.apiService.putData("update/delete-admin?userID="+id, {}).subscribe(
+      (response) => {
+        console.log(response);
+        this.getAdmins();
+      },
+      (error) => {
+        console.error('Error eliminando el administrador:', error);
+      }
+    )
   }
 
   getAdmins() {

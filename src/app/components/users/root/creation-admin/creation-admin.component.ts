@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CreateAdminService } from '../../../../services/modal/create-admin.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../services/api.service';
+import { ModalService } from '../../../../services/modal.service';
 
 @Component({
   selector: 'app-creation-admin',
@@ -13,7 +13,7 @@ import { ApiService } from '../../../../services/api.service';
 })
 export class CreationAdminComponent implements OnInit{
 
-  constructor(private createAdminService: CreateAdminService,
+  constructor(private createAdminService: ModalService,
               private apiService: ApiService
   ){
   }
