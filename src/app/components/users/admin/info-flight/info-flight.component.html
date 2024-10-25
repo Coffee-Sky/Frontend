@@ -104,17 +104,17 @@
         </div>
 
         <div *ngIf="!isEditing" class="flex flex-row justify-center gap-4">
-          <button *ngIf="tickets > 0" (click)="createPromo()"
+          <button *ngIf="tickets > 0 && statusID === 1" (click)="createPromo()"
             class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade focus:outline-none focus:shadow-outline
             disabled:opacity-50 disabled:cursor-not-allowed">
             Crear promoción
           </button>
-          <button *ngIf="tickets === 0" (click)="toggleEdit()"
+          <button *ngIf="statusID === 1" (click)="toggleEdit()"
             class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade focus:outline-none focus:shadow-outline
             disabled:opacity-50 disabled:cursor-not-allowed">
             Editar información
           </button>
-          <button 
+          <button (click)="cancelFlightFunction()"
             class="w-fit px-4 py-2 mt-3 font-bold text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline">
             Cancelar vuelo
           </button>
@@ -127,6 +127,10 @@
 
         <div class="" *ngIf="creationPromo==true">
           <app-promotion/>
+        </div>
+
+        <div class="" *ngIf="cancelFlight==true">
+          <app-cancel-flight />
         </div>
 
         <div class="flex flex-1 items-center justify-center gap-4" *ngIf="isEditing">
