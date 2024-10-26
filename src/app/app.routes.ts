@@ -11,6 +11,7 @@ import { rootGuard } from './guards/root.guard';
 import { InfoFlightComponent } from './components/users/admin/info-flight/info-flight.component';
 import { CreationFlightComponent } from './components/users/admin/creation-flight/creation-flight.component';
 import { ProfileComponent } from './components/users/profile/profile.component';
+import { FlightsComponent } from './components/home/flights/flights.component';
 
 export const routes: Routes = [
   { path: '', component: PageComponent, canActivate: [authGuard] }, 
@@ -20,7 +21,8 @@ export const routes: Routes = [
   { path: 'info-vuelo', component: InfoFlightComponent},
   { path: 'creation', component: CreationFlightComponent},
   { path: 'info/:code', component: InfoAdminComponent},
-  { path: 'profile', component: ProfileComponent }
+  { path: 'profile', component: ProfileComponent },
+  { path: 'flights', component: FlightsComponent}
 ];
 
 @NgModule({

@@ -1,1 +1,129 @@
-<p>flights works!</p>
+<div class="min-h-screen bg-gray-100 p-6">
+  <header class="w-full fixed top-0 left-0 bg-white shadow-md z-50 p-4">
+    <div class="flex items-center space-x-4">
+      <img src="Nombre2.png" alt="COFFEESKY" class="h-12" />
+      <div class="text-lg">
+        <p class="font-bold">Bogotá a Cali</p>
+        <p class="text-gray-500 flex items-center space-x-2">
+          <span class="material-symbols-outlined" translate="no">flight_takeoff</span>
+          <span>{{departureDate | date:'EEE. d MMM. yyyy':'es'}}</span>
+          <span class="mx-2">•</span>
+          <span class="material-symbols-outlined" translate="no">flight_land</span>
+          <span>{{returnDate | date:'EEE. d MMM. yyyy':'es'}}</span>
+          <span class="mx-2">•</span>
+          <span class="material-symbols-outlined" translate="no">person</span>
+          <span>1 pasajero</span>
+          <button class="ml-2 text-teal-600 hover:underline focus:outline-none flex items-center">
+            <span class="material-symbols-outlined" translate="no">edit</span>
+            Editar
+          </button>
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <div class="max-w-3xl mx-auto space-y-4 pt-24">
+    <div class="text-lg font-bold flex items-center">
+      <span class="material-symbols-outlined" translate="no">flight_takeoff</span>
+      <p class="inline-block ml-2">Ida: Bogotá a Cali</p>
+    </div>
+    <div *ngFor="let vuelo of vuelos" 
+         class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+         (click)="selectFlight(vuelo)">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-6">
+          <div class="text-left">
+            <p class="text-2xl font-bold">{{formatTime(vuelo.departureTime)}}</p>
+            <p class="text-sm text-gray-500">{{vuelo.origin}}</p>
+          </div>
+          
+          <div class="flex flex-col items-center">
+            <div class="w-32 h-px bg-teal-500 relative mt-4">
+              <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-1 rounded-full">
+                <span class="material-symbols-outlined transform rotate-90 text-teal-500" translate="no">flight</span>
+              </div>
+            </div>
+            <p class="text-xs text-gray-500 mt-4">{{vuelo.duration}}</p>
+          </div>
+          
+          <div class="text-right">
+            <p class="text-2xl font-bold">{{formatTime(vuelo.arrivalTimeDestination)}}</p>
+            <p class="text-sm text-gray-500">{{vuelo.destination}}</p>
+          </div>
+        </div>
+        
+        <div class="text-right">
+          <p class="text-xs text-gray-500">Desde</p>
+          <p class="text-xl font-bold flex items-center">
+            COP {{vuelo.priceEconomy | number}}
+            <span class="material-symbols-outlined ml-1" translate="no">keyboard_arrow_down</span>
+          </p>
+        </div>
+      </div>
+
+      <!-- Contenedores de clases -->
+      <div *ngIf="selectedFlight === vuelo" class="mt-2 space-y-2 animate-fade-in">
+        <!-- Clase Económica -->
+        <div class="bg-white rounded-lg p-6 border border-gray-200 hover:border-teal-500 cursor-pointer transition-colors duration-200">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-bold text-lg">Clase Económica</h3>
+              <ul class="mt-2 space-y-2">
+                <li class="flex items-center text-sm text-gray-600">
+                  <span class="material-symbols-outlined mr-2 text-teal-500" translate="no">backpack</span>
+                  1 artículo personal
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <span class="material-symbols-outlined mr-2 text-teal-500" translate="no">chair</span>
+                  Asiento estándar
+                </li>
+              </ul>
+            </div>
+            <div class="text-right">
+              <p class="text-2xl font-bold text-teal-600">COP {{vuelo.priceEconomy | number}}</p>
+              <button class="mt-2 bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors duration-200">
+                Seleccionar
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- Primera Clase -->
+        <div class="bg-white rounded-lg p-6 border border-gray-200 hover:border-teal-500 cursor-pointer transition-colors duration-200">
+          <div class="flex justify-between items-center">
+            <div>
+              <h3 class="font-bold text-lg">Primera Clase</h3>
+              <ul class="mt-2 space-y-2">
+                <li class="flex items-center text-sm text-gray-600">
+                  <span class="material-symbols-outlined mr-2 text-teal-500" translate="no">backpack</span>
+                  1 artículo personal
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <span class="material-symbols-outlined mr-2 text-teal-500" translate="no">travel_luggage_and_bags</span>
+                  1 equipaje de mano de 10 kg
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <span class="material-symbols-outlined mr-2 text-teal-500" translate="no">luggage</span>
+                  1 equipaje de bodega de 30 kg 
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <span class="material-symbols-outlined mr-2 text-teal-500" translate="no">chair</span>
+                  Asiento premium con mayor espacio
+                </li>
+                <li class="flex items-center text-sm text-gray-600">
+                  <span class="material-symbols-outlined mr-2 text-teal-500" translate="no">restaurant_menu</span>
+                  Comida y bebidas incluidas
+                </li>
+              </ul>
+            </div>
+            <div class="text-right">
+              <p class="text-2xl font-bold text-teal-600">COP {{vuelo.priceEconomy * 2 | number}}</p>
+              <button class="mt-2 bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors duration-200">
+                Seleccionar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
