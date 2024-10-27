@@ -11,6 +11,14 @@ export const adminGuard: CanActivateFn = (route, state) => {
     if (decodeToken && decodeToken.role === 'ROLE_ADMIN') {
       return true;
     }
+    else if (decodeToken && decodeToken.role === 'ROLE_ROOT') {
+      router.navigate(['/root']);
+      return false;
+    }
+    else {
+      router.navigate(['/']);
+      return false;
+    }
   }
   router.navigate(['/login']);  // Redirige al login si el token no es válido o no existe
   return false;

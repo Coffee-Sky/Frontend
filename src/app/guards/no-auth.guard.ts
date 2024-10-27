@@ -14,7 +14,7 @@ export const noAuthGuard: CanActivateFn = (route, state) => {
     if (decodeToken && decodeToken.role === 'ROLE_ROOT') {
       router.navigate(['/root']);
     } else if (decodeToken && decodeToken.role === 'ROLE_ADMIN') {
-      router.navigate(['/info']);
+      router.navigate(['/admin']);
     } else {
       router.navigate(['/']);  // Redirige a la página principal si está autenticado
     }

@@ -13,7 +13,7 @@ export const authGuard: CanActivateFn = (route, state) => {
       router.navigate(['/root']);
       return false;  // Bloquea el acceso a esta ruta, ya que el root tiene su propia vista
     } else if (decodeToken.role === 'ROLE_ADMIN') {
-      router.navigate(['/info']);
+      router.navigate(['/admin']);
       return false;  // Bloquea el acceso a esta ruta, redirige al área de admin
     }
     // Si es un usuario registrado y no admin o root, permite continuar
