@@ -44,6 +44,17 @@ export class JwtService {
     return null;
   }
 
+  getRole(): string | null {
+    if (this.isLocalStorageAvailable()) {
+      const token = this.getToken();
+      if (token) {
+        const decoded: any = jwtDecode(token);
+        return decoded.role;
+      }
+    }
+    return null;
+  }
+
   removeToken(): void {
     if (this.isLocalStorageAvailable()) {
       localStorage.removeItem(this.TOKEN_KEY);

@@ -101,6 +101,7 @@ export class ProfileComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.jwtService.getRole();
     this.getUserInfo();
     this.editProfileForm = this.fb.group({
       firstname: [this.user.firstname, [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]],
@@ -118,9 +119,16 @@ export class ProfileComponent implements OnInit{
       // password: ['12w@waR4', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)]],
     });
     this.originalValues = this.editProfileForm.getRawValue();
-
     this.getGenders();
     this.getAccessToken();
+  }
+
+  verifyRole(){
+    const role = this.jwtService.getRole();
+    if(role === 'ROLE_ADMIN'){
+      return true;
+    }
+    return false;
   }
 
   getUserInfo() {
@@ -131,7 +139,7 @@ export class ProfileComponent implements OnInit{
         this.editProfileForm.patchValue(user);
         this.originalValues = this.editProfileForm.getRawValue();
         console.log(user);
-        if(user.image !== ''){
+        if(user.image !== '' && user.image !== 'default.jpg'){
           this.imageUrl = user.image;
         }
       },

@@ -6,6 +6,7 @@ import { PromotionComponent } from '../promotion/promotion.component';
 import { ModalService } from '../../../../services/modal.service';
 import { EditFlightService } from '../../../../services/edit-flight.service';
 import { CancelFlightComponent } from '../cancel-flight/cancel-flight.component';
+import { JwtService } from '../../../../services/jwt.service';
 
 @Component({
   selector: 'app-admin-home',
@@ -23,7 +24,8 @@ export class AdminHomeComponent implements OnInit{
 
   constructor(private createPromoService: ModalService,
               private editFlightService: EditFlightService,
-              private cancelFlightService: ModalService
+              private cancelFlightService: ModalService,
+              private jwtService: JwtService
             ){}
 
   vuelos = [
@@ -54,6 +56,11 @@ export class AdminHomeComponent implements OnInit{
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  logout() {
+    this.jwtService.removeToken();
+    window.location.href = '';
   }
 
 }
