@@ -142,10 +142,10 @@ export class RegisterComponent implements OnInit{
 
   save() {
     if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
+      // console.log(this.registerForm.value);
       this.apiService.postData("sign-up/register-client", this.registerForm.value).subscribe(
         (response) => {
-          console.log('Usuario registrado:', response);
+          // console.log('Usuario registrado:', response);
           window.alert('Usuario registrado exitosamente');
           window.location.href = '/login';
         },

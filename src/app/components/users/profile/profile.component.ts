@@ -101,6 +101,7 @@ export class ProfileComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    this.jwtService.getRole();
     this.getUserInfo();
     this.editProfileForm = this.fb.group({
       firstname: [this.user.firstname, [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]],
@@ -118,9 +119,16 @@ export class ProfileComponent implements OnInit{
       // password: ['12w@waR4', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)]],
     });
     this.originalValues = this.editProfileForm.getRawValue();
-
     this.getGenders();
     this.getAccessToken();
+  }
+
+  verifyRole(){
+    const role = this.jwtService.getRole();
+    if(role === 'ROLE_ADMIN'){
+      return true;
+    }
+    return false;
   }
 
   getUserInfo() {
@@ -130,7 +138,10 @@ export class ProfileComponent implements OnInit{
         const user = response;
         this.editProfileForm.patchValue(user);
         this.originalValues = this.editProfileForm.getRawValue();
-        this.imageUrl = user.image ? '' : '';
+        console.log(user);
+        if(user.image !== '' && user.image !== 'default.jpg'){
+          this.imageUrl = user.image;
+        }
       },
       (error) => {
         console.error('Error obteniendo la información del usuario:', error);
@@ -232,16 +243,17 @@ export class ProfileComponent implements OnInit{
       console.log(this.editProfileForm.value);
       this.isEditing = false;
       this.editProfileForm.controls['genderID'].disable();
-      this.submitUserInfo();
+      this.submitUserInfo(this.editProfileForm.getRawValue());
     } else {
       console.log('Formulario invalido');
     }
   }
 
-  submitUserInfo(){
-    const { email, identificationnumber, ...userInfo } = this.editProfileForm.getRawValue();
+  submitUserInfo(info: any) {
+    const { email, identificationnumber, ...userInfo } = info;
     userInfo.userID = Number(this.code);
     userInfo.image = this.imageUrl;
+    userInfo.username = userInfo.username;
     console.log('Información del usuario a enviar:', userInfo);
     this.apiService.putData('update/update-client-info', userInfo).subscribe(
       (response) => {
@@ -284,6 +296,7 @@ export class ProfileComponent implements OnInit{
         (response) => {
           console.log('Imagen subida correctamente', response);
           this.imageUrl = response.secure_url;
+          this.submitUserInfo(this.originalValues);
           this.changingPicture = false;
         },
         (error) => {
