@@ -15,6 +15,9 @@ import { AdminHomeComponent } from './components/users/admin/admin-home/admin-ho
 import { adminGuard } from './guards/admin.guard';
 import { usersRegisteredGuard } from './guards/users-registered.guard';
 import { FlightsComponent } from './components/home/flights/flights.component';
+import { ListCardsComponent } from './components/users/cards/list-cards/list-cards.component';
+import { InfoCardsComponent } from './components/users/cards/info-cards/info-cards.component';
+import { AddCardComponent } from './components/users/cards/add-card/add-card.component';
 
 export const routes: Routes = [
   { path: '', component: PageComponent, canActivate: [authGuard]}, 
@@ -26,7 +29,10 @@ export const routes: Routes = [
   { path: 'flights', component: FlightsComponent},
   { path: 'info/:code', component: InfoAdminComponent, canActivate: [rootGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [usersRegisteredGuard]},
-  { path: 'admin', component: AdminHomeComponent, canActivate: [adminGuard]}
+  { path: 'admin', component: AdminHomeComponent, canActivate: [adminGuard]},
+  { path: 'cards', component: ListCardsComponent},
+  { path: 'add-card', component: AddCardComponent},
+  { path: 'info-card/:id', component: InfoCardsComponent}
 ];
 
 @NgModule({

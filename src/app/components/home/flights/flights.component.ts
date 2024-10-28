@@ -2,6 +2,7 @@ import { CommonModule, registerLocaleData } from '@angular/common';
 import { Component, LOCALE_ID, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import localeEs from '@angular/common/locales/es';
+import { SearchFlightService } from '../../../services/search-flight.service';
 
 registerLocaleData(localeEs, 'es');
 
@@ -15,27 +16,37 @@ registerLocaleData(localeEs, 'es');
 })
 export class FlightsComponent implements OnInit {
 
-  origin = 'Bogotá';
-  destination = 'Cali';
-  departureDate = new Date('2024-11-10');
-  returnDate = new Date('2024-11-13');
-  passengers = 1;
+  vuelos: any[] = [];
+  origin: string = '';
+  originCode: string = '';
+  destination: string = '';
+  destinationCode: string = '';
+  departureDate: Date | null = null;
+  returnDate: Date | null = null;
+  passengers: number = 1;
+  tripType: string = 'roundtrip';
   selectedFlight: any = null;
+  selectedReturnFlight: any = null;
 
-  vuelos= [
-    { id: '1', departureTime: '12:06', arrivalTimeDestination: '13:06', origin: 'BOG', destination: 'CLO', duration: '1h', priceEconomy: 190255 },
-    { id: '2', departureTime: '12:39', arrivalTimeDestination: '13:39', origin: 'BOG', destination: 'CLO', duration: '1h', priceEconomy: 190255 },
-    { id: '3', departureTime: '09:18', arrivalTimeDestination: '10:19', origin: 'BOG', destination: 'CLO', duration: '1h 1m', priceEconomy: 190255 },
-    { id: '4', departureTime: '13:40', arrivalTimeDestination: '14:41', origin: 'BOG', destination: 'CLO', duration: '1h 1m', priceEconomy: 0 },
-    { id: '5', departureTime: '15:23', arrivalTimeDestination: '16:36', origin: 'BOG', destination: 'CLO', duration: '1h 13m', priceEconomy: 226170 },
-    { id: '6', departureTime: '03:38', arrivalTimeDestination: '04:51', origin: 'BOG', destination: 'CLO', duration: '1h 13m', priceEconomy: 226170 },
-    { id: '7', departureTime: '17:00', arrivalTimeDestination: '18:04', origin: 'BOG', destination: 'CLO', duration: '1h 4m', priceEconomy: 226170 },
-  ].sort((a,b) => a.departureTime.localeCompare(b.departureTime));
-
-  constructor() { }
+  constructor(private searchFlightService: SearchFlightService) { }
 
   ngOnInit(): void {
+    this.searchFlightService.searchCriteria$.subscribe(criteria => {
+      if (criteria) {
+        this.tripType = criteria.tripType;
+        this.origin = criteria.origin;
+        this.originCode = criteria.originCode;
+        this.destination = criteria.destination;
+        this.destinationCode = criteria.destinationCode;
+        this.departureDate = criteria.departureDate;
+        this.returnDate = criteria.returnDate;
+        this.passengers = criteria.passengers;
+      }
+    });
 
+    this.searchFlightService.flights$.subscribe(flights => {
+      this.vuelos = flights;
+    });
   }
 
   formatTime(time: string): string {
@@ -48,6 +59,13 @@ export class FlightsComponent implements OnInit {
 
   selectFlight(vuelo: any): void {
     this.selectedFlight = this.selectedFlight === vuelo ? null : vuelo;
+    console.log('vuelo ida: ', this.selectedFlight);
+  }
+
+  selectReturnFlight(vuelo: any): void {
+    this.selectedReturnFlight = this.selectedReturnFlight === vuelo ? null : vuelo;
+    console.log('vuelo regreso: ', this.selectedReturnFlight);
   }
 
 }
+

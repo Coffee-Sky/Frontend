@@ -8,11 +8,13 @@ import { RootHomeComponent } from "./components/users/root/root-home/root-home.c
 import { CloudinaryService } from './services/cloudinary.service';
 import { ProfileComponent } from "./components/users/profile/profile.component";
 import { AdminHomeComponent } from "./components/users/admin/admin-home/admin-home.component";
+import { InfoCardsComponent } from "./components/users/cards/info-cards/info-cards.component";
+import { ListCardsComponent } from "./components/users/cards/list-cards/list-cards.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RegisterComponent, LoginComponent, HeaderComponent, PageComponent, RootHomeComponent, ProfileComponent, AdminHomeComponent],
+  imports: [RouterOutlet, RegisterComponent, LoginComponent, HeaderComponent, PageComponent, RootHomeComponent, ProfileComponent, AdminHomeComponent, InfoCardsComponent, ListCardsComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

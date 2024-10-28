@@ -1,19 +1,19 @@
 <div class="min-h-screen bg-gray-100 p-6">
   <header class="w-full fixed top-0 left-0 bg-white shadow-md z-50 p-4">
     <div class="flex items-center space-x-4">
-      <img src="Nombre2.png" alt="COFFEESKY" class="h-12" />
+      <img src="Nombre2.png" alt="COFFEESKY" class="w-32 cursor-pointer" routerLink=""/>
       <div class="text-lg">
-        <p class="font-bold">Bogotá a Cali</p>
+        <p class="font-bold">{{origin}} a {{destination}}</p>
         <p class="text-gray-500 flex items-center space-x-2">
           <span class="material-symbols-outlined" translate="no">flight_takeoff</span>
           <span>{{departureDate | date:'EEE. d MMM. yyyy':'es'}}</span>
-          <span class="mx-2">•</span>
-          <span class="material-symbols-outlined" translate="no">flight_land</span>
-          <span>{{returnDate | date:'EEE. d MMM. yyyy':'es'}}</span>
+          <span *ngIf="tripType === 'roundtrip' " class="mx-2">•</span>
+          <span *ngIf="tripType === 'roundtrip' " class="material-symbols-outlined transform scale-x-[-1]" translate="no">flight_takeoff</span>
+          <span *ngIf="tripType === 'roundtrip' ">{{returnDate | date:'EEE. d MMM. yyyy':'es'}}</span>
           <span class="mx-2">•</span>
           <span class="material-symbols-outlined" translate="no">person</span>
-          <span>1 pasajero</span>
-          <button class="ml-2 text-teal-600 hover:underline focus:outline-none flex items-center">
+          <span>{{passengers}} {{passengers === 1 ? 'pasajero' : 'pasajeros'}}</span>
+          <button class="ml-2 text-teal-600 hover:text-teal-700 focus:outline-none flex items-center">
             <span class="material-symbols-outlined" translate="no">edit</span>
             Editar
           </button>
@@ -25,8 +25,14 @@
   <div class="max-w-3xl mx-auto space-y-4 pt-24">
     <div class="text-lg font-bold flex items-center">
       <span class="material-symbols-outlined" translate="no">flight_takeoff</span>
-      <p class="inline-block ml-2">Ida: Bogotá a Cali</p>
+      <p class="inline-block ml-2">Ida: {{origin}} a {{destination}}</p>
     </div>
+
+    <div *ngIf="tripType === 'roundtrip' " class="text-lg font-bold flex items-center">
+      <span class="material-symbols-outlined transform scale-x-[-1]" translate="no">flight_takeoff</span>
+      <p class="inline-block ml-2">Vuelta: {{destination}} a {{origin}}</p>
+    </div>
+
     <div *ngFor="let vuelo of vuelos" 
          class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer"
          (click)="selectFlight(vuelo)">
@@ -34,7 +40,7 @@
         <div class="flex items-center space-x-6">
           <div class="text-left">
             <p class="text-2xl font-bold">{{formatTime(vuelo.departureTime)}}</p>
-            <p class="text-sm text-gray-500">{{vuelo.origin}}</p>
+            <p class="text-sm text-gray-500">{{vuelo.originCode}}</p>
           </div>
           
           <div class="flex flex-col items-center">
@@ -48,7 +54,7 @@
           
           <div class="text-right">
             <p class="text-2xl font-bold">{{formatTime(vuelo.arrivalTimeDestination)}}</p>
-            <p class="text-sm text-gray-500">{{vuelo.destination}}</p>
+            <p class="text-sm text-gray-500">{{vuelo.destinationCode}}</p>
           </div>
         </div>
         
@@ -61,9 +67,7 @@
         </div>
       </div>
 
-      <!-- Contenedores de clases -->
       <div *ngIf="selectedFlight === vuelo" class="mt-2 space-y-2 animate-fade-in">
-        <!-- Clase Económica -->
         <div class="bg-white rounded-lg p-6 border border-gray-200 hover:border-teal-500 cursor-pointer transition-colors duration-200">
           <div class="flex justify-between items-start">
             <div>
@@ -79,15 +83,15 @@
                 </li>
               </ul>
             </div>
-            <div class="text-right">
+            <div class="text-center">
               <p class="text-2xl font-bold text-teal-600">COP {{vuelo.priceEconomy | number}}</p>
               <button class="mt-2 bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors duration-200">
                 Seleccionar
               </button>
+              <p class="text-xs mt-1 text-gray-600">Precio por pasajero</p>
             </div>
           </div>
         </div>
-        <!-- Primera Clase -->
         <div class="bg-white rounded-lg p-6 border border-gray-200 hover:border-teal-500 cursor-pointer transition-colors duration-200">
           <div class="flex justify-between items-center">
             <div>
@@ -115,15 +119,19 @@
                 </li>
               </ul>
             </div>
-            <div class="text-right">
+            <div class="text-center">
               <p class="text-2xl font-bold text-teal-600">COP {{vuelo.priceEconomy * 2 | number}}</p>
               <button class="mt-2 bg-teal-600 text-white px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors duration-200">
                 Seleccionar
               </button>
+              <p class="text-xs mt-1 text-gray-600">Precio por pasajero</p>
             </div>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  <div *ngIf="vuelos.length === 0" class="bg-white rounded-lg shadow-md p-6 mt-6">
+      <p class="text-center text-gray-500">No se encontraron vuelos disponibles para las fechas seleccionadas.</p>
   </div>
 </div>
