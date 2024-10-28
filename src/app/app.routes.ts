@@ -14,6 +14,7 @@ import { ProfileComponent } from './components/users/profile/profile.component';
 import { AdminHomeComponent } from './components/users/admin/admin-home/admin-home.component';
 import { adminGuard } from './guards/admin.guard';
 import { usersRegisteredGuard } from './guards/users-registered.guard';
+import { FlightsComponent } from './components/home/flights/flights.component';
 
 export const routes: Routes = [
   { path: '', component: PageComponent, canActivate: [authGuard]}, 
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'root', component: RootHomeComponent, canActivate: [rootGuard]},
   { path: 'info-vuelo', component: InfoFlightComponent, canActivate: [adminGuard]},
   { path: 'creation', component: CreationFlightComponent, canActivate: [adminGuard]},
+    { path: 'flights', component: FlightsComponent}
   { path: 'info/:code', component: InfoAdminComponent, canActivate: [rootGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [usersRegisteredGuard]},
   { path: 'admin', component: AdminHomeComponent, canActivate: [adminGuard]}

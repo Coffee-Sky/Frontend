@@ -9,6 +9,6 @@ export class EditFlightService {
   public isEditing: boolean = false;
   
   toggleEditFlight() {
-    this.isEditing = !this.isEditing;
+    this.isEditing = true;
   }
 }
