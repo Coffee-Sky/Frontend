@@ -9,8 +9,9 @@
 
           <div *ngIf="isDropdownOpen" class="absolute right-0 mt-20 w-48 bg-white rounded-md shadow-lg z-20 divide-y divide-gray-100 text-center">
             <div class="py-2">
-              <p class="block text-gray-800">USERNAME</p>
-              <p class="block mb-2 text-gray-800">Correo.com</p>
+              <p class="block text-gray-800">ID: {{admin.userID}}</p>
+              <p class="block text-gray-800">{{admin.username}}</p>
+              <p class="block mb-2 text-gray-800">{{admin.email}}</p>
             </div>
             <div cursor-pointer>
               <a href="/perfil" class="block py-2 text-gray-800 hover:bg-gray-100" routerLink="/profile">Ver perfil</a>
