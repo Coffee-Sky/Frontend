@@ -1,0 +1,60 @@
+<form [formGroup]="searchForm" (ngSubmit)="save()">
+  <div class="flex items-center justify-center p-4">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-4xl p-6 space-y-4">
+      <div class="flex items-center space-x-4 mb-4">
+        <label class="inline-flex items-center">
+          <input type="radio" name="tripType" value="roundtrip" class="h-4 w-4" formControlName="tripType"/>
+          <span class="ml-2 text-sm font-medium">Ida y vuelta</span>
+        </label>
+        <label class="inline-flex items-center">
+          <input type="radio" name="tripType" value="oneway" class="h-4 w-4" formControlName="tripType"/>
+          <span class="ml-2 text-sm font-medium">Solo ida</span>
+        </label>
+      </div>
+
+      <div class="grid grid-cols-2 sm:grid-cols-5 lg:grid-cols-5 gap-4">
+        <div class="w-full">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Origen</label>
+          <select class="w-full p-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-color3" formControlName="origin">
+            <option *ngFor="let city of cities" [value]="city">{{city}}</option>
+          </select>
+        </div>
+        <div class="w-full">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Destino</label>
+          <select class="w-full p-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-color3" formControlName="destination">
+            <option *ngFor="let city of availableDestinationCities" [value]="city">{{city}}</option>
+          </select>
+        </div>
+        <div class="w-full">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Ida</label>
+          <input class="w-full p-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-color3" 
+                 type="date" [min]="minDepartureDate" formControlName="departureDate"/>
+        </div>
+        <div class="w-full" *ngIf="searchForm.get('tripType')?.value === 'roundtrip'">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Vuelta</label>
+          <input class="w-full p-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-color3" 
+                 type="date" [min]="selectedDepartureDate || minDepartureDate" formControlName="returnDate"/>
+        </div>
+        <div class="w-full">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Pasajeros</label>
+          <select class="w-full pl-3 pr-10 py-2 border border-gray-300 rounded-md appearance-none focus:outline-none focus:ring-1 focus:ring-color3" formControlName="passengers">
+            <option value=1>1 Pasajero</option>
+            <option value=2>2 pasajeros</option>
+            <option value=3>3 Pasajeros</option>
+            <option value=4>4 Pasajeros</option>
+            <option value=5>5 Pasajeros</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="flex justify-end mt-6">
+        <button 
+          [disabled]="searchForm.invalid"
+          class="px-6 py-2 bg-color1 text-white font-medium rounded-md hover:bg-color1-shade focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
+          disabled:opacity-50 disabled:cursor-not-allowed" type="submit">
+          Buscar
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
