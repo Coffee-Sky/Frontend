@@ -23,7 +23,7 @@ export const routes: Routes = [
   { path: 'root', component: RootHomeComponent, canActivate: [rootGuard]},
   { path: 'info-vuelo', component: InfoFlightComponent, canActivate: [adminGuard]},
   { path: 'creation', component: CreationFlightComponent, canActivate: [adminGuard]},
-    { path: 'flights', component: FlightsComponent}
+  { path: 'flights', component: FlightsComponent},
   { path: 'info/:code', component: InfoAdminComponent, canActivate: [rootGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [usersRegisteredGuard]},
   { path: 'admin', component: AdminHomeComponent, canActivate: [adminGuard]}
