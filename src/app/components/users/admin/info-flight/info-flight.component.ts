@@ -5,11 +5,12 @@ import { RouterModule } from '@angular/router';
 import { ModalService } from '../../../../services/modal.service';
 import { PromotionComponent } from "../promotion/promotion.component";
 import { EditFlightService } from '../../../../services/edit-flight.service';
+import { CancelFlightComponent } from '../cancel-flight/cancel-flight.component';
 
 @Component({
   selector: 'app-info-flight',
   standalone: true,
-  imports: [RouterModule, CommonModule, ReactiveFormsModule, PromotionComponent],
+  imports: [RouterModule, CommonModule, ReactiveFormsModule, PromotionComponent, CancelFlightComponent],
   templateUrl: './info-flight.component.html',
   styleUrl: './info-flight.component.css'
 })
@@ -17,14 +18,16 @@ export class InfoFlightComponent implements OnInit{
   isEditing: boolean = false;
   originalValues: any;
   editFlightForm!: FormGroup;
+  cancelFlight: boolean = false;
   creationPromo: boolean = false;
-  // tickets: number = 24;
-  tickets: number = 0;
+  tickets: number = 24;
+  statusID: number = 1;
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private createPromoService: ModalService, private editFlightService: EditFlightService) { }
+  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private createPromoService: ModalService, private editFlightService: EditFlightService, private cancelFlightService: ModalService) { }
 
   ngOnInit(): void {
     this.createPromoService.$promotion.subscribe((value)=>{this.creationPromo = value})
+    this.cancelFlightService.$cancel.subscribe((value)=>{this.cancelFlight = value})
     this.isEditing = this.editFlightService.isEditing;
     this.editFlightForm = this.fb.group({
       origin: ['', [Validators.required]],
@@ -52,6 +55,10 @@ export class InfoFlightComponent implements OnInit{
 
   createPromo(){
     this.creationPromo = true;
+  }
+
+  cancelFlightFunction(){
+    this.cancelFlight = true;
   }
 
   save() {

@@ -15,8 +15,41 @@ import { time } from 'console';
 export class CreationFlightComponent implements OnInit{
   minDepartureDate = new Date().toISOString().split('T')[0];  // Fecha actual como mínima para ida
 
+  cities_origin: string[] = ['Arauca',
+                            'Armenia',
+                            'Barranquilla',
+                            'Bogotá',
+                            'Bucaramanga',
+                            'Cali',
+                            'Cartagena',
+                            'Cúcuta',
+                            'Florencia',
+                            'Ibagué',
+                            'Leticia',
+                            'Manizales',
+                            'Medellín',
+                            'Mitú',
+                            'Mocoa',
+                            'Montería',
+                            'Neiva',
+                            'Pasto',
+                            'Pereira',
+                            'Popayán',
+                            'Puerto Carreño',
+                            'Puerto Inírida',
+                            'Quibdó',
+                            'Riohacha',
+                            'San Andrés',
+                            'San José del Guaviare',
+                            'Santa Marta',
+                            'Sincelejo',
+                            'Tunja',
+                            'Valledupar',
+                            'Villavicencio',
+                            'Yopal']
+
   cities: { [key: string]: string[] } = {
-    national: ['Bogotá', 'Cali', 'Cartagena', 'Medellín', 'Pererira'],
+    national: ['Bogotá', 'Cali', 'Cartagena', 'Medellín', 'Pereira'],
     international: ['Buenos Aires', 'Londres', 'Madrid', 'Miami', 'New York']
   };
 
@@ -82,10 +115,10 @@ export class CreationFlightComponent implements OnInit{
   }
 
   updateOriginCities(type: string) {
-    if (type === '1') { // Nacional
-      this.availableOriginCities = this.cities['national'];
-    } else if (type === '2') { // Internacional
-      this.availableOriginCities = [...this.cities['national'], ...this.cities['international']];
+    if (type === 'Nacional') { // Nacional
+      this.availableOriginCities = this.cities_origin;
+    } else if (type === 'Internacional') { // Internacional
+      this.availableOriginCities = [...this.cities['national'], ...this.cities['international']].sort();
     }
   }
 
@@ -96,9 +129,9 @@ export class CreationFlightComponent implements OnInit{
       this.availableDestinationCities = [];
       return;
     }
-    if (type === '1') { // Nacional
+    if (type === 'Nacional') { // Nacional
       // Si es vuelo nacional, solo mostrar ciudades nacionales excepto la de origen
-      this.availableDestinationCities = this.cities['national'].filter(city => city !== origin);
+      this.availableDestinationCities = this.cities_origin.filter(city => city !== origin);
     } else { // Internacional
       // Si el origen es nacional, mostrar solo ciudades internacionales
       if (this.cities['national'].includes(origin)) {

@@ -48,7 +48,7 @@ export class AdminHomeComponent implements OnInit{
     this.editFlightService.toggleEditFlight();
   }
 
-  cancel(){
+  cancelFlightFunction(){
     this.cancelFlight = true;
   }
 
