@@ -1,30 +1,257 @@
-<app-header/>
-<div class="container mx-auto text-center py-10 lg:pb-20 lg:pt-20">
-  <h2 class="text-3xl lg:text-5xl font-semibold">Tarjetas registradas</h2>
-  <div class="flex flex-col sm:flex-row sm:-mx-3 mt-12">
-    <!-- <div class="flex-1 px-3">
-      <div class="p-12 rounded-lg border border-solid border-color2 mb-8"
-        style="box-shadow:0 10px 10px">
-        <p class="font-bold text-xl text-color4-shade">Búsqueda</p>
-        <p class="mt-4 text-color1-shade">Busca vuelos en la página con diversos filtros como origen, destino o fecha.
-          Suscríbete a nuestro boletín para recibir notificaciones de vuelos.</p>
-      </div>
-    </div> -->
-    <div class="flex-1 px-3">
-      <div class="p-12 rounded-lg border border-solid border-color2 mb-8"
-        style="box-shadow:0 10px 10px">
-        <p class="font-bold text-xl text-color5">Compra</p>
-        <p class="mt-4 text-color1-shade">¿Quieres realizar la compra de un tiquete? Agrégalo al carrito de compras y págalo en línea.
-          También podrás ver el historial de tus compras.</p>
-      </div>
+<div class="min-h-screen bg-gray-100">
+  <app-header/>
+  <div class="flex justify-center">
+  <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
+    <div class="lg:w-5/6 xl:w-5/6 p-6 sm:p-6 mx-0">
+      <h2 class="text-xl text-center font-bold mb-4">Información de tarjeta</h2>
+      <form class="px-8 pt-4 mb-4" [formGroup]="editCardForm" (ngSubmit)="save()">
+
+        <div class="text-center text-gray-500 font-semibold">
+          <p>Información de la tarjeta</p>
+          <hr class="mb-5 mt-2 border-t" />
+        </div>
+
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Tipo <span *ngIf="isEditing" class="text-red-500">*</span></label>
+              <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="type">
+              <option value="" disabled selected>Tipo de tarjeta</option>
+              <option value="debit">Débito</option>
+              <option value="credit">Crédito</option>
+            </select>
+            <input  *ngIf="!isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Tipo" formControlName="type" [readOnly]="!isEditing"/>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Número de tarjeta <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="Número de tarjeta" formControlName="number" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','number') && editCardForm.controls['number'].dirty" class="text-red-500 text-xs">El número de tarjeta es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','number')" class="text-red-500 text-xs">El número de tarjeta no es válido</span>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">CVV <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="0000" formControlName="cvv" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','cvv') && editCardForm.controls['cvv'].dirty" class="text-red-500 text-xs">El CVV es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','cvv')" class="text-red-500 text-xs">El CVV no es válido</span>
+          </div>
+        </div>
+
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Fecha de caducidad <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <input min="1925-01-01" class="w-full px-3 py-3 text-sm leading-tight text-gray-400 border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="date" placeholder="" formControlName=caducityDate [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','caducityDate') && editCardForm.controls['caducityDate'].dirty" class="text-red-500 text-xs">La fecha es requerida</span>
+          </div>
+          <div class="mb-2 w-full relative">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">
+              {{ editCardForm.get('type')?.value === 'credit' ? 'Cupo' : 'Saldo' }} 
+              <span *ngIf="isEditing" class="text-red-500">*</span>
+            </label>
+            <div class="absolute top-9 left-2 flex items-center text-gray-500">
+              <span class="material-symbols-outlined" translate="no">
+                attach_money
+              </span>
+            </div>
+            <input class="w-full px-8 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="" formControlName="balance" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','balance') && editCardForm.controls['balance'].dirty" class="text-red-500 text-xs">El valor es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','balance')" class="text-red-500 text-xs">El valor no es válido</span>
+          </div>
+          <div class="mb-2 w-full">
+          </div>
+        </div>
+
+        <div class="text-center text-gray-500 font-semibold">
+          <p>Información del titular</p>
+          <hr class="mb-5 mt-2 border-t" />
+        </div>
+  
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Primer nombre <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Primer nombre" formControlName="firstname" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','firstname') && editCardForm.controls['firstname'].dirty" class="text-red-500 text-xs">El nombre es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','firstname')" class="text-red-500 text-xs">El nombre no es válido</span>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Segundo nombre</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Segundo nombre" formControlName="secondname" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('pattern','secondname')" class="text-red-500 text-xs">El nombre no es válido</span>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Primer apellido <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Primer apellido" formControlName="firstlastname" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','firstlastname') && editCardForm.controls['firstlastname'].dirty" class="text-red-500 text-xs">El primer apellido es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','firstlastname')" class="text-red-500 text-xs">El apellido no es válido</span>
+          </div>
+        </div>
+
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Segundo apellido</label>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Segundo apellido" formControlName="secondlastname" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('pattern','secondlastname')" class="text-red-500 text-xs">El apellido no es válido</span>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Teléfono <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="Teléfono" formControlName="cvv" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','cvv') && editCardForm.controls['cvv'].dirty" class="text-red-500 text-xs">El teléfono es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','cvv')" class="text-red-500 text-xs">El teléfono no es válido</span>
+          </div>
+          <div class="mb-2 w-full">
+          </div>
+        </div>
+
+        <div class="text-center text-gray-500 font-semibold">
+          <p>Dirección de facturación</p>
+          <hr class="mb-5 mt-2 border-t"/>
+        </div>
+  
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">País <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <!-- <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="country" (change)="getStates($event)"> -->
+              <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="country">
+              <option value="" disabled selected>País</option>
+              <option value="Colombia">Colombia PREDEFINIDA</option>
+              <!-- <option *ngFor="let country of countries" [value]="country.country_name">
+                {{ country.country_name }}
+              </option> -->
+            </select>
+            <input  *ngIf="!isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="País" formControlName="country" [readOnly]="!isEditing"/>
+          </div>
+
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Estado <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <!-- <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="state" (change)="getCities($event)"> -->
+              <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="state">
+              <option value="" disabled selected>Estado</option>
+              <option value="Risaralda">Risaralda PREDEFINIDA</option>
+              <!-- <option *ngFor="let state of states" [value]="state.state_name">
+                {{ state.state_name }}
+              </option> -->
+            </select>
+            <input  *ngIf="!isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Estado" formControlName="state" [readOnly]="!isEditing"/>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Ciudad <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="city">
+              <option value="" disabled selected>Ciudad</option>
+              <option value="Pereira">Pereira PREDEFINIDA</option>
+              <!-- <option *ngFor="let city of cities" [value]="city.city_name">
+                {{ city.city_name }}
+              </option> -->
+            </select>
+            <input  *ngIf="!isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Ciudad" formControlName="city" [readOnly]="!isEditing"/>
+          </div>
+        </div>
+  
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Barrio <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="Barrio" formControlName="neighborhood" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','neighborhood') && editCardForm.controls['neighborhood'].dirty" class="text-red-500 text-xs">El barrio es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','neighborhood')" class="text-red-500 text-xs">El barrio no es válido</span>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Tipo de calle<span *ngIf="isEditing" class="text-red-500">*</span></label>
+              <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="streetType">
+              <option *ngFor="let type of streetTypes" [value]="type">{{ type }}</option>
+            </select>
+            <input  *ngIf="!isEditing" class="w-full px-3 py-3 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Tipo de calle" formControlName="streetType" [readOnly]="!isEditing"/>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">
+              {{ editCardForm.get('streetType')?.value || 'Calle' }} 
+              <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="" formControlName="streetName" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','streetName') && editCardForm.controls['streetName'].dirty" class="text-red-500 text-xs">El campo es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','streetName')" class="text-red-500 text-xs">Sólo ingrese números o letras</span>
+          </div>
+        </div>
+
+        <div class="mb-6 md:flex md:justify-between gap-4">
+          <div class="mb-2 w-full flex flex-row gap-4 items-center">
+            <div class="relative">
+              <label class="block mb-2 text-sm font-bold text-color1-shade">Número <span *ngIf="isEditing" class="text-red-500">*</span></label>
+              <div class="absolute top-9 left-2 flex items-center text-gray-500">
+                <span class="material-symbols-outlined" translate="no">
+                  numbers
+                </span>
+              </div>
+              <input class="w-full px-9 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+              type="text" placeholder="" formControlName="streetNumber1" [readOnly]="!isEditing"/>
+              <div class="h-5">
+                <span *ngIf="editCardForm.hasError('required','streetNumber1') && editCardForm.controls['streetNumber1'].dirty" class="text-red-500 text-xs">El número es requerido</span>
+                <span *ngIf="editCardForm.hasError('pattern','streetNumber1')" class="text-red-500 text-xs">Sólo números o letras</span>
+              </div>
+            </div>
+            <div>
+              <input class="w-full px-3 py-3 mb-1 mt-7 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+              type="text" placeholder="" formControlName="streetNumber2" [readOnly]="!isEditing"/>
+              <label class="sr-only">Número adicional</label>
+              <div class="h-5">
+                <span *ngIf="editCardForm.hasError('required','streetNumber2') && editCardForm.controls['streetNumber2'].dirty" class="text-red-500 text-xs">El número es requerido</span>
+                <span *ngIf="editCardForm.hasError('pattern','streetNumber2')" class="text-red-500 text-xs">Sólo números o letras</span>
+              </div>
+            </div>
+          </div>
+          <div class="mb-2 w-full">
+            <label class="block mb-2 text-sm font-bold text-color1-shade">Código postal <span *ngIf="isEditing" class="text-red-500">*</span></label>
+            <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
+            type="text" placeholder="Código postal" formControlName="postalCode" [readOnly]="!isEditing"/>
+            <div class="h-5">
+              <span *ngIf="editCardForm.hasError('required','postalCode') && editCardForm.controls['postalCode'].dirty" class="text-red-500 text-xs">El código postal es requerido</span>
+              <span *ngIf="editCardForm.hasError('pattern','postalCode')" class="text-red-500 text-xs">El código postal no es válido</span>
+            </div>
+          </div>
+          <div class="mb-2 w-full">
+          </div>
+        </div>
+  
+        <div class="" *ngIf="deleteCard==true">
+          <app-delete-card />
+        </div>
+
+        <div class="flex flex-1 items-center justify-center gap-4" *ngIf="!isEditing">
+          <button (click)="toggleEdit()" 
+            class="w-28 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline
+            disabled:opacity-50 disabled:cursor-not-allowed">
+            Editar
+          </button>
+          <button (click)="deleteCardFunction()" 
+            class="w-28 py-2 mt-3 font-bold text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline">
+            Eliminar
+          </button>
+        </div>
+
+        <div class="flex flex-1 items-center justify-center gap-4" *ngIf="isEditing">
+          <button type="submit" [disabled]="editCardForm.invalid"
+            class="w-28 py-2 mt-3 font-bold text-white bg-color1 rounded-full hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline
+            disabled:opacity-50 disabled:cursor-not-allowed">
+            Guardar
+          </button>
+          <button (click)="cancel()" 
+            class="w-28 py-2 mt-3 font-bold text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:shadow-outline">
+            Cancelar
+          </button>
+        </div>
+      </form>
     </div>
-    <div class="flex-1 px-3">
-      <div class="p-12 rounded-lg border border-solid border-color2 mb-8"
-        style="box-shadow:0 10px 10px">
-        <p class="font-bold text-xl text-color5-shade">Comunicación</p>
-        <p class="mt-4 text-color1-shade">¿Tienes alguna duda o comentario? No dudes en escribir a uno de nuestros administradores
-          por medio del chat en línea.</p>
-      </div>
-    </div>
+  </div>
   </div>
 </div>
