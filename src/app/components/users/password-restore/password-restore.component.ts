@@ -24,10 +24,18 @@ export class PasswordRestoreComponent {
 
   save() {
     if (this.emailForm.valid) {
-      window.alert("Se ha enviado el correo para recuperar tu contraseña.")
-      console.log(this.emailForm.value);
+      this.apiService.getData('update/recover-password?email='+this.emailForm.value.email).subscribe(
+        (response) => {
+          // console.log('Contraseña enviada al correo:', response);
+          window.alert("Se ha enviado el correo para recuperar tu contraseña.")
+        },
+        (error) => {
+          console.error('Error:', error);
+          window.alert('No se ha podido enviar la contraseña al correo, inténtelo nuevamente.');
+        }
+      );
     } else {
-      console.log('Formulario inválido');
+      console.error('Formulario inválido');
     }
   }
 

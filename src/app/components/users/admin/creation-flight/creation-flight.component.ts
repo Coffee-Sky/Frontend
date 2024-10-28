@@ -2,7 +2,7 @@ import { CommonModule, formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { time } from 'console';
+import { ApiService } from '../../../../services/api.service';
 
 @Component({
   selector: 'app-creation-flight',
@@ -56,7 +56,7 @@ export class CreationFlightComponent implements OnInit{
   availableOriginCities: string[] = [];
   availableDestinationCities: string[] = [];
 
-  constructor() {
+  constructor(private apiService: ApiService) {
   }
 
   ngOnInit(): void {
@@ -193,11 +193,55 @@ export class CreationFlightComponent implements OnInit{
     return '';
   }
 
+  formatDate(): string {
+    const departureDate = this.creationForm.value.departureDate;
+    if (!departureDate) {
+      throw new Error("Departure date is not defined");
+    }
+    const [year, month, day] = departureDate.split('-').map(Number);
+
+    const departureTime = this.creationForm.value.departureTime;
+    if (!departureTime) {
+      throw new Error("Departure time is not defined");
+    }
+    const [hour, minute] = departureTime.split(':').map(Number);
+
+    const date = new Date(Date.UTC(year, month - 1, day, hour, minute));
+
+    return date.toISOString();
+  }
+
   save() {
     if (this.creationForm.valid) {
       console.log(this.creationForm.value);
+  
+      const departure = this.formatDate();
+  
+      const { origin, destination, type, priceEconomy, priceFirstClass } = this.creationForm.value;
+  
+      const flightInfo = {
+        departure,
+        origin,
+        destiny: destination, 
+        type,
+        economyPrice: priceEconomy, 
+        businessPrice: priceFirstClass 
+      };
+  
+      console.log('Información del vuelo a enviar:', flightInfo);
+
+      this.apiService.postData('manage/create-flight', flightInfo).subscribe(
+        (response) => {
+          window.alert('Vuelo creado exitosamente.');
+          window.location.href = '/admin';
+        },
+        (error) => {
+          console.error('Error creando el vuelo:', error);
+          window.alert('Error creando el vuelo. Inténtelo nuevamente.');
+        }
+      )
     } else {
-      console.log("Error");
+      console.log("Error: Formulario no válido");
     }
   }
 }

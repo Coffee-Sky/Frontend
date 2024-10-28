@@ -6,6 +6,32 @@ import { PromotionComponent } from '../promotion/promotion.component';
 import { ModalService } from '../../../../services/modal.service';
 import { EditFlightService } from '../../../../services/edit-flight.service';
 import { CancelFlightComponent } from '../cancel-flight/cancel-flight.component';
+import { JwtService } from '../../../../services/jwt.service';
+import { ApiService } from '../../../../services/api.service';
+
+interface Role {
+  roleID: number;
+  name: string;
+}
+
+interface Admin {
+  userID: number;
+  firstname: string;
+  secondname: string;
+  firstlastname: string;
+  secondlastname: string;
+  identificationnumber: string;
+  bornDate: string;
+  borncountry: string;
+  bornstate: string;
+  borncity: string;
+  genderID: number;
+  image: string;
+  username: string;
+  email: string;
+  role: Role;
+  statusID: number;
+}
 
 @Component({
   selector: 'app-admin-home',
@@ -21,9 +47,35 @@ export class AdminHomeComponent implements OnInit{
   isEditing: boolean = false;
   isDropdownOpen: boolean = false;
 
+  code: string = '';
+
+  admin: Admin = {
+    userID: 0,
+    firstname: '',
+    secondname: '',
+    firstlastname: '',
+    secondlastname: '',
+    identificationnumber: '',
+    bornDate: '',
+    borncountry: '',
+    bornstate: '',
+    borncity: '',
+    genderID: 0,
+    image: '',
+    username: '',
+    email: '',
+    role: {
+      roleID: 0,
+      name: ''
+    },
+    statusID: 0
+  };
+
   constructor(private createPromoService: ModalService,
               private editFlightService: EditFlightService,
-              private cancelFlightService: ModalService
+              private cancelFlightService: ModalService,
+              private jwtService: JwtService,
+              private apiService: ApiService
             ){}
 
   vuelos = [
@@ -34,6 +86,20 @@ export class AdminHomeComponent implements OnInit{
   ngOnInit(): void {
     this.createPromoService.$promotion.subscribe((value)=>{this.creationPromo = value})
     this.cancelFlightService.$cancel.subscribe((value)=>{this.cancelFlight = value})
+    this.getAdminInfo();
+  }
+
+  getAdminInfo() {
+    this.code = this.jwtService.getCode() ?? '';
+    this.apiService.getData('data/get-user-info?userID='+this.code).subscribe(
+      (response: Admin) => {
+        this.admin = response;
+        console.log(this.admin);
+      },
+      (error) => {
+        console.error('Error obteniendo la información del usuario:', error);
+      }
+    );
   }
 
   createFlight(){
@@ -54,6 +120,11 @@ export class AdminHomeComponent implements OnInit{
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  logout() {
+    this.jwtService.removeToken();
+    window.location.href = '';
   }
 
 }
