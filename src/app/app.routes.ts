@@ -12,6 +12,9 @@ import { InfoFlightComponent } from './components/users/admin/info-flight/info-f
 import { CreationFlightComponent } from './components/users/admin/creation-flight/creation-flight.component';
 import { ProfileComponent } from './components/users/profile/profile.component';
 import { FlightsComponent } from './components/home/flights/flights.component';
+import { ListCardsComponent } from './components/users/cards/list-cards/list-cards.component';
+import { InfoCardsComponent } from './components/users/cards/info-cards/info-cards.component';
+import { AddCardComponent } from './components/users/cards/add-card/add-card.component';
 
 export const routes: Routes = [
   { path: '', component: PageComponent, canActivate: [authGuard] }, 
@@ -22,7 +25,10 @@ export const routes: Routes = [
   { path: 'creation', component: CreationFlightComponent},
   { path: 'info/:code', component: InfoAdminComponent},
   { path: 'profile', component: ProfileComponent },
-  { path: 'flights', component: FlightsComponent}
+  { path: 'flights', component: FlightsComponent},
+  { path: 'cards', component: ListCardsComponent},
+  { path: 'add-card', component: AddCardComponent},
+  { path: 'info-card/:id', component: InfoCardsComponent},
 ];
 
 @NgModule({
