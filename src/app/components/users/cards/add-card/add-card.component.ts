@@ -30,7 +30,7 @@ export class AddCardComponent implements OnInit {
     firstname: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]),
     secondname: new FormControl('', Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)),
     firstlastname: new FormControl('', [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]),
-    secondlastanme: new FormControl('', Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)),
+    secondlastname: new FormControl('', Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)),
     phone: new FormControl('', [Validators.required, Validators.pattern(/^\d{7,15}$/)]),
     country: new FormControl('', Validators.required),
     state: new FormControl('', Validators.required),
