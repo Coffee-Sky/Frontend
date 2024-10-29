@@ -1,12 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators, ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 import { RouterModule, ActivatedRoute, Router } from '@angular/router';
 import { ModalService } from '../../../../services/modal.service';
 import { PromotionComponent } from "../promotion/promotion.component";
 import { EditFlightService } from '../../../../services/edit-flight.service';
 import { CancelFlightComponent } from '../cancel-flight/cancel-flight.component';
 import { ApiService } from '../../../../services/api.service';
+
+// Validación personalizada para comparar los precios
+export function priceComparisonValidator(): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const priceEconomy = control.get('priceEconomy')?.value;
+    const priceFirstClass = control.get('priceFirstClass')?.value;
+
+    if (priceEconomy != null && priceFirstClass != null && priceEconomy >= priceFirstClass) {
+      return { priceComparison: true }; // Error si economy >= first class
+    }
+    return null; // No hay errores
+  };
+}
 
 interface Flight {
   flightID: number;
@@ -81,13 +94,15 @@ export class InfoFlightComponent implements OnInit{
       duration: [this.flight.duration, [Validators.required]],
       arrivalDateDestination: ['', [Validators.required]],
       arrivalTimeDestination: ['', [Validators.required]],
-      departureDateDestination: ['', [Validators.required]],
-      departureTimeDestination: ['', [Validators.required]],
-      arrivalDateOrigin: ['', [Validators.required]],
-      arrivalTimeOrigin: ['', [Validators.required]],
+      // departureDateDestination: ['', [Validators.required]],
+      // departureTimeDestination: ['', [Validators.required]],
+      // arrivalDateOrigin: ['', [Validators.required]],
+      // arrivalTimeOrigin: ['', [Validators.required]],
       priceFirstClass: [this.flight.businessPrice, [Validators.required]],
       priceEconomy: [this.flight.economyPrice, [Validators.required]]
-    });
+    },
+    { validators: priceComparisonValidator() } 
+  );
     this.originalValues = this.editFlightForm.getRawValue();
   }
 
@@ -143,11 +158,39 @@ export class InfoFlightComponent implements OnInit{
 
   save() {
     if (this.editFlightForm.valid) {
-      console.log(this.editFlightForm.value);
+      console.log('Formulario válido:', this.editFlightForm.value);
       this.isEditing = false;
+      this.submitInfo();
     } else {
-      console.log("Error");
+      console.log('Formulario inválido:', this.editFlightForm.errors);
+      console.log('Errores por control:', this.getControlErrors());
     }
+  }
+
+  submitInfo() {
+    const flightID = this.code;
+    const economyPrice = this.editFlightForm.get('priceEconomy')?.value;
+    const businessPrice = this.editFlightForm.get('priceFirstClass')?.value;
+    this.apiService.putData('update/flight-price', { 'flightID': flightID, 'economyPrice': economyPrice, 'businessPrice': businessPrice }).subscribe(
+      (response) => {
+        console.log('Respuesta:', response);
+        window.alert('Precios actualizados correctamente.')
+      },
+      (error) => {
+        window.alert('Error al actualizar los precios del vuelo. Inténtelo nuevamente.');
+      }
+    );
+  }
+
+  getControlErrors() {
+    const errors: any = {};
+    Object.keys(this.editFlightForm.controls).forEach(key => {
+      const controlErrors = this.editFlightForm.get(key)?.errors;
+      if (controlErrors) {
+        errors[key] = controlErrors;
+      }
+    });
+    return errors;
   }
 
   cancel() {
