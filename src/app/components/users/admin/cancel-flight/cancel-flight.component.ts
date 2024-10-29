@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from '../../../../services/modal.service';
+import { ApiService } from '../../../../services/api.service';
 
 @Component({
   selector: 'app-cancel-flight',
@@ -10,12 +11,28 @@ import { ModalService } from '../../../../services/modal.service';
 })
 export class CancelFlightComponent implements OnInit{
 
-  constructor(private cancelFlightService: ModalService){
+  constructor(private cancelFlightService: ModalService, private apiService: ApiService) {
 
   }
 
+  @Input() flightCode!: number;
+
   ngOnInit(): void {
     
+  }
+
+  cancelFlight(){
+
+    this.apiService.putData('manage/delete-flight?flightId='+this.flightCode, {flightID: Number(this.flightCode)}).subscribe(
+      (response) => {
+        window.alert('Vuelo cancelado con éxito');
+        this.close();
+        window.location.reload();
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 
   close(){
