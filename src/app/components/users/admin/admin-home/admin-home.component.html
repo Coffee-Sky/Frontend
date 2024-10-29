@@ -62,7 +62,7 @@
                   {{ flight.status === 1 ? 'Sin realizar' : flight.status === 2 ? 'Realizado' : flight.status === 3 ? 'Cancelado' : 'Desconocido' }}
                 </td>              
                 <td class="flex justify-center gap-4 px-5 py-3">
-                  <button [routerLink]="['/info-vuelo']" class="bg-color1 text-gray-100 w-10 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                  <button [routerLink]="['/flight/'+flight.flightID]" class="bg-color1 text-gray-100 w-10 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
                     <span class="material-symbols-outlined" translate="no">
                       visibility
                     </span>

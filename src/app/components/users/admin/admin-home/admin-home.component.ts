@@ -150,8 +150,6 @@ export class AdminHomeComponent implements OnInit{
   validateCancel(flightDate: string, flightStatus: number){
     let currentDate = new Date();
     let parsedFlightDate = new Date(flightDate);
-    console.log(parsedFlightDate < currentDate)
-    console.log(flightStatus)
     if(parsedFlightDate < currentDate || flightStatus !== 1){
       return true;
     }else{
