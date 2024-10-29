@@ -17,7 +17,7 @@
           <button (click)="close()" class="inline-flex w-full justify-center rounded-md bg-color1 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-color1-shade sm:ml-3 sm:w-auto">Cancelar</button>
           <button [disabled]="creationForm.invalid" type="submit" 
           class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-color1 hover:bg-gray-300 sm:mt-0 sm:w-auto
-          disabled:opacity-40 disabled:cursor-not-allowed ">Crear</button>
+          disabled:opacity-40 disabled:cursor-not-allowed " (click)="save()">Crear</button>
         </div>
       </div>
     </div>
