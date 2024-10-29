@@ -87,6 +87,8 @@ export class AdminHomeComponent implements OnInit{
   flights: Flight[] = [];
 
   flightCodeCancel: number = 0;
+  flightDateCancel: string = '';
+  flightStatusCancel: number = 0;
 
   constructor(private createPromoService: ModalService,
               private editFlightService: EditFlightService,
@@ -144,9 +146,23 @@ export class AdminHomeComponent implements OnInit{
     this.editFlightService.toggleEditFlight();
   }
 
-  cancelFlightFunction(flightID: number){
+  validateCancel(flightDate: string, flightStatus: number){
+    let currentDate = new Date();
+    let parsedFlightDate = new Date(flightDate);
+    console.log(parsedFlightDate < currentDate)
+    console.log(flightStatus)
+    if(parsedFlightDate < currentDate || flightStatus !== 1){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  cancelFlightFunction(flightID: number, flightDate: string, flightStatus: number){
     this.cancelFlight = true;
     this.flightCodeCancel = flightID;
+    this.flightDateCancel = flightDate;
+    this.flightStatusCancel = flightStatus;
   }
 
   toggleDropdown() {

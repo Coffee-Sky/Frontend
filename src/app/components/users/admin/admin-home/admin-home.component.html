@@ -50,7 +50,8 @@
 
             <tbody>
               <tr *ngFor="let flight of flights" class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
-                <td class="py-3 px-5">{{ flight.flightID }}</td>
+                <td class="py-3 px-5" *ngIf="flight.type == 'Nacional'">AN-{{ flight.flightID }}</td>
+                <td class="py-3 px-5" *ngIf="flight.type == 'Internacional'">AI-{{ flight.flightID }}</td>
                 <td class="py-3 px-5">{{ flight.origin }}</td>
                 <td class="py-3 px-5">{{ flight.destiny }}</td>
                 <td class="py-3 px-5">{{ flight.departure | date:'dd/MM/yyyy' }}</td>
@@ -82,7 +83,7 @@
                   </button> -->
                   <!-- <button *ngIf="vuelo.statusID === 1" (click)="cancelFlightFunction()"
                   class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit"> -->
-                  <button (click)="cancelFlightFunction(flight.flightID)"
+                  <button *ngIf="!validateCancel(flight.departure, flight.status)" (click)="cancelFlightFunction(flight.flightID, flight.departure, flight.status)"
                   class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
                   <span class="material-symbols-outlined" translate="no">
                     delete
@@ -99,7 +100,7 @@
         </div>
         
         <div class="" *ngIf="cancelFlight==true">
-          <app-cancel-flight [flightCode]="flightCodeCancel" />
+          <app-cancel-flight [flightCode]="flightCodeCancel" [flightDate]="flightDateCancel" [flightStatus]="flightStatusCancel"/>
         </div>
   
       </div>

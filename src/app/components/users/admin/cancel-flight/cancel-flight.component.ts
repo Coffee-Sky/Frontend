@@ -1,11 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ModalService } from '../../../../services/modal.service';
 import { ApiService } from '../../../../services/api.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-cancel-flight',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './cancel-flight.component.html',
   styleUrl: './cancel-flight.component.css'
 })
@@ -16,9 +17,25 @@ export class CancelFlightComponent implements OnInit{
   }
 
   @Input() flightCode!: number;
+  @Input() flightDate!: string;
+  @Input() flightStatus!: number;
+
+  flightCancelled: boolean = false;
 
   ngOnInit(): void {
-    
+    this.validateCancel();
+  }
+
+  validateCancel(){
+    let currentDate = new Date();
+    let flightDate = new Date(this.flightDate);
+    console.log(flightDate < currentDate)
+    console.log(this.flightStatus)
+    if(flightDate < currentDate || this.flightStatus !== 1){
+      this.flightCancelled = true;
+    }else{
+      this.flightCancelled = false;
+    }
   }
 
   cancelFlight(){
