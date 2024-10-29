@@ -126,6 +126,7 @@ export class AdminHomeComponent implements OnInit{
     this.apiService.getData('data/get-flights').subscribe(
       (response: Flight[]) => {
         this.flights = response;
+        this.flights.sort((a: Flight, b: Flight) => a.status - b.status);
         console.log(this.flights);
       },
       (error) => {
