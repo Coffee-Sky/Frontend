@@ -37,7 +37,7 @@ export class LoginComponent {
   submitInfo() {
     this.apiService.postData("auth/login", this.loginForm.value).subscribe(
       (response) => {
-        window.alert('Bienvenido');
+        // window.alert('Bienvenido');
         this.jwtService.setToken(response.token);
         console.log('Token:', response.token);
         const token = this.jwtService.decodeToken();
