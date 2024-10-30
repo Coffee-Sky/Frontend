@@ -30,7 +30,7 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-color1-shade">CVV <span class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-color1-shade border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="text" placeholder="0000" formControlName="cvv"/>
+            type="text" placeholder="000" formControlName="cvv"/>
             <span *ngIf="cardForm.hasError('required','cvv') && cardForm.controls['cvv'].dirty" class="text-red-500 text-xs">El CVV es requerido</span>
             <span *ngIf="cardForm.hasError('pattern','cvv')" class="text-red-500 text-xs">El CVV no es válido</span>
           </div>
