@@ -7,20 +7,20 @@ module.exports = {
     extend: {
       colors: {
         color1: {
-          DEFAULT: "#22333B", // Gunmetal
-          shade: "#161E22", // Eerie Black
+          DEFAULT: "#0F766E", // teal-700
+          shade: "#115E59", // teal-800
         },
         color2: {
-          DEFAULT: "#B8B5AF", // Silver
-          shade: "#868A88", // Battleship Gray
+          DEFAULT: "#F3F4F6", // gray-100
+          shade: "#E5E7EB", // gray-200
         },
         color3: {
-          DEFAULT: "#EAE0D5",  // Almond
-          shade: "#DED3C8",
+          DEFAULT: "#ccfbf1",  // teal-100
+          shade: "#f0fdfa", // teal-50
         },
         color4: {
-          DEFAULT: "#D8C6B2", // Dun
-          shade: "#C6AC8F", // Khaki
+          DEFAULT: "#0D9488", // teal-600
+          shade: "#0F766E", // teal-700
         },
         color5: {
           DEFAULT: "#927E67", // Beaver

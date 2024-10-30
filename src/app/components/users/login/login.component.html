@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-color2 text-gray-900 flex justify-center">
-  <div class="max-w-screen-xl m-0 sm:m-10 bg-color4 shadow sm:rounded-lg flex justify-center flex-1">
+  <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
     <div class="lg:w-1/2 xl:w-5/12 p-6 sm:p-12">
       <div>
         <a href="">
@@ -23,7 +23,7 @@
                 type="password" placeholder="Contraseña" formControlName="password" />
               <span *ngIf="loginForm.hasError('required','password') && loginForm.controls['password'].dirty" class="text-red-500 text-xs">La contraseña es requerida</span>
               <span *ngIf="loginForm.get('password')?.hasError('pattern')" class="text-red-500 text-xs">La contraseña es inválida</span>
-              <a (click)="passwordRestoreClick()" class="text-xs text-color1 float-right mb-5 mt-2 cursor-pointer">¿Olvidaste tu contraseña?</a>
+              <a (click)="passwordRestoreClick()" class="text-xs text-color1-shade float-right mb-5 mt-2 cursor-pointer">¿Olvidaste tu contraseña?</a>
               <div class="" *ngIf="passwordRestore==true">
                 <app-password-restore />
               </div> 
@@ -46,8 +46,8 @@
                 </span>
               </button>
             </form>
-            <p class="mt-6 text-xs text-color1 text-center">
-              ¿No tienes una cuenta? <a href="/register" class="text-color1 font-semibold">Regístrate</a>
+            <p class="mt-6 text-xs text-center">
+              ¿No tienes una cuenta? <a href="/register" class="text-color1-shade font-semibold">Regístrate</a>
             </p>
           </div>
         </div>
