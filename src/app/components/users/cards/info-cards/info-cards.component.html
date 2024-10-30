@@ -224,7 +224,7 @@
         </div>
   
         <div class="" *ngIf="deleteCard==true">
-          <app-delete-card />
+          <app-delete-card [cardId]="code" />
         </div>
 
         <div class="flex flex-1 items-center justify-center gap-4" *ngIf="!isEditing">

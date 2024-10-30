@@ -23,14 +23,14 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Número de tarjeta <span class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="text" placeholder="Número de tarjeta" formControlName="number"/>
-            <span *ngIf="cardForm.hasError('required','number') && cardForm.controls['number'].dirty" class="text-red-500 text-xs">El número de tarjeta es requerido</span>
-            <span *ngIf="cardForm.hasError('pattern','number')" class="text-red-500 text-xs">El número de tarjeta no es válido</span>
+            type="text" placeholder="Número de tarjeta" formControlName="cardNumber"/>
+            <span *ngIf="cardForm.hasError('required','cardNumber') && cardForm.controls['cardNumber'].dirty" class="text-red-500 text-xs">El número de tarjeta es requerido</span>
+            <span *ngIf="cardForm.hasError('pattern','cardNumber')" class="text-red-500 text-xs">El número de tarjeta no es válido</span>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">CVV <span class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="text" placeholder="0000" formControlName="cvv"/>
+            type="text" placeholder="000" formControlName="cvv"/>
             <span *ngIf="cardForm.hasError('required','cvv') && cardForm.controls['cvv'].dirty" class="text-red-500 text-xs">El CVV es requerido</span>
             <span *ngIf="cardForm.hasError('pattern','cvv')" class="text-red-500 text-xs">El CVV no es válido</span>
           </div>
@@ -40,8 +40,8 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Fecha de caducidad <span class="text-red-500">*</span></label>
             <input [min]="today" class="w-full px-3 py-3 text-sm leading-tight text-gray-400 border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="date" placeholder="" formControlName=caducityDate/>
-            <span *ngIf="cardForm.hasError('required','caducityDate') && cardForm.controls['caducityDate'].dirty" class="text-red-500 text-xs">La fecha es requerida</span>
+            type="date" placeholder="" formControlName=expirationDate/>
+            <span *ngIf="cardForm.hasError('required','expirationDate') && cardForm.controls['expirationDate'].dirty" class="text-red-500 text-xs">La fecha es requerida</span>
           </div>
           <div class="mb-2 w-full relative">
             <label class="block mb-2 text-sm font-bold text-black">
@@ -71,22 +71,22 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Primer nombre <span class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Primer nombre" formControlName="firstname"/>
-            <span *ngIf="cardForm.hasError('required','firstname') && cardForm.controls['firstname'].dirty" class="text-red-500 text-xs">El nombre es requerido</span>
-            <span *ngIf="cardForm.hasError('pattern','firstname')" class="text-red-500 text-xs">El nombre no es válido</span>
+            type="text" placeholder="Primer nombre" formControlName="cardHolderFirstName"/>
+            <span *ngIf="cardForm.hasError('required','cardHolderFirstName') && cardForm.controls['cardHolderFirstName'].dirty" class="text-red-500 text-xs">El nombre es requerido</span>
+            <span *ngIf="cardForm.hasError('pattern','cardHolderFirstName')" class="text-red-500 text-xs">El nombre no es válido</span>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Segundo nombre</label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Segundo nombre" formControlName="secondname"/>
-            <span *ngIf="cardForm.hasError('pattern','secondname')" class="text-red-500 text-xs">El nombre no es válido</span>
+            type="text" placeholder="Segundo nombre" formControlName="cardHolderSecondName"/>
+            <span *ngIf="cardForm.hasError('pattern','cardHolderSecondName')" class="text-red-500 text-xs">El nombre no es válido</span>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Primer apellido <span class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Primer apellido" formControlName="firstlastname"/>
-            <span *ngIf="cardForm.hasError('required','firstlastname') && cardForm.controls['firstlastname'].dirty" class="text-red-500 text-xs">El primer apellido es requerido</span>
-            <span *ngIf="cardForm.hasError('pattern','firstlastname')" class="text-red-500 text-xs">El apellido no es válido</span>
+            type="text" placeholder="Primer apellido" formControlName="cardHolderFirstLastName"/>
+            <span *ngIf="cardForm.hasError('required','cardHolderFirstLastName') && cardForm.controls['cardHolderFirstLastName'].dirty" class="text-red-500 text-xs">El primer apellido es requerido</span>
+            <span *ngIf="cardForm.hasError('pattern','cardHolderFirstLastName')" class="text-red-500 text-xs">El apellido no es válido</span>
           </div>
         </div>
 
@@ -94,15 +94,15 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Segundo apellido</label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Segundo apellido" formControlName="secondlastname"/>
-            <span *ngIf="cardForm.hasError('pattern','secondlastname')" class="text-red-500 text-xs">El apellido no es válido</span>
+            type="text" placeholder="Segundo apellido" formControlName="cardHolderSecondLastName"/>
+            <span *ngIf="cardForm.hasError('pattern','cardHolderSecondLastName')" class="text-red-500 text-xs">El apellido no es válido</span>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Teléfono <span class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="text" placeholder="Teléfono" formControlName="phone"/>
-            <span *ngIf="cardForm.hasError('required','phone') && cardForm.controls['phone'].dirty" class="text-red-500 text-xs">El teléfono es requerido</span>
-            <span *ngIf="cardForm.hasError('pattern','phone')" class="text-red-500 text-xs">El teléfono no es válido</span>
+            type="text" placeholder="Teléfono" formControlName="cardHolderPhoneNumber"/>
+            <span *ngIf="cardForm.hasError('required','cardHolderPhoneNumber') && cardForm.controls['cardHolderPhoneNumber'].dirty" class="text-red-500 text-xs">El teléfono es requerido</span>
+            <span *ngIf="cardForm.hasError('pattern','cardHolderPhoneNumber')" class="text-red-500 text-xs">El teléfono no es válido</span>
           </div>
           <div class="mb-2 w-full">
           </div>
@@ -153,9 +153,9 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Barrio <span class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="text" placeholder="Barrio" formControlName="neighborhood"/>
-            <span *ngIf="cardForm.hasError('required','neighborhood') && cardForm.controls['neighborhood'].dirty" class="text-red-500 text-xs">El barrio es requerido</span>
-            <span *ngIf="cardForm.hasError('pattern','neighborhood')" class="text-red-500 text-xs">Sólo números o letras</span>
+            type="text" placeholder="Barrio" formControlName="zone"/>
+            <span *ngIf="cardForm.hasError('required','zone') && cardForm.controls['zone'].dirty" class="text-red-500 text-xs">El barrio es requerido</span>
+            <span *ngIf="cardForm.hasError('pattern','zone')" class="text-red-500 text-xs">Sólo números o letras</span>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Tipo de calle<span class="text-red-500">*</span></label>
@@ -184,19 +184,19 @@
                 </span>
               </div>
               <input class="w-full px-9 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-              type="text" placeholder="" formControlName="streetNumber1"/>
+              type="text" placeholder="" formControlName="streetNumberOne"/>
               <div class="h-5">
-                <span *ngIf="cardForm.hasError('required','streetNumber1') && cardForm.controls['streetNumber1'].dirty" class="text-red-500 text-xs">El número es requerido</span>
-                <span *ngIf="cardForm.hasError('pattern','streetNumber1')" class="text-red-500 text-xs">Sólo números o letras</span>
+                <span *ngIf="cardForm.hasError('required','streetNumberOne') && cardForm.controls['streetNumberOne'].dirty" class="text-red-500 text-xs">El número es requerido</span>
+                <span *ngIf="cardForm.hasError('pattern','streetNumberOne')" class="text-red-500 text-xs">Sólo números o letras</span>
               </div>
             </div>
             <div>
               <input class="w-full px-3 py-3 mb-1 mt-7 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-              type="text" placeholder="" formControlName="streetNumber2"/>
+              type="text" placeholder="" formControlName="streetNumberTwo"/>
               <label class="sr-only">Número adicional</label>
               <div class="h-5">
-                <span *ngIf="cardForm.hasError('required','streetNumber2') && cardForm.controls['streetNumber2'].dirty" class="text-red-500 text-xs">El número es requerido</span>
-                <span *ngIf="cardForm.hasError('pattern','streetNumber2')" class="text-red-500 text-xs">Sólo números o letras</span>
+                <span *ngIf="cardForm.hasError('required','streetNumberTwo') && cardForm.controls['streetNumberTwo'].dirty" class="text-red-500 text-xs">El número es requerido</span>
+                <span *ngIf="cardForm.hasError('pattern','streetNumberTwo')" class="text-red-500 text-xs">Sólo números o letras</span>
               </div>
             </div>
           </div>
