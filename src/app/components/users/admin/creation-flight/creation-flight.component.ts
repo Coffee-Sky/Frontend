@@ -13,7 +13,7 @@ import { ApiService } from '../../../../services/api.service';
 })
 
 export class CreationFlightComponent implements OnInit{
-  minDepartureDate = new Date().toISOString().split('T')[0];  // Fecha actual como mínima para ida
+  minDepartureDate = new Date().toISOString().split('T')[0];
 
   cities_origin: string[] = ['Arauca',
                             'Armenia',
@@ -160,7 +160,7 @@ export class CreationFlightComponent implements OnInit{
     }
     // Crear fecha límite según el tipo de vuelo
     const minDateTime = new Date();
-    if (type === '1') { // Nacional
+    if (type === 'Nacional') { // Nacional
       minDateTime.setMinutes(minDateTime.getMinutes() + 90); // 1 hora y 30 minutos
     } else { // Internacional
       minDateTime.setMinutes(minDateTime.getMinutes() + 210); // 3 horas y 30 minutos
@@ -170,7 +170,7 @@ export class CreationFlightComponent implements OnInit{
       return {
         invalidTime: {
           minTime: formattedMinTime,
-          type: type === '1' ? 'nacional' : 'internacional'
+          type: type === 'Nacional' ? 'nacional' : 'internacional'
         }
       };
     }
