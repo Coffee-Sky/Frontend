@@ -32,7 +32,7 @@ export const routes: Routes = [
   { path: 'admin', component: AdminHomeComponent, canActivate: [adminGuard]},
   { path: 'cards', component: ListCardsComponent},
   { path: 'add-card', component: AddCardComponent},
-  { path: 'info-card/:id', component: InfoCardsComponent}
+  { path: 'info-card/:code', component: InfoCardsComponent}
 ];
 
 @NgModule({

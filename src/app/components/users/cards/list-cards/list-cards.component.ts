@@ -52,9 +52,9 @@ export class ListCardsComponent implements OnInit{
     );
   }
 
-  navigateToCardInfo(tarjeta: any): void {
-    this.router.navigate(['/info-card', tarjeta.id]);
-    console.log('Card info:', tarjeta.id);
+  navigateToCardInfo(cardId: number): void {
+    this.router.navigate(['/info-card', cardId]);
+    console.log('Card info:', cardId);
   }
 
 }
