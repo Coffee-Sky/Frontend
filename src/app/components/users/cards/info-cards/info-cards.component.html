@@ -4,7 +4,7 @@
   <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
     <div class="lg:w-5/6 xl:w-5/6 p-6 sm:p-6 mx-0">
       <h2 class="text-xl text-center font-bold mb-4">Información de tarjeta</h2>
-      <form class="px-8 pt-4 mb-4" [formGroup]="editCardForm" (ngSubmit)="save()">
+      <form class="px-8 pt-4 mb-4" [formGroup]="editCardForm">
 
         <div class="text-center text-gray-500 font-semibold">
           <p>Información de la tarjeta</p>
@@ -15,19 +15,19 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Tipo <span *ngIf="isEditing" class="text-red-500">*</span></label>
               <select *ngIf="isEditing" class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="type">
-              <option value="" disabled selected>Tipo de tarjeta</option>
-              <option value="debit">Débito</option>
-              <option value="credit">Crédito</option>
-            </select>
+                <option value="" disabled selected>Tipo de tarjeta</option>
+                <option value="debit">Débito</option>
+                <option value="credit">Crédito</option>
+              </select>
             <input  *ngIf="!isEditing" class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Tipo" formControlName="type" [readOnly]="!isEditing"/>
+            type="text" placeholder="Tipo" [value]="typeMap[editCardForm.get('type')?.value] || 'Desconocido'" [readOnly]="!isEditing"/>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Número de tarjeta <span *ngIf="isEditing" class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="text" placeholder="Número de tarjeta" formControlName="number" [readOnly]="!isEditing"/>
-            <span *ngIf="editCardForm.hasError('required','number') && editCardForm.controls['number'].dirty" class="text-red-500 text-xs">El número de tarjeta es requerido</span>
-            <span *ngIf="editCardForm.hasError('pattern','number')" class="text-red-500 text-xs">El número de tarjeta no es válido</span>
+            type="text" placeholder="Número de tarjeta" formControlName="cardNumber" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','cardNumber') && editCardForm.controls['cardNumber'].dirty" class="text-red-500 text-xs">El número de tarjeta es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','cardNumber')" class="text-red-500 text-xs">El número de tarjeta no es válido</span>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">CVV <span *ngIf="isEditing" class="text-red-500">*</span></label>
@@ -42,8 +42,8 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Fecha de caducidad <span *ngIf="isEditing" class="text-red-500">*</span></label>
             <input min="1925-01-01" class="w-full px-3 py-3 text-sm leading-tight text-gray-400 border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="date" placeholder="" formControlName=caducityDate [readOnly]="!isEditing"/>
-            <span *ngIf="editCardForm.hasError('required','caducityDate') && editCardForm.controls['caducityDate'].dirty" class="text-red-500 text-xs">La fecha es requerida</span>
+            type="month" placeholder="" formControlName=expirationDate [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','expirationDate') && editCardForm.controls['expirationDate'].dirty" class="text-red-500 text-xs">La fecha es requerida</span>
           </div>
           <div class="mb-2 w-full relative">
             <label class="block mb-2 text-sm font-bold text-black">
@@ -73,22 +73,22 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Primer nombre <span *ngIf="isEditing" class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Primer nombre" formControlName="firstname" [readOnly]="!isEditing"/>
-            <span *ngIf="editCardForm.hasError('required','firstname') && editCardForm.controls['firstname'].dirty" class="text-red-500 text-xs">El nombre es requerido</span>
-            <span *ngIf="editCardForm.hasError('pattern','firstname')" class="text-red-500 text-xs">El nombre no es válido</span>
+            type="text" placeholder="Primer nombre" formControlName="cardHolderFirstName" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','cardHolderFirstName') && editCardForm.controls['cardHolderFirstName'].dirty" class="text-red-500 text-xs">El nombre es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','cardHolderFirstName')" class="text-red-500 text-xs">El nombre no es válido</span>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Segundo nombre</label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Segundo nombre" formControlName="secondname" [readOnly]="!isEditing"/>
-            <span *ngIf="editCardForm.hasError('pattern','secondname')" class="text-red-500 text-xs">El nombre no es válido</span>
+            type="text" placeholder="Segundo nombre" formControlName="cardHolderSecondName" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('pattern','cardHolderSecondName')" class="text-red-500 text-xs">El nombre no es válido</span>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Primer apellido <span *ngIf="isEditing" class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Primer apellido" formControlName="firstlastname" [readOnly]="!isEditing"/>
-            <span *ngIf="editCardForm.hasError('required','firstlastname') && editCardForm.controls['firstlastname'].dirty" class="text-red-500 text-xs">El primer apellido es requerido</span>
-            <span *ngIf="editCardForm.hasError('pattern','firstlastname')" class="text-red-500 text-xs">El apellido no es válido</span>
+            type="text" placeholder="Primer apellido" formControlName="cardHolderFirstLastName" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','cardHolderFirstLastName') && editCardForm.controls['cardHolderFirstLastName'].dirty" class="text-red-500 text-xs">El primer apellido es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','cardHolderFirstLastName')" class="text-red-500 text-xs">El apellido no es válido</span>
           </div>
         </div>
 
@@ -96,15 +96,15 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Segundo apellido</label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text" placeholder="Segundo apellido" formControlName="secondlastname" [readOnly]="!isEditing"/>
-            <span *ngIf="editCardForm.hasError('pattern','secondlastname')" class="text-red-500 text-xs">El apellido no es válido</span>
+            type="text" placeholder="Segundo apellido" formControlName="cardHolderSecondLastName" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('pattern','cardHolderSecondLastName')" class="text-red-500 text-xs">El apellido no es válido</span>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Teléfono <span *ngIf="isEditing" class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="text" placeholder="Teléfono" formControlName="cvv" [readOnly]="!isEditing"/>
-            <span *ngIf="editCardForm.hasError('required','cvv') && editCardForm.controls['cvv'].dirty" class="text-red-500 text-xs">El teléfono es requerido</span>
-            <span *ngIf="editCardForm.hasError('pattern','cvv')" class="text-red-500 text-xs">El teléfono no es válido</span>
+            type="text" placeholder="Teléfono" formControlName="cardHolderPhoneNumber" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','cardHolderPhoneNumber') && editCardForm.controls['cardHolderPhoneNumber'].dirty" class="text-red-500 text-xs">El teléfono es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','cardHolderPhoneNumber')" class="text-red-500 text-xs">El teléfono no es válido</span>
           </div>
           <div class="mb-2 w-full">
           </div>
@@ -161,9 +161,9 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Barrio <span *ngIf="isEditing" class="text-red-500">*</span></label>
             <input class="w-full px-3 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="text" placeholder="Barrio" formControlName="neighborhood" [readOnly]="!isEditing"/>
-            <span *ngIf="editCardForm.hasError('required','neighborhood') && editCardForm.controls['neighborhood'].dirty" class="text-red-500 text-xs">El barrio es requerido</span>
-            <span *ngIf="editCardForm.hasError('pattern','neighborhood')" class="text-red-500 text-xs">El barrio no es válido</span>
+            type="text" placeholder="Barrio" formControlName="zone" [readOnly]="!isEditing"/>
+            <span *ngIf="editCardForm.hasError('required','zone') && editCardForm.controls['zone'].dirty" class="text-red-500 text-xs">El barrio es requerido</span>
+            <span *ngIf="editCardForm.hasError('pattern','zone')" class="text-red-500 text-xs">El barrio no es válido</span>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Tipo de calle<span *ngIf="isEditing" class="text-red-500">*</span></label>
@@ -194,19 +194,19 @@
                 </span>
               </div>
               <input class="w-full px-9 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-              type="text" placeholder="" formControlName="streetNumber1" [readOnly]="!isEditing"/>
+              type="text" placeholder="" formControlName="streetNumberOne" [readOnly]="!isEditing"/>
               <div class="h-5">
-                <span *ngIf="editCardForm.hasError('required','streetNumber1') && editCardForm.controls['streetNumber1'].dirty" class="text-red-500 text-xs">El número es requerido</span>
-                <span *ngIf="editCardForm.hasError('pattern','streetNumber1')" class="text-red-500 text-xs">Sólo números o letras</span>
+                <span *ngIf="editCardForm.hasError('required','streetNumberOne') && editCardForm.controls['streetNumberOne'].dirty" class="text-red-500 text-xs">El número es requerido</span>
+                <span *ngIf="editCardForm.hasError('pattern','streetNumberOne')" class="text-red-500 text-xs">Sólo números o letras</span>
               </div>
             </div>
             <div>
               <input class="w-full px-3 py-3 mb-1 mt-7 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-              type="text" placeholder="" formControlName="streetNumber2" [readOnly]="!isEditing"/>
+              type="text" placeholder="" formControlName="streetNumberTwo" [readOnly]="!isEditing"/>
               <label class="sr-only">Número adicional</label>
               <div class="h-5">
-                <span *ngIf="editCardForm.hasError('required','streetNumber2') && editCardForm.controls['streetNumber2'].dirty" class="text-red-500 text-xs">El número es requerido</span>
-                <span *ngIf="editCardForm.hasError('pattern','streetNumber2')" class="text-red-500 text-xs">Sólo números o letras</span>
+                <span *ngIf="editCardForm.hasError('required','streetNumberTwo') && editCardForm.controls['streetNumberTwo'].dirty" class="text-red-500 text-xs">El número es requerido</span>
+                <span *ngIf="editCardForm.hasError('pattern','streetNumberTwo')" class="text-red-500 text-xs">Sólo números o letras</span>
               </div>
             </div>
           </div>
@@ -237,10 +237,15 @@
             class="w-28 py-2 mt-3 font-bold text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:shadow-outline">
             Eliminar
           </button>
+          <button routerLink="/cards" 
+            class="w-28 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline
+            disabled:opacity-50 disabled:cursor-not-allowed">
+            Regresar
+          </button>
         </div>
 
         <div class="flex flex-1 items-center justify-center gap-4" *ngIf="isEditing">
-          <button type="submit" [disabled]="editCardForm.invalid"
+          <button [disabled]="editCardForm.invalid" (click)="save()"
             class="w-28 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline
             disabled:opacity-50 disabled:cursor-not-allowed">
             Guardar
