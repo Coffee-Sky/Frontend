@@ -1,5 +1,5 @@
 <div class="min-h-screen bg-color2 text-gray-900 flex justify-center">
-    <div class="max-w-fit mx-auto m-0 sm:m-10 bg-color4 shadow sm:rounded-lg flex justify-center flex-1 relative">
+    <div class="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 sm:m-10 bg-white shadow sm:rounded-lg">
       <div class="p-6">
         <div class="flex justify-center relative">
           <img src="Nombre2.png" alt="" class="w-48 mx-auto" />
@@ -24,7 +24,7 @@
         </div>
 
         <div class="flex justify-end py-6">
-          <button [routerLink]="'/creation'" class="flex flex-row tracking-wide rounded-full font-semibold bg-color1 text-gray-100 px-4 py-3 hover:bg-color1-shade transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none" type="submit">
+          <button [routerLink]="'/creation'" class="flex flex-row tracking-wide rounded-md font-semibold bg-color1 text-gray-100 px-4 py-3 hover:bg-color1-shade transition-all duration-300 ease-in-out focus:shadow-outline focus:outline-none" type="submit">
             <span class="material-symbols-outlined" translate="no">
               add
             </span>
@@ -32,62 +32,59 @@
           </button>
         </div>
   
-        <div class="bg-color3 px-3 py-3 flex justify-center shadow-md sm:rounded-lg">
-          <table class="w-full text-center text-md rtl:text-right text-color1-shade">
-            <thead class="uppercase px-6 py-3">
-              <tr class="border-b border-color4">
-                <th class="py-2 px-5">Código</th>
-                <th class="py-2 px-5">Origen</th>
-                <th class="py-2 px-5">Destino</th>
-                <th class="py-2 px-5">Fecha</th>
-                <th class="py-2 px-5">Tiquetes vendidos</th>
-                <th class="py-2 px-5">Precio primera clase</th>
-                <th class="py-2 px-5">Precio economy</th>
-                <th class="py-2 px-5">Estado</th>
-                <th class="py-2 px-5">Acciones</th>
-              </tr>
-            </thead>
+        <div class="bg-white border border-color4 px-3 py-3 flex justify-center shadow-md sm:rounded-lg overflow-hidden">
+          <div class="overflow-x-auto">
+            <table class="w-full text-center text-sm text-black">
+              <thead class="uppercase px-6 py-3">
+                <tr class="border-b border-color4">
+                  <th class="py-2 px-5">Código</th>
+                  <th class="py-2 px-5">Origen</th>
+                  <th class="py-2 px-5">Destino</th>
+                  <th class="py-2 px-5">Fecha</th>
+                  <th class="py-2 px-5">Tiquetes vendidos</th>
+                  <th class="py-2 px-5">Precio primera clase</th>
+                  <th class="py-2 px-5">Precio economy</th>
+                  <th class="py-2 px-5">Estado</th>
+                  <th class="py-2 px-5">Acciones</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <tr *ngFor="let vuelo of vuelos" routerLink="/-vuelo" class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
-                <td class="py-3 px-5">{{ vuelo.vueloID }}</td>
-                <td class="py-3 px-5">{{ vuelo.origin }}</td>
-                <td class="py-3 px-5">{{ vuelo.destination }}</td>
-                <td class="py-3 px-5">{{ vuelo.departureDate }}</td>
-                <td class="py-3 px-5">{{ vuelo.TiquetesVendidos }}</td>
-                <td class="py-3 px-5">{{ vuelo.priceFirstClass | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
-                <td class="py-3 px-5">{{ vuelo.priceEconomy | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
-                <td class="py-3 px-5">
-                  {{ vuelo.statusID === 1 ? 'Sin realizar' : vuelo.statusID === 2 ? 'Realizado' : 'Desconocido' }}
-                </td>              
-                <td class="flex justify-center gap-4 px-5 py-3">
-                  <button [routerLink]="['/info-vuelo']" class="bg-color1 text-gray-100 w-10 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+              <tbody>
+                <tr *ngFor="let vuelo of vuelos" routerLink="/-vuelo" class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
+                  <td class="py-3 px-5 whitespace-nowrap">{{ vuelo.vueloID }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ vuelo.origin }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ vuelo.destination }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ vuelo.departureDate }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ vuelo.TiquetesVendidos }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ vuelo.priceFirstClass | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ vuelo.priceEconomy | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">
+                    {{ vuelo.statusID === 1 ? 'Sin realizar' : vuelo.statusID === 2 ? 'Realizado' : 'Desconocido' }}
+                  </td>              
+                  <td class="flex justify-center gap-4 px-5 py-3">
+                    <button [routerLink]="['/info-vuelo']" class="bg-color1 text-gray-100 w-10 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                      <span class="material-symbols-outlined" translate="no">
+                        visibility
+                      </span>
+                    </button>
+                    <button *ngIf="vuelo.statusID === 1" (click)="editFlight()" [routerLink]="['/info-vuelo']"
+                    class="bg-color1 text-gray-100 w-10 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
                     <span class="material-symbols-outlined" translate="no">
-                      visibility
+                      edit
                     </span>
-                  </button>
-                  <button *ngIf="vuelo.statusID === 1" (click)="editFlight()" [routerLink]="['/info-vuelo']"
-                  class="bg-color1 text-gray-100 w-10 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
-                  <span class="material-symbols-outlined" translate="no">
-                    edit
-                  </span>
-                  </button>
-                  <!-- <button *ngIf="vuelo.TiquetesVendidos > 0 && vuelo.statusID === 1" (click)="createPromo()"
-                  class="bg-color1 text-gray-100 w-10 py-1 rounded-lg hover:bg-color1-shade transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                    </button>
+                    
+                    <button *ngIf="vuelo.statusID === 1" (click)="cancelFlightFunction()"
+                    class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
                     <span class="material-symbols-outlined" translate="no">
-                      price_change
+                      delete
                     </span>
-                  </button> -->
-                  <button *ngIf="vuelo.statusID === 1" (click)="cancelFlightFunction()"
-                  class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
-                  <span class="material-symbols-outlined" translate="no">
-                    delete
-                  </span>
-                  </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div> 
         
         <div class="" *ngIf="creationPromo==true">
@@ -102,8 +99,8 @@
     </div>
   </div>
 
-  <!-- <div class="min-h-screen bg-color2 text-gray-900 flex justify-center">
-    <div class="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+<!-- <div class="min-h-screen bg-color2 text-gray-900 flex justify-center">
+    <div class="w-full max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 bg-white">
       
       <div class="flex justify-between items-center mb-6">
         <img src="Nombre2.png" alt="" class="w-32 sm:w-48" />
@@ -116,7 +113,7 @@
   
       
       <div class="flex justify-end mb-6">
-        <button class="flex items-center space-x-2 bg-color1 text-gray-100 px-4 py-2 rounded-full hover:bg-color1-shade transition-all">
+        <button class="flex items-center space-x-2 bg-color1 text-gray-100 px-4 py-2 rounded-md hover:bg-color1-shade transition-all">
           <span class="material-symbols-outlined">add</span>
           <span class="hidden sm:inline">Crear vuelo</span>
         </button>
@@ -125,7 +122,7 @@
       
       <div class="bg-color3 rounded-lg shadow-md overflow-hidden">
         <div class="overflow-x-auto">
-          <table class="w-full text-sm text-color1-shade">
+          <table class="w-full text-sm text-black">
             <thead class="uppercase bg-color3-shade">
               <tr>
                 <th class="p-4 whitespace-nowrap">Código</th>

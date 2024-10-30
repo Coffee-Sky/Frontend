@@ -12,6 +12,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
+  isMenuOpen = false;
 
   constructor(public jwtService: JwtService) { }
 
