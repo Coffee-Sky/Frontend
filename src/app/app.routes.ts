@@ -24,7 +24,7 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent, canActivate: [noAuthGuard]},
   { path: 'register', component: RegisterComponent, canActivate: [noAuthGuard]},
   { path: 'root', component: RootHomeComponent, canActivate: [rootGuard]},
-  { path: 'info-vuelo', component: InfoFlightComponent, canActivate: [adminGuard]},
+  { path: 'flight/:code', component: InfoFlightComponent, canActivate: [adminGuard]},
   { path: 'creation', component: CreationFlightComponent, canActivate: [adminGuard]},
   { path: 'flights', component: FlightsComponent},
   { path: 'info/:code', component: InfoAdminComponent, canActivate: [rootGuard]},
@@ -32,7 +32,7 @@ export const routes: Routes = [
   { path: 'admin', component: AdminHomeComponent, canActivate: [adminGuard]},
   { path: 'cards', component: ListCardsComponent},
   { path: 'add-card', component: AddCardComponent},
-  { path: 'info-card/:id', component: InfoCardsComponent}
+  { path: 'info-card/:code', component: InfoCardsComponent}
 ];
 
 @NgModule({

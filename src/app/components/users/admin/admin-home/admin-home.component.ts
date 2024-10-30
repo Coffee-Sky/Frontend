@@ -33,6 +33,19 @@ interface Admin {
   statusID: number;
 }
 
+interface Flight {
+  flightID: number;
+  origin: string;
+  destiny: string;
+  departure: string;
+  arrival: string;
+  duration: string;
+  economyPrice: number;
+  businessPrice: number;
+  type: string;
+  status: number;
+}
+
 @Component({
   selector: 'app-admin-home',
   standalone: true,
@@ -71,6 +84,12 @@ export class AdminHomeComponent implements OnInit{
     statusID: 0
   };
 
+  flights: Flight[] = [];
+
+  flightCodeCancel: number = 0;
+  flightDateCancel: string = '';
+  flightStatusCancel: number = 0;
+
   constructor(private createPromoService: ModalService,
               private editFlightService: EditFlightService,
               private cancelFlightService: ModalService,
@@ -87,6 +106,7 @@ export class AdminHomeComponent implements OnInit{
     this.createPromoService.$promotion.subscribe((value)=>{this.creationPromo = value})
     this.cancelFlightService.$cancel.subscribe((value)=>{this.cancelFlight = value})
     this.getAdminInfo();
+    this.listFlights();
   }
 
   getAdminInfo() {
@@ -98,6 +118,19 @@ export class AdminHomeComponent implements OnInit{
       },
       (error) => {
         console.error('Error obteniendo la información del usuario:', error);
+      }
+    );
+  }
+
+  listFlights(){
+    this.apiService.getData('data/get-flights').subscribe(
+      (response: Flight[]) => {
+        this.flights = response;
+        this.flights.sort((a: Flight, b: Flight) => a.status - b.status);
+        console.log(this.flights);
+      },
+      (error) => {
+        console.error('Error obteniendo la información de los usuarios:', error);
       }
     );
   }
@@ -114,8 +147,21 @@ export class AdminHomeComponent implements OnInit{
     this.editFlightService.toggleEditFlight();
   }
 
-  cancelFlightFunction(){
+  validateCancel(flightDate: string, flightStatus: number){
+    let currentDate = new Date();
+    let parsedFlightDate = new Date(flightDate);
+    if(parsedFlightDate < currentDate || flightStatus !== 1){
+      return true;
+    }else{
+      return false;
+    }
+  }
+
+  cancelFlightFunction(flightID: number, flightDate: string, flightStatus: number){
     this.cancelFlight = true;
+    this.flightCodeCancel = flightID;
+    this.flightDateCancel = flightDate;
+    this.flightStatusCancel = flightStatus;
   }
 
   toggleDropdown() {

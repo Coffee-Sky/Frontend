@@ -30,7 +30,7 @@ export class CreationAdminComponent implements OnInit{
     console.log(this.creationForm.value);
     if (this.creationForm.valid) {
       console.log(this.creationForm.value);
-      this.apiService.postDataWithHeaders('sign-up/register-admin', this.creationForm.value).subscribe(
+      this.apiService.postData('sign-up/register-admin', this.creationForm.value).subscribe(
         (response) => {
           console.log(response);
           window.alert('Administrador creado con éxito');
