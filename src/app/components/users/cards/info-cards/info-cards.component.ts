@@ -158,7 +158,7 @@ export class InfoCardsComponent implements OnInit {
           streetNumberTwo: billingInfo.streetNumberTwo,
           postalCode: billingInfo.postalCode,
         });
-        console.log(card);
+        // console.log(card);
         this.originalValues = this.editCardForm.getRawValue();
       },
       (error) => {
@@ -180,12 +180,12 @@ export class InfoCardsComponent implements OnInit {
 
   save() {
     if (this.editCardForm.valid) {
-      console.log(this.editCardForm.value);
+      // console.log(this.editCardForm.value);
       this.isEditing = false;
 
       this.apiService.putData('update/edit-card', this.editCardForm.value).subscribe(
         (response) => {
-          console.log(response);
+          // console.log(response);
           window.alert('Tarjeta actualizada correctamente.');
         },
         (error) => {
@@ -194,7 +194,7 @@ export class InfoCardsComponent implements OnInit {
         }
       );
     } else {
-      console.log('Formulario invalido');
+      console.error('Formulario invalido');
     }
   }
 

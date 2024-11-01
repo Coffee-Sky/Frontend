@@ -155,7 +155,7 @@ export class RegisterComponent implements OnInit{
         }
       );
     } else {
-      console.log('Formulario invalido');
+      console.error('Formulario invalido');
     }
   }
 }

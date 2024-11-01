@@ -138,7 +138,7 @@ export class ProfileComponent implements OnInit{
         const user = response;
         this.editProfileForm.patchValue(user);
         this.originalValues = this.editProfileForm.getRawValue();
-        console.log(user);
+        // console.log(user);
         if(user.image !== '' && user.image !== 'default.jpg'){
           this.imageUrl = user.image;
         }
@@ -191,7 +191,7 @@ export class ProfileComponent implements OnInit{
   getStates(event: Event) {
     const selectedCountry = (event.target as HTMLSelectElement).value;
 
-    console.log('Selected Country:', selectedCountry);
+    // console.log('Selected Country:', selectedCountry);
 
     this.states = [];
     this.cities = [];
@@ -224,10 +224,10 @@ export class ProfileComponent implements OnInit{
   }
 
   toggleEdit() {
-    console.log('entreeee');
+    // console.log('entreeee');
     this.isEditing = true;
     this.cdRef.detectChanges();
-    console.log('el valor es: ', this.isEditing);
+    // console.log('el valor es: ', this.isEditing);
     if (this.isEditing) {
       this.editProfileForm.controls['genderID'].enable();
     }
@@ -240,12 +240,12 @@ export class ProfileComponent implements OnInit{
 
   save() {
     if (this.editProfileForm.valid) {
-      console.log(this.editProfileForm.value);
+      // console.log(this.editProfileForm.value);
       this.isEditing = false;
       this.editProfileForm.controls['genderID'].disable();
       this.submitUserInfo(this.editProfileForm.getRawValue());
     } else {
-      console.log('Formulario invalido');
+      console.error('Formulario invalido');
     }
   }
 
@@ -254,10 +254,10 @@ export class ProfileComponent implements OnInit{
     userInfo.userID = Number(this.code);
     userInfo.image = this.imageUrl;
     userInfo.username = userInfo.username;
-    console.log('Información del usuario a enviar:', userInfo);
+    // console.log('Información del usuario a enviar:', userInfo);
     this.apiService.putData('update/update-client-info', userInfo).subscribe(
       (response) => {
-        console.log(response)
+        // console.log(response)
         this.getUserInfo();
       },
       (error) => {
@@ -270,7 +270,7 @@ export class ProfileComponent implements OnInit{
   cancel() {
     this.isEditing = false;
     this.editProfileForm.reset(this.originalValues);
-    console.log('el valor en cancelar es: ', this.isEditing);
+    // console.log('el valor en cancelar es: ', this.isEditing);
     this.editProfileForm.controls['genderID'].disable();
   }
 
@@ -294,7 +294,7 @@ export class ProfileComponent implements OnInit{
     if (this.selectedFile) {
       this.cloudinary.uploadImage(this.selectedFile).subscribe(
         (response) => {
-          console.log('Imagen subida correctamente', response);
+          // console.log('Imagen subida correctamente', response);
           this.imageUrl = response.secure_url;
           this.submitUserInfo(this.originalValues);
           this.changingPicture = false;

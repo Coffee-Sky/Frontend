@@ -110,7 +110,7 @@ export class AdminHomeComponent implements OnInit{
     this.apiService.getData('data/get-user-info?userID='+this.code).subscribe(
       (response: Admin) => {
         this.admin = response;
-        console.log(this.admin);
+        // console.log(this.admin);
         if(this.admin.image !== '' && this.admin.image !== 'default.jpg'){
           this.imageUrl = this.admin.image;
         }
@@ -126,7 +126,7 @@ export class AdminHomeComponent implements OnInit{
       (response: Flight[]) => {
         this.flights = response;
         this.flights.sort((a: Flight, b: Flight) => a.status - b.status);
-        console.log(this.flights);
+        // console.log(this.flights);
       },
       (error) => {
         console.error('Error obteniendo la información de los usuarios:', error);

@@ -73,21 +73,21 @@ export class AddCardComponent implements OnInit {
       this.cardForm.get('userId')?.setValue(this.code);
       this.cardForm.get('cardHolderId')?.setValue(this.code);
       this.cardForm.get('expirationDate')?.setValue(this.changeExpirationDate(this.cardForm.get('expirationDate')?.value!));
-      console.log(this.cardForm.value);
+      // console.log(this.cardForm.value);
 
       this.apiService.postData('update/enroll-card', this.cardForm.value).subscribe(
         (response) => {
-          console.log(response);
+          // console.log(response);
           window.alert('Tarjeta registrada correctamente.');
           this.router.navigate(['/cards']);
         },
         (error) => {
-          console.log(error);
+          console.error(error);
           window.alert('Error al registrar la tarjeta. Vuélvalo a intentar.');
         }
       );
     } else {
-      console.log("Error");
+      console.error("Error");
     }
   }
 }

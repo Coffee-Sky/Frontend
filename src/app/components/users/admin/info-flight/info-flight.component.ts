@@ -110,7 +110,7 @@ export class InfoFlightComponent implements OnInit{
     this.apiService.getData('data/get-flight-info?flightID='+this.code).subscribe(
       (response: Flight) => {
         this.flight = response;
-        console.log(this.flight);
+        // console.log(this.flight);
 
         // Actualiza el formulario con los datos recibidos del vuelo
         this.editFlightForm.patchValue({
@@ -158,12 +158,12 @@ export class InfoFlightComponent implements OnInit{
 
   save() {
     if (this.editFlightForm.valid) {
-      console.log('Formulario válido:', this.editFlightForm.value);
+      // console.log('Formulario válido:', this.editFlightForm.value);
       this.isEditing = false;
       this.submitInfo();
     } else {
-      console.log('Formulario inválido:', this.editFlightForm.errors);
-      console.log('Errores por control:', this.getControlErrors());
+      console.error('Formulario inválido:', this.editFlightForm.errors);
+      console.error('Errores por control:', this.getControlErrors());
     }
   }
 
@@ -173,10 +173,11 @@ export class InfoFlightComponent implements OnInit{
     const businessPrice = this.editFlightForm.get('priceFirstClass')?.value;
     this.apiService.putData('update/flight-price', { 'flightID': flightID, 'economyPrice': economyPrice, 'businessPrice': businessPrice }).subscribe(
       (response) => {
-        console.log('Respuesta:', response);
+        // console.log('Respuesta:', response);
         window.alert('Precios actualizados correctamente.')
       },
       (error) => {
+        console.error('Error actualizando los precios del vuelo:', error);
         window.alert('Error al actualizar los precios del vuelo. Inténtelo nuevamente.');
       }
     );
@@ -196,6 +197,6 @@ export class InfoFlightComponent implements OnInit{
   cancel() {
     this.isEditing = false;
     this.editFlightForm.reset(this.originalValues);
-    console.log('el valor en cancelar es: ', this.isEditing);
+    // console.log('el valor en cancelar es: ', this.isEditing);
   }
 }

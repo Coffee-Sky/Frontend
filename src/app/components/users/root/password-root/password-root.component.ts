@@ -25,24 +25,24 @@ export class PasswordRootComponent implements OnInit{
 
   save() {
     if (this.passwordForm.valid) {
-      console.log(this.passwordForm.value);
-      console.log(this.jwtService.decodeToken());
+      // console.log(this.passwordForm.value);
+      // console.log(this.jwtService.decodeToken());
       const data = {
         userID: this.jwtService.decodeToken()?.sub,
         password: this.passwordForm.value.password
       }
       this.apiService.putData('update/change-password', data).subscribe(
         (response) => {
-          console.log(response);
+          // console.log(response);
           window.alert('Contraseña actualizada');
           this.passwordService.$password.emit(false);
         },
         (error) => {
-          console.log(error);
+          console.error(error);
         }
       )
     } else {
-      console.log('Formulario inválido');
+      console.error('Formulario inválido');
     }
   }
 

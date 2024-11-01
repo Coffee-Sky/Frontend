@@ -90,7 +90,7 @@ allFlights: FlightData = {
     this.searchFlightService.flights$.subscribe(flights => {
       if(Object.keys(flights).length === 0) return;
       this.allFlights = flights;
-      console.log('vuelos: ', this.allFlights);
+      // console.log('vuelos: ', this.allFlights);
       
       // this.allFlights = {
       //   outboundFlights: { outbound: flights['outboundFlights'] || [] },
@@ -143,7 +143,7 @@ allFlights: FlightData = {
       this.selectedFlight = vuelo;
       this.selectedClassIda = null;
     }
-    console.log('vuelo ida: ', this.selectedFlight);
+    // console.log('vuelo ida: ', this.selectedFlight);
   }
 
   selectReturnFlight(vuelo: any): void {
@@ -156,7 +156,7 @@ allFlights: FlightData = {
       this.selectedReturnFlight = vuelo;
       this.selectedClassVuelta = null;
     }
-    console.log('vuelo regreso: ', this.selectedReturnFlight);
+    // console.log('vuelo regreso: ', this.selectedReturnFlight);
   }
 
   selectClass(classType: 'economy' | 'firstClass', tipo: 'ida' | 'vuelta'): void {

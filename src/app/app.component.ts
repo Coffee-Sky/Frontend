@@ -20,29 +20,4 @@ import { ListCardsComponent } from "./components/users/cards/list-cards/list-car
 })
 export class AppComponent {
   title = 'frontend';
-
-  // selectedFile: File | null = null;
-
-  // constructor(private cloudinary: CloudinaryService) {}
-
-  //  // Método para manejar la selección del archivo
-  // onFileSelected(event: any) {
-  //   if (event.target.files && event.target.files[0]) {
-  //     this.selectedFile = event.target.files[0];
-  //   }
-  // }
-
-  // // Método para subir la imagen
-  // uploadImage() {
-  //   if (this.selectedFile) {
-  //     this.cloudinary.uploadImage(this.selectedFile).subscribe(
-  //       (response) => {
-  //         console.log('Imagen subida correctamente', response);
-  //       },
-  //       (error) => {
-  //         console.error('Error al subir la imagen', error);
-  //       }
-  //     );
-  //   }
-  // }
 }

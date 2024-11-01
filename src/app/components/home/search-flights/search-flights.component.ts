@@ -171,7 +171,7 @@ export class SearchFlightsComponent implements OnInit{
       this.editSearchService.$edit.emit(false);
       this.searchFlightService.setSearchCriteria(this.searchForm.value);
       this.router.navigate(['/flights']);
-      console.log(this.searchForm.value);
+      // console.log(this.searchForm.value);
     } else {
       console.log('Formulario invalido');
     }

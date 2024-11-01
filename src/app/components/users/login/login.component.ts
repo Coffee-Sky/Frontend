@@ -39,9 +39,9 @@ export class LoginComponent {
       (response) => {
         // window.alert('Bienvenido');
         this.jwtService.setToken(response.token);
-        console.log('Token:', response.token);
+        // console.log('Token:', response.token);
         const token = this.jwtService.decodeToken();
-        console.log('Token decodificado:', token);
+        // console.log('Token decodificado:', token);
         window.location.href = '';
       },
       (error) => {
@@ -53,10 +53,10 @@ export class LoginComponent {
 
   save() {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
+      // console.log(this.loginForm.value);
       this.submitInfo();
     } else {
-      console.log('Formulario invalido');
+      console.error('Formulario invalido');
     }
   }
 }
