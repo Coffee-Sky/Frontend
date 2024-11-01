@@ -5,7 +5,6 @@ import { LoginComponent } from "./components/users/login/login.component";
 import { HeaderComponent } from "./components/home/header/header.component";
 import { PageComponent } from "./components/home/page/page.component";
 import { RootHomeComponent } from "./components/users/root/root-home/root-home.component";
-import { CloudinaryService } from './services/cloudinary.service';
 import { ProfileComponent } from "./components/users/profile/profile.component";
 import { AdminHomeComponent } from "./components/users/admin/admin-home/admin-home.component";
 import { InfoCardsComponent } from "./components/users/cards/info-cards/info-cards.component";
