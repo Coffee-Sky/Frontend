@@ -6,6 +6,21 @@ import { CommonModule } from '@angular/common';
 import { ModalService } from '../../../../services/modal.service';
 import { DeleteCardComponent } from '../delete-card/delete-card.component';
 import { ApiService } from '../../../../services/api.service';
+import { LocationService } from '../../../../services/location.service';
+
+interface Country {
+  country_name: string;
+  country_short_name: string;
+  country_phone_code: number;
+}
+
+interface State {
+  state_name: string;
+}
+
+interface City {
+  city_name: string;
+}
 
 interface Card {
   cardId: number;
@@ -53,6 +68,12 @@ export class InfoCardsComponent implements OnInit {
 
   code: string = '';
 
+  accessToken: string = '';
+
+  countries: Country[] = [];
+  states: State[] = [];
+  cities: City[] = [];
+
   isEditing: boolean = false;
   originalValues: any;
   editCardForm!: FormGroup;
@@ -96,9 +117,10 @@ export class InfoCardsComponent implements OnInit {
     credit: 'Crédito'
   };
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private deleteCardService: ModalService, private route: ActivatedRoute, private router: Router, private apiService: ApiService) { }
+  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private deleteCardService: ModalService, private route: ActivatedRoute, private router: Router, private apiService: ApiService, private locationService: LocationService) { }
 
   ngOnInit(): void {
+    this.getAccessToken();
     this.route.paramMap.subscribe(params => {
       this.code = params.get('code') ?? '';
       if (!this.code) this.router.navigate(['cards']);
@@ -129,6 +151,68 @@ export class InfoCardsComponent implements OnInit {
     });
     this.getCardInfo();
     this.originalValues = this.editCardForm.getRawValue();
+  }
+
+  getAccessToken() {
+    this.locationService.getAccessToken().subscribe(
+      (response) => {
+        this.accessToken = response.auth_token;
+        // console.log('Access Token:', this.accessToken);
+        this.getCountries();
+        // this.getStates('Colombia');
+        // this.getCities('Antioquia');
+      },
+      (error) => {
+        console.error('Error obteniendo el token de acceso:', error);
+      }
+    );
+  }
+
+  getCountries() {
+    this.locationService.getCountries(this.accessToken).subscribe(
+      (response) => {
+        this.countries = response;
+        // console.log(this.countries);
+      },
+      (error) => {
+        console.error('Error obteniendo los países:', error);
+      }
+    );
+  }
+
+  getStates(event: Event) {
+    const selectedCountry = (event.target as HTMLSelectElement).value;
+
+    // console.log('Selected Country:', selectedCountry);
+
+    this.states = [];
+    this.cities = [];
+
+    this.locationService.getStates(this.accessToken, selectedCountry).subscribe(
+      (response) => {
+        this.states = response;
+        // console.log(this.states);
+      },
+      (error) => {
+        console.error('Error obteniendo los estados:', error);
+      }
+    );
+  }
+
+  getCities(event: Event) {
+    const selectedState = (event.target as HTMLSelectElement).value;
+
+    // console.log('Selected Country:', selectedState);
+
+    this.locationService.getCities(this.accessToken, selectedState).subscribe(
+      (response) => {
+        this.cities = response;
+        // console.log(this.cities);
+      },
+      (error) => {
+        console.error('Error obteniendo las ciudades:', error);
+      }
+    );
   }
 
   getCardInfo() {
