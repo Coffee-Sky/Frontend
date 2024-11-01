@@ -18,8 +18,8 @@ export class LoginComponent {
 
   loginForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.pattern(/^[a-z]([a-z0-9.-]+)?@[a-z0-9]+.[a-z]{2,3}(.([a-z]{2}))?$/)]),
-    // password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)])
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)])
+    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/\-|<>+[\]])[A-Za-z\d@$!%*?&/\-|<>+[\]]{8,20}$/)])
+    // password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20)])
   });
 
   passwordRestore: boolean = false;
@@ -37,11 +37,11 @@ export class LoginComponent {
   submitInfo() {
     this.apiService.postData("auth/login", this.loginForm.value).subscribe(
       (response) => {
-        window.alert('Bienvenido');
+        // window.alert('Bienvenido');
         this.jwtService.setToken(response.token);
-        console.log('Token:', response.token);
+        // console.log('Token:', response.token);
         const token = this.jwtService.decodeToken();
-        console.log('Token decodificado:', token);
+        // console.log('Token decodificado:', token);
         window.location.href = '';
       },
       (error) => {
@@ -53,10 +53,10 @@ export class LoginComponent {
 
   save() {
     if (this.loginForm.valid) {
-      console.log(this.loginForm.value);
+      // console.log(this.loginForm.value);
       this.submitInfo();
     } else {
-      console.log('Formulario invalido');
+      console.error('Formulario invalido');
     }
   }
 }

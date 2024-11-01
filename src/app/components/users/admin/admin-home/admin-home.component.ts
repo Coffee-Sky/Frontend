@@ -59,6 +59,7 @@ export class AdminHomeComponent implements OnInit{
   creationPromo: boolean = false;
   isEditing: boolean = false;
   isDropdownOpen: boolean = false;
+  imageUrl: string = '';
 
   code: string = '';
 
@@ -97,11 +98,6 @@ export class AdminHomeComponent implements OnInit{
               private apiService: ApiService
             ){}
 
-  vuelos = [
-    {vueloID: 'A001', origin: 'Pereira', destination: 'Bogotá', departureDate: '2024-11-14', priceFirstClass: 900000, priceEconomy: 500000, TiquetesVendidos: 0, statusID: 1},
-    {vueloID: 'A002', origin: 'Cali', destination: 'Cartagena', departureDate: '2024-11-15', priceFirstClass: 1000000, priceEconomy: 570000, TiquetesVendidos: 125, statusID: 1},
-  ]
-
   ngOnInit(): void {
     this.createPromoService.$promotion.subscribe((value)=>{this.creationPromo = value})
     this.cancelFlightService.$cancel.subscribe((value)=>{this.cancelFlight = value})
@@ -114,7 +110,10 @@ export class AdminHomeComponent implements OnInit{
     this.apiService.getData('data/get-user-info?userID='+this.code).subscribe(
       (response: Admin) => {
         this.admin = response;
-        console.log(this.admin);
+        // console.log(this.admin);
+        if(this.admin.image !== '' && this.admin.image !== 'default.jpg'){
+          this.imageUrl = this.admin.image;
+        }
       },
       (error) => {
         console.error('Error obteniendo la información del usuario:', error);
@@ -127,7 +126,7 @@ export class AdminHomeComponent implements OnInit{
       (response: Flight[]) => {
         this.flights = response;
         this.flights.sort((a: Flight, b: Flight) => a.status - b.status);
-        console.log(this.flights);
+        // console.log(this.flights);
       },
       (error) => {
         console.error('Error obteniendo la información de los usuarios:', error);

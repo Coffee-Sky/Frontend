@@ -213,7 +213,7 @@ export class CreationFlightComponent implements OnInit{
 
   save() {
     if (this.creationForm.valid) {
-      console.log(this.creationForm.value);
+      // console.log(this.creationForm.value);
   
       const departure = this.formatDate();
   
@@ -228,7 +228,7 @@ export class CreationFlightComponent implements OnInit{
         businessPrice: priceFirstClass 
       };
   
-      console.log('Información del vuelo a enviar:', flightInfo);
+      // console.log('Información del vuelo a enviar:', flightInfo);
 
       this.apiService.postData('manage/create-flight', flightInfo).subscribe(
         (response) => {
@@ -241,7 +241,7 @@ export class CreationFlightComponent implements OnInit{
         }
       )
     } else {
-      console.log("Error: Formulario no válido");
+      console.error("Error: Formulario no válido");
     }
   }
 }

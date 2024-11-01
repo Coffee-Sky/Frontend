@@ -60,7 +60,7 @@ export class RootHomeComponent implements OnInit{
   deleteAdminFunction(id: number){
     this.apiService.putData("update/delete-admin?userID="+id, {}).subscribe(
       (response) => {
-        console.log(response);
+        // console.log(response);
         this.getAdmins();
       },
       (error) => {
@@ -73,7 +73,7 @@ export class RootHomeComponent implements OnInit{
     this.apiService.getData("data/get-admins").subscribe(
       (response) => {
         this.admins = response;
-        console.log(this.admins);
+        // console.log(this.admins);
       },
       (error) => {
         console.error('Error obteniendo los administradores:', error);

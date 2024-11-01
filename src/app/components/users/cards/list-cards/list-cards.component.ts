@@ -44,17 +44,17 @@ export class ListCardsComponent implements OnInit{
     this.apiService.getData('data/get-user-cards?userID='+this.code).subscribe(
       (response: Card[]) => {
         this.cards = response;
-        console.log('Tarjetas del usuario:', this.cards);
+        // console.log('Tarjetas del usuario:', this.cards);
       },
       (error) => {
-        console.log('Error obteniendo las tarjetas del usuario:', error);
+        console.error('Error obteniendo las tarjetas del usuario:', error);
       }
     );
   }
 
   navigateToCardInfo(cardId: number): void {
     this.router.navigate(['/info-card', cardId]);
-    console.log('Card info:', cardId);
+    // console.log('Card info:', cardId);
   }
 
 }

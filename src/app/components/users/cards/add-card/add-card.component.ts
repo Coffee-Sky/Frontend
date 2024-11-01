@@ -6,6 +6,21 @@ import { RouterModule } from '@angular/router';
 import { JwtService } from '../../../../services/jwt.service';
 import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
+import { LocationService } from '../../../../services/location.service';
+
+interface Country {
+  country_name: string;
+  country_short_name: string;
+  country_phone_code: number;
+}
+
+interface State {
+  state_name: string;
+}
+
+interface City {
+  city_name: string;
+}
 
 @Component({
   selector: 'app-add-card',
@@ -17,6 +32,12 @@ import { Router } from '@angular/router';
 export class AddCardComponent implements OnInit {
 
   code: string = '';
+
+  accessToken: string = '';
+
+  countries: Country[] = [];
+  states: State[] = [];
+  cities: City[] = [];
   
   today = new Date().toISOString().split('T')[0];
   streetTypes = ['Autopista', 'Avenida', 'Calle', 'Carrera', 'Circular', 'Circunvalar', 'Diagonal', 'Manzana', 'Pasaje', 'Peatonal', 'Transversal', 'Vereda', 'Vía', 'Zona', 'Otro'];
@@ -45,10 +66,73 @@ export class AddCardComponent implements OnInit {
     cardHolderId: new FormControl('')
   });
 
-  constructor(private jwtService: JwtService, private apiService: ApiService, private router: Router) { }
+  constructor(private jwtService: JwtService, private apiService: ApiService, private router: Router, private locationService: LocationService) { }
 
   ngOnInit(): void {
+    this.getAccessToken();
     this.getCodeUser();
+  }
+
+  getAccessToken() {
+    this.locationService.getAccessToken().subscribe(
+      (response) => {
+        this.accessToken = response.auth_token;
+        // console.log('Access Token:', this.accessToken);
+        this.getCountries();
+        // this.getStates('Colombia');
+        // this.getCities('Antioquia');
+      },
+      (error) => {
+        console.error('Error obteniendo el token de acceso:', error);
+      }
+    );
+  }
+
+  getCountries() {
+    this.locationService.getCountries(this.accessToken).subscribe(
+      (response) => {
+        this.countries = response;
+        // console.log(this.countries);
+      },
+      (error) => {
+        console.error('Error obteniendo los países:', error);
+      }
+    );
+  }
+
+  getStates(event: Event) {
+    const selectedCountry = (event.target as HTMLSelectElement).value;
+
+    // console.log('Selected Country:', selectedCountry);
+
+    this.states = [];
+    this.cities = [];
+
+    this.locationService.getStates(this.accessToken, selectedCountry).subscribe(
+      (response) => {
+        this.states = response;
+        // console.log(this.states);
+      },
+      (error) => {
+        console.error('Error obteniendo los estados:', error);
+      }
+    );
+  }
+
+  getCities(event: Event) {
+    const selectedState = (event.target as HTMLSelectElement).value;
+
+    // console.log('Selected Country:', selectedState);
+
+    this.locationService.getCities(this.accessToken, selectedState).subscribe(
+      (response) => {
+        this.cities = response;
+        // console.log(this.cities);
+      },
+      (error) => {
+        console.error('Error obteniendo las ciudades:', error);
+      }
+    );
   }
 
   getCodeUser() {
@@ -73,21 +157,21 @@ export class AddCardComponent implements OnInit {
       this.cardForm.get('userId')?.setValue(this.code);
       this.cardForm.get('cardHolderId')?.setValue(this.code);
       this.cardForm.get('expirationDate')?.setValue(this.changeExpirationDate(this.cardForm.get('expirationDate')?.value!));
-      console.log(this.cardForm.value);
+      // console.log(this.cardForm.value);
 
       this.apiService.postData('update/enroll-card', this.cardForm.value).subscribe(
         (response) => {
-          console.log(response);
+          // console.log(response);
           window.alert('Tarjeta registrada correctamente.');
           this.router.navigate(['/cards']);
         },
         (error) => {
-          console.log(error);
+          console.error(error);
           window.alert('Error al registrar la tarjeta. Vuélvalo a intentar.');
         }
       );
     } else {
-      console.log("Error");
+      console.error("Error");
     }
   }
 }
