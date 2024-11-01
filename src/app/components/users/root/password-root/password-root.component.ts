@@ -20,7 +20,7 @@ export class PasswordRootComponent implements OnInit{
   }
 
   passwordForm = new FormGroup({
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)])
+    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/<>+])[A-Za-z\d@$!%*?&/<>+]{8,20}$/)])
   })
 
   save() {
