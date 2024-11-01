@@ -90,7 +90,6 @@ allFlights: FlightData = {
     this.searchFlightService.flights$.subscribe(flights => {
       if(Object.keys(flights).length === 0) return;
       this.allFlights = flights;
-      // console.log('vuelos: ', this.allFlights);
       
       // this.allFlights = {
       //   outboundFlights: { outbound: flights['outboundFlights'] || [] },

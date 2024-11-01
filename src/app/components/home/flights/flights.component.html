@@ -259,7 +259,9 @@
       </div>
     </div>
   </div>
-  <div *ngIf="allFlights.returnFlights.return.length === 0" class="bg-white rounded-lg shadow-md p-6 mt-6">
-    <p class="text-center text-gray-500">No se encontraron vuelos disponibles para las fechas seleccionadas.</p>
+  <div *ngIf="tripType === 'roundtrip'">
+    <div *ngIf="allFlights.returnFlights.return.length === 0" class="bg-white rounded-lg shadow-md p-6 mt-6">
+      <p class="text-center text-gray-500">No se encontraron vuelos disponibles para las fechas seleccionadas.</p>
+    </div>
   </div>
 </div>
