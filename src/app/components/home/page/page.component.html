@@ -2,6 +2,46 @@
 <div class="bg-gray-100">
   <app-header/> 
   <app-search-flights/>
+  <!-- Carrusel de imágenes -->
+  <div class="relative overflow-hidden w-full max-w-6xl mx-auto">
+    <div 
+      *ngIf="isLoaded"
+      class="flex transition-transform duration-500 ease-in-out"
+      [style.transform]="'translateX(-' + (getCurrentTranslate()) + '%)'">
+      
+      <div 
+        *ngFor="let image of images" 
+        class="w-full md:w-1/2 md:p-2 flex-shrink-0 p-8">
+        <div class="aspect-[16/9] flex items-center">
+          <img 
+            [src]="image.url" 
+            [alt]="image.alt"
+            class=" object-contain rounded-xl"
+            (load)="onImageLoad()">
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!isLoaded" class="w-full aspect-[16/9] flex items-center justify-center bg-gray-100">
+      <p>Cargando imágenes...</p>
+    </div>
+    <ng-container *ngIf="isLoaded">
+      <button 
+        (click)="prev()"
+        class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/50 w-10 h-10 rounded-full hover:bg-white shadow-lg">
+        <span class="material-symbols-outlined ml-2 mt-1" translate="no">
+          arrow_back_ios
+        </span>
+      </button>
+      <button 
+        (click)="next()"
+        class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/50 w-10 h-10 rounded-full hover:bg-white shadow-lg">
+        <span class="material-symbols-outlined mt-1" translate="no">
+          arrow_forward_ios
+        </span>
+      </button>
+    </ng-container>
+  </div>
+
   <div class="container mx-auto px-8 lg:flex items-center pt-18 md:pt-16">
     <div class="text-center ml-12 lg:text-left lg:w-1/2 text-black">
       <h1 class="text-4xl lg:text-5xl xl:text-6xl font-bold leading-none">PRÓXIMAMENTE EN COFFEESKY</h1>
