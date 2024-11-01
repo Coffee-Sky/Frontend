@@ -21,19 +21,19 @@
         </div>
         <div class="w-full">
           <label class="block text-sm font-medium text-gray-700 mb-1">Destino</label>
-          <select class="w-full p-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-color3" formControlName="destination">
+          <select class="w-full p-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-color3" formControlName="destiny">
             <option *ngFor="let city of availableDestinationCities" [value]="city">{{city}}</option>
           </select>
         </div>
         <div class="w-full">
           <label class="block text-sm font-medium text-gray-700 mb-1">Ida</label>
           <input class="w-full p-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-color3" 
-                 type="date" [min]="minDepartureDate" formControlName="departureDate"/>
+                 type="date" [min]="minDepartureDate" formControlName="departure"/>
         </div>
         <div class="w-full" *ngIf="searchForm.get('tripType')?.value === 'roundtrip'">
           <label class="block text-sm font-medium text-gray-700 mb-1">Vuelta</label>
           <input class="w-full p-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-color3" 
-                 type="date" [min]="selectedDepartureDate || minDepartureDate" formControlName="returnDate"/>
+                 type="date" [min]="selectedDepartureDate || minDepartureDate" formControlName="arrival"/>
         </div>
         <div class="w-full">
           <label class="block text-sm font-medium text-gray-700 mb-1">Pasajeros</label>
