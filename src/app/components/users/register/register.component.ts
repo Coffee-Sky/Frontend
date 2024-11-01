@@ -137,7 +137,7 @@ export class RegisterComponent implements OnInit{
     bornDate: new FormControl('', Validators.required),
     username: new FormControl('', Validators.required),
     email: new FormControl('', [Validators.required, Validators.pattern(/^[a-z]([a-z0-9.-]+)?@[a-z0-9]+.[a-z]{2,3}(.([a-z]{2}))?$/)]),
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)]),
+    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/\-|<>+\[\]])[A-Za-z\d@$!%*?&/\-|<>+\[\]]{8,20}$/)]),
   });
 
   save() {
