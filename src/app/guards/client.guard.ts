@@ -16,7 +16,7 @@ export const clientGuard: CanActivateFn = (route, state) => {
       return false;
     }
     else {
-      router.navigate(['/']);
+      // router.navigate(['/']);
       return true;
     }
   }
