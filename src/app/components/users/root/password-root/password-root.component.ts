@@ -20,29 +20,29 @@ export class PasswordRootComponent implements OnInit{
   }
 
   passwordForm = new FormGroup({
-    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)])
+    password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/<>+])[A-Za-z\d@$!%*?&/<>+]{8,20}$/)])
   })
 
   save() {
     if (this.passwordForm.valid) {
-      console.log(this.passwordForm.value);
-      console.log(this.jwtService.decodeToken());
+      // console.log(this.passwordForm.value);
+      // console.log(this.jwtService.decodeToken());
       const data = {
         userID: this.jwtService.decodeToken()?.sub,
         password: this.passwordForm.value.password
       }
       this.apiService.putData('update/change-password', data).subscribe(
         (response) => {
-          console.log(response);
+          // console.log(response);
           window.alert('Contraseña actualizada');
           this.passwordService.$password.emit(false);
         },
         (error) => {
-          console.log(error);
+          console.error(error);
         }
       )
     } else {
-      console.log('Formulario inválido');
+      console.error('Formulario inválido');
     }
   }
 

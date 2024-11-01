@@ -6,7 +6,7 @@
             <img src="Nombre2.png" alt="" class="w-48 mx-auto" />
           </a>
         </div>
-        <form class="px-8 pt-4 pb-8 mb-4" [formGroup]="creationForm" (ngSubmit)="save()">
+        <form class="px-8 pt-4 pb-8 mb-4" [formGroup]="creationForm">
           
           <div class="text-center font-semibold">
             <p>Información de origen y destino</p>
@@ -96,7 +96,7 @@
           </div>
 
           <div class="flex flex-row justify-center gap-4">
-            <button [disabled]="creationForm.invalid"
+            <button [disabled]="creationForm.invalid" (click)="save()"
               class="w-32 px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade focus:outline-none focus:shadow-outline
               disabled:opacity-50 disabled:cursor-not-allowed" type="submit">
               Crear vuelo

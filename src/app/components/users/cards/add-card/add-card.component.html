@@ -4,7 +4,7 @@
   <div class="max-w-screen-xl m-0 sm:m-10 bg-white shadow sm:rounded-lg flex justify-center flex-1">
     <div class="lg:w-5/6 xl:w-5/6 p-6 sm:p-6 mx-0">
       <h2 class="text-xl text-center font-bold mb-4">Agregar tarjeta</h2>
-      <form class="px-8 pt-4 mb-4" [formGroup]="cardForm" (ngSubmit)="save()">
+      <form class="px-8 pt-4 mb-4" [formGroup]="cardForm">
 
         <div class="text-center text-gray-500 font-semibold">
           <p>Información de la tarjeta</p>
@@ -40,8 +40,11 @@
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Fecha de caducidad <span class="text-red-500">*</span></label>
             <input [min]="today" class="w-full px-3 py-3 text-sm leading-tight text-gray-400 border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="date" placeholder="" formControlName=expirationDate/>
+            type="month" placeholder="" formControlName=expirationDate/>
             <span *ngIf="cardForm.hasError('required','expirationDate') && cardForm.controls['expirationDate'].dirty" class="text-red-500 text-xs">La fecha es requerida</span>
+            <span *ngIf="cardForm.controls['expirationDate'].hasError('invalidFormat') && cardForm.controls['expirationDate'].dirty" class="text-red-500 text-xs">
+              El formato debe ser MM-YYYY
+            </span>
           </div>
           <div class="mb-2 w-full relative">
             <label class="block mb-2 text-sm font-bold text-black">
@@ -116,35 +119,33 @@
         <div class="mb-6 md:flex md:justify-between gap-4">
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">País <span class="text-red-500">*</span></label>
-            <!-- <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="country" (change)="getStates($event)"> -->
-              <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="country">
+              <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="country" (change)="getStates($event)">
               <option value="" disabled selected>País</option>
-              <option value="Colombia">Colombia PREDEFINIDA</option>
-              <!-- <option *ngFor="let country of countries" [value]="country.country_name">
+              <!-- <option value="Colombia">Colombia PREDEFINIDA</option> -->
+              <option *ngFor="let country of countries" [value]="country.country_name">
                 {{ country.country_name }}
-              </option> -->
+              </option>
             </select>
           </div>
 
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Estado <span class="text-red-500">*</span></label>
-            <!-- <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="state" (change)="getCities($event)"> -->
-              <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="state">
+            <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="state" (change)="getCities($event)">
               <option value="" disabled selected>Estado</option>
-              <option value="Risaralda">Risaralda PREDEFINIDA</option>
-              <!-- <option *ngFor="let state of states" [value]="state.state_name">
+              <!-- <option value="Risaralda">Risaralda PREDEFINIDA</option> -->
+              <option *ngFor="let state of states" [value]="state.state_name">
                 {{ state.state_name }}
-              </option> -->
+              </option>
             </select>
           </div>
           <div class="mb-2 w-full">
             <label class="block mb-2 text-sm font-bold text-black">Ciudad <span class="text-red-500">*</span></label>
             <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="city">
               <option value="" disabled selected>Ciudad</option>
-              <option value="Pereira">Pereira PREDEFINIDA</option>
-              <!-- <option *ngFor="let city of cities" [value]="city.city_name">
+              <!-- <option value="Pereira">Pereira PREDEFINIDA</option> -->
+              <option *ngFor="let city of cities" [value]="city.city_name">
                 {{ city.city_name }}
-              </option> -->
+              </option>
             </select>
           </div>
         </div>
@@ -215,7 +216,7 @@
   
 
         <div class="flex flex-row justify-center gap-4">
-          <button [disabled]="cardForm.invalid"
+          <button [disabled]="cardForm.invalid" (click)="save()"
             class="w-32 px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade focus:outline-none focus:shadow-outline
             disabled:opacity-50 disabled:cursor-not-allowed" type="submit">
             Agregar

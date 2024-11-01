@@ -6,7 +6,7 @@
           <img src="Nombre2.png" alt="" class="w-48 mx-auto" />
         </a>
       </div>
-      <form class="px-8 pt-4 pb-8 mb-4" [formGroup]="editFlightForm" (ngSubmit)="save()">
+      <form class="px-8 pt-4 pb-8 mb-4" [formGroup]="editFlightForm">
         
         <div class="text-center font-semibold">
           <p>Información de origen</p>
@@ -136,7 +136,7 @@
         </div>
 
         <div class="flex flex-1 items-center justify-center gap-4" *ngIf="isEditing">
-          <button type="submit" [disabled]="editFlightForm.invalid"
+          <button type="submit" [disabled]="editFlightForm.invalid" (click)="save()"
             class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline
             disabled:opacity-50 disabled:cursor-not-allowed">
             Guardar

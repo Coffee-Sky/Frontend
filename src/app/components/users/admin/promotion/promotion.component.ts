@@ -25,7 +25,7 @@ export class PromotionComponent implements OnInit{
     if (this.promotionForm.valid) {
       console.log(this.promotionForm.value);
     } else {
-      console.log('Formulario inválido');
+      console.error('Formulario inválido');
     }
   }
 

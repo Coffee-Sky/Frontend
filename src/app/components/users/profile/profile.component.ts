@@ -8,6 +8,8 @@ import { FooterComponent } from '../../home/footer/footer.component';
 import { ApiService } from '../../../services/api.service';
 import { LocationService } from '../../../services/location.service';
 import { JwtService } from '../../../services/jwt.service';
+import { PasswordRootComponent } from '../root/password-root/password-root.component';
+import { ModalService } from '../../../services/modal.service';
 
 interface Role {
   roleID: number;
@@ -55,7 +57,7 @@ interface Gender {
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent, FooterComponent],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent, FooterComponent, PasswordRootComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -67,6 +69,8 @@ export class ProfileComponent implements OnInit{
   imageUrl: string = '';
   changingPicture: boolean = false;
   selectedFile: File | null = null;
+
+  changePassword: boolean = false;
 
   accessToken: string = '';
 
@@ -97,10 +101,11 @@ export class ProfileComponent implements OnInit{
     statusID: 0
   };
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService, private apiService: ApiService, private locationService: LocationService, private jwtService: JwtService) { 
+  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService, private apiService: ApiService, private locationService: LocationService, private jwtService: JwtService, private passwordService: ModalService, ) { 
   }
 
   ngOnInit(): void {
+    this.passwordService.$password.subscribe((value)=>{this.changePassword = value})
     this.jwtService.getRole();
     this.getUserInfo();
     this.editProfileForm = this.fb.group({
@@ -109,7 +114,7 @@ export class ProfileComponent implements OnInit{
       firstlastname: [this.user.firstlastname, [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]],
       secondlastname: [this.user.secondlastname, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)],
       genderID: [this.user.genderID, Validators.required],
-      identificationnumber: [{value: this.user.identificationnumber, disabled: true}],
+      identificationnumber: [this.user.identificationnumber, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       borncountry: [this.user.borncountry, Validators.required],
       bornstate: [this.user.bornstate, Validators.required],
       borncity: [this.user.borncity, Validators.required],
@@ -139,6 +144,7 @@ export class ProfileComponent implements OnInit{
         this.editProfileForm.patchValue(user);
         this.originalValues = this.editProfileForm.getRawValue();
         console.log(user);
+        console.log(user.identificationnumber);
         if(user.image !== '' && user.image !== 'default.jpg'){
           this.imageUrl = user.image;
         }
@@ -191,7 +197,7 @@ export class ProfileComponent implements OnInit{
   getStates(event: Event) {
     const selectedCountry = (event.target as HTMLSelectElement).value;
 
-    console.log('Selected Country:', selectedCountry);
+    // console.log('Selected Country:', selectedCountry);
 
     this.states = [];
     this.cities = [];
@@ -224,10 +230,10 @@ export class ProfileComponent implements OnInit{
   }
 
   toggleEdit() {
-    console.log('entreeee');
+    // console.log('entreeee');
     this.isEditing = true;
     this.cdRef.detectChanges();
-    console.log('el valor es: ', this.isEditing);
+    // console.log('el valor es: ', this.isEditing);
     if (this.isEditing) {
       this.editProfileForm.controls['genderID'].enable();
     }
@@ -240,24 +246,24 @@ export class ProfileComponent implements OnInit{
 
   save() {
     if (this.editProfileForm.valid) {
-      console.log(this.editProfileForm.value);
+      // console.log(this.editProfileForm.value);
       this.isEditing = false;
       this.editProfileForm.controls['genderID'].disable();
       this.submitUserInfo(this.editProfileForm.getRawValue());
     } else {
-      console.log('Formulario invalido');
+      console.error('Formulario invalido');
     }
   }
 
   submitUserInfo(info: any) {
-    const { email, identificationnumber, ...userInfo } = info;
+    const { email, ...userInfo } = info;
     userInfo.userID = Number(this.code);
     userInfo.image = this.imageUrl;
     userInfo.username = userInfo.username;
     console.log('Información del usuario a enviar:', userInfo);
     this.apiService.putData('update/update-client-info', userInfo).subscribe(
       (response) => {
-        console.log(response)
+        // console.log(response)
         this.getUserInfo();
       },
       (error) => {
@@ -270,7 +276,7 @@ export class ProfileComponent implements OnInit{
   cancel() {
     this.isEditing = false;
     this.editProfileForm.reset(this.originalValues);
-    console.log('el valor en cancelar es: ', this.isEditing);
+    // console.log('el valor en cancelar es: ', this.isEditing);
     this.editProfileForm.controls['genderID'].disable();
   }
 
@@ -294,7 +300,7 @@ export class ProfileComponent implements OnInit{
     if (this.selectedFile) {
       this.cloudinary.uploadImage(this.selectedFile).subscribe(
         (response) => {
-          console.log('Imagen subida correctamente', response);
+          // console.log('Imagen subida correctamente', response);
           this.imageUrl = response.secure_url;
           this.submitUserInfo(this.originalValues);
           this.changingPicture = false;
@@ -304,5 +310,9 @@ export class ProfileComponent implements OnInit{
         }
       );
     }
+  }
+
+  changePasswordRoot(){
+    this.changePassword = true;
   }
 }

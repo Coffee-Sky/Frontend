@@ -4,7 +4,7 @@
         <div class="flex justify-center relative">
           <img src="Nombre2.png" alt="" class="w-48 mx-auto" />
           <button (click)="toggleDropdown()" class="">
-            <img [src]="'Logo2.png'" src="Logo2.png" alt="Imagen de usuario" class="w-16 h-16 rounded-full">
+            <img [src]="imageUrl || 'Logo2.png'" src="Logo2.png" alt="Imagen de usuario" class="w-16 h-16 rounded-full">
           </button>
 
           <div *ngIf="isDropdownOpen" class="absolute right-0 mt-20 w-48 bg-white rounded-md shadow-lg z-20 divide-y divide-gray-100 text-center">

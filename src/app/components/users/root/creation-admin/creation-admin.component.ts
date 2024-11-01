@@ -27,22 +27,22 @@ export class CreationAdminComponent implements OnInit{
   })
 
   save() {
-    console.log(this.creationForm.value);
+    // console.log(this.creationForm.value);
     if (this.creationForm.valid) {
-      console.log(this.creationForm.value);
+      // console.log(this.creationForm.value);
       this.apiService.postData('sign-up/register-admin', this.creationForm.value).subscribe(
         (response) => {
-          console.log(response);
+          // console.log(response);
           window.alert('Administrador creado con éxito');
           this.createAdminService.$create.emit(false);
           window.location.reload();
         },
         (error) => {
-          console.log(error);
+          console.error(error);
         }
       );
     } else {
-      console.log('Formulario inválido');
+      console.error('Formulario inválido');
     }
   }
 

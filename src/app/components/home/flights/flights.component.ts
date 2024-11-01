@@ -8,6 +8,32 @@ import { ModalService } from '../../../services/modal.service';
 
 registerLocaleData(localeEs, 'es');
 
+interface Flight {
+  flightID: number;
+  origin: string;
+  destiny: string;
+  departure: string; 
+  arrival: string; 
+  duration: string;
+  economyPrice: number;
+  businessPrice: number;
+  type: string;
+  status: number;
+}
+
+interface OutboundFlight {
+  outbound: Flight[];
+}
+
+interface ReturnFlight {
+  return: Flight[];
+}
+
+interface FlightData {
+  outboundFlights: OutboundFlight;
+  returnFlights: ReturnFlight;
+}
+
 @Component({
   selector: 'app-flights',
   standalone: true,
@@ -18,8 +44,8 @@ registerLocaleData(localeEs, 'es');
 })
 export class FlightsComponent implements OnInit {
 
-  vuelosIda: any[] = [];
-  vuelosVuelta: any[] = [];
+  vuelosIda: Flight[] = [];
+  vuelosVuelta: Flight[] = [];
   origin: string = '';
   originCode: string = '';
   destination: string = '';
@@ -34,6 +60,16 @@ export class FlightsComponent implements OnInit {
   selectedClassVuelta: 'economy' | 'firstClass' | null = null;
   editingSearch: boolean = false;
 
+allFlights: FlightData = {
+  outboundFlights: {
+    outbound: [] 
+  },
+  returnFlights: {
+    return: [] 
+  }
+};
+
+  
   constructor(private searchFlightService: SearchFlightService, private editSearchService: ModalService) { }
 
   ngOnInit(): void {
@@ -43,7 +79,7 @@ export class FlightsComponent implements OnInit {
         this.tripType = criteria.tripType;
         this.origin = criteria.origin;
         this.originCode = criteria.originCode;
-        this.destination = criteria.destination;
+        this.destination = criteria.destiny;
         this.destinationCode = criteria.destinationCode;
         this.departureDate = criteria.departureDate;
         this.returnDate = criteria.returnDate;
@@ -52,20 +88,32 @@ export class FlightsComponent implements OnInit {
     });
 
     this.searchFlightService.flights$.subscribe(flights => {
-      // console.log('vuelos: ', flights)
+      if(Object.keys(flights).length === 0) return;
+      this.allFlights = flights;
+      
+      // this.allFlights = {
+      //   outboundFlights: { outbound: flights['outboundFlights'] || [] },
+      //   returnFlights: { return: flights['returnFlights'] || [] }
+      // };
+      // console.log('vuelos: ', this.allFlights);
       // console.log('origin: ', this.origin)
       // console.log('destination: ', this.destination)
       // console.log('departureDate: ', this.departureDate)
       // console.log('returnDate', this.returnDate)
-      if (this.tripType === 'roundtrip') {
-        this.vuelosVuelta = flights.filter((vuelo: { origin: string; destination: string; departureDate: Date | null; }) => vuelo.origin === this.destination && vuelo.destination === this.origin && vuelo.departureDate === this.returnDate);
-        this.vuelosIda = flights.filter((vuelo: { origin: string; destination: string; departureDate: Date | null; }) => vuelo.origin === this.origin && vuelo.destination === this.destination && vuelo.departureDate === this.departureDate);
-        // console.log('vuelos ida: ', this.vuelosIda);
-        // console.log('vuelos vuelta: ', this.vuelosVuelta);
-      } else {
-        this.vuelosIda = flights.filter((vuelo: { origin: string; destination: string; departureDate: Date | null; }) => vuelo.origin === this.origin && vuelo.destination === this.destination && vuelo.departureDate === this.departureDate);
-      }
+      // if (this.tripType === 'roundtrip') {
+      //   this.vuelosVuelta = flights.filter((vuelo: { origin: string; destination: string; departureDate: Date | null; }) => vuelo.origin === this.destination && vuelo.destination === this.origin && vuelo.departureDate === this.returnDate);
+      //   this.vuelosIda = flights.filter((vuelo: { origin: string; destination: string; departureDate: Date | null; }) => vuelo.origin === this.origin && vuelo.destination === this.destination && vuelo.departureDate === this.departureDate);
+      //   // console.log('vuelos ida: ', this.vuelosIda);
+      //   // console.log('vuelos vuelta: ', this.vuelosVuelta);
+      // } else {
+      //   this.vuelosIda = flights.filter((vuelo: { origin: string; destination: string; departureDate: Date | null; }) => vuelo.origin === this.origin && vuelo.destination === this.destination && vuelo.departureDate === this.departureDate);
+      // }
+
     });
+  }
+
+  alert(){
+    window.alert('Próximamente podrá comprar este vuelo.')
   }
 
   editSearch(){
@@ -94,7 +142,7 @@ export class FlightsComponent implements OnInit {
       this.selectedFlight = vuelo;
       this.selectedClassIda = null;
     }
-    console.log('vuelo ida: ', this.selectedFlight);
+    // console.log('vuelo ida: ', this.selectedFlight);
   }
 
   selectReturnFlight(vuelo: any): void {
@@ -107,7 +155,7 @@ export class FlightsComponent implements OnInit {
       this.selectedReturnFlight = vuelo;
       this.selectedClassVuelta = null;
     }
-    console.log('vuelo regreso: ', this.selectedReturnFlight);
+    // console.log('vuelo regreso: ', this.selectedReturnFlight);
   }
 
   selectClass(classType: 'economy' | 'firstClass', tipo: 'ida' | 'vuelta'): void {

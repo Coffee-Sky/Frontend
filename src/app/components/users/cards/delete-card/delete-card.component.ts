@@ -28,7 +28,7 @@ export class DeleteCardComponent implements OnInit{
       },
       (error) => {
         window.alert('Error eliminando la tarjeta. Vuélvalo a intentar.');
-        console.log('Error obteniendo las tarjetas del usuario:', error);
+        console.error('Error obteniendo las tarjetas del usuario:', error);
       }
     );
   }

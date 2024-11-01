@@ -14,6 +14,7 @@ import { ProfileComponent } from './components/users/profile/profile.component';
 import { AdminHomeComponent } from './components/users/admin/admin-home/admin-home.component';
 import { adminGuard } from './guards/admin.guard';
 import { usersRegisteredGuard } from './guards/users-registered.guard';
+import { clientGuard } from './guards/client.guard';
 import { FlightsComponent } from './components/home/flights/flights.component';
 import { ListCardsComponent } from './components/users/cards/list-cards/list-cards.component';
 import { InfoCardsComponent } from './components/users/cards/info-cards/info-cards.component';
@@ -26,13 +27,13 @@ export const routes: Routes = [
   { path: 'root', component: RootHomeComponent, canActivate: [rootGuard]},
   { path: 'flight/:code', component: InfoFlightComponent, canActivate: [adminGuard]},
   { path: 'creation', component: CreationFlightComponent, canActivate: [adminGuard]},
-  { path: 'flights', component: FlightsComponent},
+  { path: 'flights', component: FlightsComponent },
   { path: 'info/:code', component: InfoAdminComponent, canActivate: [rootGuard]},
   { path: 'profile', component: ProfileComponent, canActivate: [usersRegisteredGuard]},
   { path: 'admin', component: AdminHomeComponent, canActivate: [adminGuard]},
-  { path: 'cards', component: ListCardsComponent},
-  { path: 'add-card', component: AddCardComponent},
-  { path: 'info-card/:code', component: InfoCardsComponent}
+  { path: 'cards', component: ListCardsComponent, canActivate: [clientGuard]},
+  { path: 'add-card', component: AddCardComponent, canActivate: [clientGuard]},
+  { path: 'info-card/:code', component: InfoCardsComponent, canActivate: [clientGuard]}
 ];
 
 @NgModule({

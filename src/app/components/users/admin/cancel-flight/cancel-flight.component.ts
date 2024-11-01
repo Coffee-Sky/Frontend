@@ -29,8 +29,8 @@ export class CancelFlightComponent implements OnInit{
   validateCancel(){
     let currentDate = new Date();
     let flightDate = new Date(this.flightDate);
-    console.log(flightDate < currentDate)
-    console.log(this.flightStatus)
+    // console.log(flightDate < currentDate)
+    // console.log(this.flightStatus)
     if(flightDate < currentDate || this.flightStatus !== 1){
       this.flightCancelled = true;
     }else{

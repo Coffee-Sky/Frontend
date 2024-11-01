@@ -58,80 +58,80 @@ export class SearchFlightsComponent implements OnInit{
 
   availableDestinationCities: string[] = [];
 
-  cityCodes: { [key: string]: string } = {
-    'Arauca': 'AUC',
-    'Armenia': 'AXM',
-    'Barranquilla': 'BAQ',
-    'Bogotá': 'BOG',
-    'Bucaramanga': 'BGA',
-    'Cali': 'CLO',
-    'Cartagena': 'CTG',
-    'Cúcuta': 'CUC',
-    'Florencia': 'FLA',
-    'Ibagué': 'IBE',
-    'Leticia': 'LET',
-    'Manizales': 'MZL',
-    'Medellín': 'MDE',
-    'Mitú': 'MVP',
-    'Mocoa': 'VGZ',
-    'Montería': 'MTR',
-    'Neiva': 'NVA',
-    'Pasto': 'PSO',
-    'Pereira': 'PEI',
-    'Popayán': 'PPN',
-    'Puerto Carreño': 'PCR',
-    'Puerto Inírida': 'PDA',
-    'Quibdó': 'UIB',
-    'Riohacha': 'RCH',
-    'San Andrés': 'ADZ',
-    'San José del Guaviare': 'SJE',
-    'Santa Marta': 'SMR',
-    'Sincelejo': 'CZU',
-    'Tunja': 'TUN',
-    'Valledupar': 'VUP',
-    'Villavicencio': 'VVC',
-    'Yopal': 'EYP',
-    'Buenos Aires': 'EZE',
-    'Londres': 'LHR',
-    'Madrid': 'MAD',
-    'Miami': 'MIA',
-    'New York': 'JFK'
-  };
+  // cityCodes: { [key: string]: string } = {
+  //   'Arauca': 'AUC',
+  //   'Armenia': 'AXM',
+  //   'Barranquilla': 'BAQ',
+  //   'Bogotá': 'BOG',
+  //   'Bucaramanga': 'BGA',
+  //   'Cali': 'CLO',
+  //   'Cartagena': 'CTG',
+  //   'Cúcuta': 'CUC',
+  //   'Florencia': 'FLA',
+  //   'Ibagué': 'IBE',
+  //   'Leticia': 'LET',
+  //   'Manizales': 'MZL',
+  //   'Medellín': 'MDE',
+  //   'Mitú': 'MVP',
+  //   'Mocoa': 'VGZ',
+  //   'Montería': 'MTR',
+  //   'Neiva': 'NVA',
+  //   'Pasto': 'PSO',
+  //   'Pereira': 'PEI',
+  //   'Popayán': 'PPN',
+  //   'Puerto Carreño': 'PCR',
+  //   'Puerto Inírida': 'PDA',
+  //   'Quibdó': 'UIB',
+  //   'Riohacha': 'RCH',
+  //   'San Andrés': 'ADZ',
+  //   'San José del Guaviare': 'SJE',
+  //   'Santa Marta': 'SMR',
+  //   'Sincelejo': 'CZU',
+  //   'Tunja': 'TUN',
+  //   'Valledupar': 'VUP',
+  //   'Villavicencio': 'VVC',
+  //   'Yopal': 'EYP',
+  //   'Buenos Aires': 'EZE',
+  //   'Londres': 'LHR',
+  //   'Madrid': 'MAD',
+  //   'Miami': 'MIA',
+  //   'New York': 'JFK'
+  // };
 
   searchForm = new FormGroup({
     tripType: new FormControl('roundtrip'),
     origin: new FormControl('', Validators.required),
-    originCode: new FormControl(''),
-    destination: new FormControl('', Validators.required),
-    destinationCode: new FormControl(''),
-    departureDate: new FormControl('', Validators.required),
-    returnDate: new FormControl(''),
+    // originCode: new FormControl(''),
+    destiny: new FormControl('', Validators.required),
+    // destinationCode: new FormControl(''),
+    departure: new FormControl('', Validators.required),
+    arrival: new FormControl(''),
     passengers: new FormControl(1, Validators.required),
   });
 
   constructor(private searchFlightService: SearchFlightService, private router: Router, private editSearchService: ModalService) {
-    this.searchForm.get('departureDate')?.valueChanges.subscribe(value => {
+    this.searchForm.get('departure')?.valueChanges.subscribe(value => {
       if (value) {
         this.selectedDepartureDate = value;
-        const returnDate = this.searchForm.get('returnDate')?.value;
-        if (returnDate && returnDate < value) {
-          this.searchForm.get('returnDate')?.setValue('');
+        const arrival = this.searchForm.get('arrival')?.value;
+        if (arrival && arrival < value) {
+          this.searchForm.get('arrival')?.setValue('');
         }
       }
     });
     this.searchForm.get('tripType')?.valueChanges.subscribe(value => {
-      const returnDateControl = this.searchForm.get('returnDate');
+      const arrivalControl = this.searchForm.get('arrival');
       if (value === 'roundtrip') {
-        returnDateControl?.setValidators(Validators.required);
+        arrivalControl?.setValidators(Validators.required);
       } else {
-        returnDateControl?.clearValidators();
-        returnDateControl?.setValue('');
+        arrivalControl?.clearValidators();
+        arrivalControl?.setValue('');
       }
-      returnDateControl?.updateValueAndValidity();
+      arrivalControl?.updateValueAndValidity();
     });
 
     if (this.searchForm.get('tripType')?.value === 'roundtrip') {
-      this.searchForm.get('returnDate')?.setValidators(Validators.required);
+      this.searchForm.get('arrival')?.setValidators(Validators.required);
     }
   }
 
@@ -140,17 +140,17 @@ export class SearchFlightsComponent implements OnInit{
     this.searchForm.get('origin')?.valueChanges.subscribe(origin => {
       if (origin) {
         this.updateDestinationCities();
-        this.searchForm.get('originCode')?.setValue(this.cityCodes[origin] || '');
+        // this.searchForm.get('originCode')?.setValue(this.cityCodes[origin] || '');
         this.searchForm.patchValue({
-          destination: ''
+          destiny: ''
         });
       }
     });
-    this.searchForm.get('destination')?.valueChanges.subscribe(destination => {
-      if (destination) {
-        this.searchForm.get('destinationCode')?.setValue(this.cityCodes[destination] || '');
-      }
-    });
+    // this.searchForm.get('destination')?.valueChanges.subscribe(destination => {
+    //   if (destination) {
+    //     this.searchForm.get('destinationCode')?.setValue(this.cityCodes[destination] || '');
+    //   }
+    // });
   }
 
   updateDestinationCities() {
@@ -171,7 +171,7 @@ export class SearchFlightsComponent implements OnInit{
       this.editSearchService.$edit.emit(false);
       this.searchFlightService.setSearchCriteria(this.searchForm.value);
       this.router.navigate(['/flights']);
-      console.log(this.searchForm.value);
+      // console.log(this.searchForm.value);
     } else {
       console.log('Formulario invalido');
     }
