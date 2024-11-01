@@ -109,7 +109,7 @@ export class ProfileComponent implements OnInit{
       firstlastname: [this.user.firstlastname, [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]],
       secondlastname: [this.user.secondlastname, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)],
       genderID: [this.user.genderID, Validators.required],
-      identificationnumber: [{value: this.user.identificationnumber, disabled: true}],
+      identificationnumber: [this.user.identificationnumber, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
       borncountry: [this.user.borncountry, Validators.required],
       bornstate: [this.user.bornstate, Validators.required],
       borncity: [this.user.borncity, Validators.required],
@@ -138,7 +138,8 @@ export class ProfileComponent implements OnInit{
         const user = response;
         this.editProfileForm.patchValue(user);
         this.originalValues = this.editProfileForm.getRawValue();
-        // console.log(user);
+        console.log(user);
+        console.log(user.identificationnumber);
         if(user.image !== '' && user.image !== 'default.jpg'){
           this.imageUrl = user.image;
         }
@@ -250,11 +251,11 @@ export class ProfileComponent implements OnInit{
   }
 
   submitUserInfo(info: any) {
-    const { email, identificationnumber, ...userInfo } = info;
+    const { email, ...userInfo } = info;
     userInfo.userID = Number(this.code);
     userInfo.image = this.imageUrl;
     userInfo.username = userInfo.username;
-    // console.log('Información del usuario a enviar:', userInfo);
+    console.log('Información del usuario a enviar:', userInfo);
     this.apiService.putData('update/update-client-info', userInfo).subscribe(
       (response) => {
         // console.log(response)
