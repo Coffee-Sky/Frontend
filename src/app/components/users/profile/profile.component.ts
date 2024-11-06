@@ -114,7 +114,7 @@ export class ProfileComponent implements OnInit{
       firstlastname: [this.user.firstlastname, [Validators.required, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)]],
       secondlastname: [this.user.secondlastname, Validators.pattern(/^[A-Za-zÁÉÍÓÚáéíóúÑñ]+$/)],
       genderID: [this.user.genderID, Validators.required],
-      identificationnumber: [this.user.identificationnumber, [Validators.required, Validators.pattern(/^[0-9]+$/)]],
+      identificationnumber: [{value: this.user.identificationnumber, disabled: true}],
       borncountry: [this.user.borncountry, Validators.required],
       bornstate: [this.user.bornstate, Validators.required],
       borncity: [this.user.borncity, Validators.required],

@@ -152,6 +152,7 @@ export class CreationFlightComponent implements OnInit{
     // Convertir la fecha y hora seleccionada a un objeto Date
     const [hours, minutes] = control.value.split(':');
     const selectedDateTime = new Date(selectedDate);
+    selectedDateTime.setDate(selectedDateTime.getDate() + 1);
     selectedDateTime.setHours(parseInt(hours), parseInt(minutes));
     const now = new Date();
     // Si la fecha seleccionada es posterior a hoy, no aplicar validación de hora
