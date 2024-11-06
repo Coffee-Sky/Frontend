@@ -21,12 +21,12 @@
   </div> -->
 
   <nav class="hidden md:flex space-x-4">
-    <button routerLink="">
+    <!-- <button routerLink="">
       <span class="material-symbols-outlined" translate="no">
         home
       </span>
       <p>Inicio</p>
-    </button>
+    </button> -->
     <button *ngIf="jwtService.tokenExistsAndValid()" routerLink="/profile">
       <span class="material-symbols-outlined" translate="no">
         person

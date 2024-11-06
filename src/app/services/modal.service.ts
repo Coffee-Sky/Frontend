@@ -12,4 +12,5 @@ export class ModalService {
   $promotion = new EventEmitter<any>();
   $cancel = new EventEmitter<any>();
   $edit = new EventEmitter<any>();
+  $verifyPassword = new EventEmitter<any>();
 }

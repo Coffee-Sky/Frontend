@@ -8,6 +8,7 @@ import { StatusAdminComponent } from '../status-admin/status-admin.component';
 import { ApiService } from '../../../../services/api.service';
 import { JwtService } from '../../../../services/jwt.service';
 import { ModalService } from '../../../../services/modal.service';
+import { VerifyPasswordComponent } from '../verify-password/verify-password.component';
 
 interface Admins {
   userID: number;
@@ -23,7 +24,7 @@ interface Admins {
 @Component({
   selector: 'app-root-home',
   standalone: true,
-  imports: [RouterModule, CommonModule, CreationAdminComponent, InfoAdminComponent, PasswordRootComponent, StatusAdminComponent],
+  imports: [RouterModule, CommonModule, CreationAdminComponent, InfoAdminComponent, PasswordRootComponent, StatusAdminComponent, VerifyPasswordComponent],
   templateUrl: './root-home.component.html',
   styleUrl: './root-home.component.css'
 })
@@ -31,6 +32,7 @@ interface Admins {
 export class RootHomeComponent implements OnInit{
   creationAdmin: boolean = false;
   changePassword: boolean = false;
+  verifyPassword: boolean = false;
   statusAdmin: boolean = false;
 
   admins: Admins[] = [];
@@ -38,6 +40,7 @@ export class RootHomeComponent implements OnInit{
   constructor(private createAdminService: ModalService, 
               private passwordService: ModalService, 
               private statusAdminService: ModalService,
+              private verifyPasswordService: ModalService,
               private apiService: ApiService,
               private jwtService: JwtService
             ){}
@@ -46,11 +49,16 @@ export class RootHomeComponent implements OnInit{
     this.createAdminService.$create.subscribe((value)=>{this.creationAdmin = value})
     this.passwordService.$password.subscribe((value)=>{this.changePassword = value})
     this.statusAdminService.$status.subscribe((value)=>{this.statusAdmin = value})
+    this.verifyPasswordService.$verifyPassword.subscribe((value)=>{this.verifyPassword = value})
     this.getAdmins();
   }
 
   createAdmin(){
     this.creationAdmin = true;
+  }
+
+  verifyPasswordRoot(){
+    this.verifyPassword = true;
   }
 
   changePasswordRoot(){
