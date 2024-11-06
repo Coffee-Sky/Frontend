@@ -130,23 +130,10 @@
 
           <div class="mb-2 md:mr-2 md:mb-0 w-full">
             <label class="block mt-3 mb-2 text-sm font-bold text-black">Documento de identidad</label>
-            <!-- Campo Editable -->
-            <input *ngIf="verifyRole()"
-            class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text"
-            placeholder="Documento de identidad"
-            formControlName="identificationnumber" 
-            [readOnly]="!isEditing"/>
-
-            <!-- Campo No Editable -->
-            <input *ngIf="!verifyRole()"
-            class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
-            type="text"
-            placeholder="Documento de identidad"
-            formControlName="identificationnumber"
-            readOnly />
-            <span *ngIf="editProfileForm.hasError('required','identificationnumber') && editProfileForm.controls['identificationnumber'].dirty" class="text-red-500 text-xs">El documento es requerido</span>
-            <span *ngIf="editProfileForm.hasError('pattern','identificationnumber') && editProfileForm.controls['identificationnumber'].dirty" class="text-red-500 text-xs">El documento es inválido</span>
+            <input class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
+            type="text" placeholder="Documento de identidad" formControlName="identificationnumber" [readOnly]="true" />
+            <!-- <span *ngIf="editProfileForm.hasError('required','identificationnumber') && editProfileForm.controls['identificationnumber'].dirty" class="text-red-500 text-xs">El documento es requerido</span>
+            <span *ngIf="editProfileForm.hasError('pattern','identificationnumber') && editProfileForm.controls['identificationnumber'].dirty" class="text-red-500 text-xs">El documento es inválido</span> -->
           </div>
           
           <div class="mb-2 w-full">
@@ -172,8 +159,8 @@
             <label class="block mt-3 mb-2 text-sm font-bold text-black">Correo</label>
             <input class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
             type="text" placeholder="Correo electrónico" formControlName="email" [readOnly]="!isEditing"/>
-            <span *ngIf="editProfileForm.hasError('required','email') && editProfileForm.controls['email'].dirty" class="text-red-500 text-xs">El correo es requerido</span>
-            <span *ngIf="editProfileForm.hasError('pattern','email')" class="text-red-500 text-xs">El correo es inválido</span>
+            <!-- <span *ngIf="editProfileForm.hasError('required','email') && editProfileForm.controls['email'].dirty" class="text-red-500 text-xs">El correo es requerido</span>
+            <span *ngIf="editProfileForm.hasError('pattern','email')" class="text-red-500 text-xs">El correo es inválido</span> -->
           </div>
           
           <!-- <div class="mb-2 w-full">

@@ -6,6 +6,11 @@
         <h2 class="mb-4 text-lg font-semibold">Crear Administrador</h2>
         <div class="mx-auto max-w-md text-left">
           <form [formGroup]="creationForm">
+            <label class="block mb-2 mt-4 text-sm text-black">Cédula del administrador <span class="text-red-500">*</span></label>
+            <input
+              class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-color1 focus:bg-white invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
+              type="text" placeholder="Documento de identidad" formControlName="identificationnumber"/>
+            <span *ngIf="creationForm.hasError('pattern','identificationnumber')" class="text-red-500 text-xs px-2">El número de documento no es válido</span>
             <label class="block mb-2 mt-4 text-sm text-black">Correo electrónico del administrador <span class="text-red-500">*</span></label>
             <input
               class="w-full px-8 py-4 rounded-lg font-medium bg-gray-100 border border-gray-200 placeholder-gray-500 text-sm focus:outline-none focus:border-color1 focus:bg-white invalid:[&:not(:placeholder-shown):not(:focus)]:border-red-500"
