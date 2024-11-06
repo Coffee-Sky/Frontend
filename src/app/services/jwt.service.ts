@@ -81,9 +81,17 @@ export class JwtService {
     }
   }
 
-
   decodeToken(): token | null {
     const token = this.getToken();
     return token ? jwtDecode(token) : null;
+  }
+
+  verifyIdRole(newToken: string){
+    const token = this.decodeToken();
+    if (token) {
+      const newDecoded: any = jwtDecode(newToken);
+      return token.sub === newDecoded.sub && token.role === newDecoded.role;
+    }
+    return false;
   }
 }
