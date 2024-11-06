@@ -119,7 +119,7 @@ export class ProfileComponent implements OnInit{
       bornstate: [this.user.bornstate, Validators.required],
       borncity: [this.user.borncity, Validators.required],
       bornDate: [this.user.bornDate, Validators.required],
-      username: [this.user.username, [Validators.required, Validators.minLength(5), Validators.maxLength(12), Validators.pattern(/^[A-Za-z0-9_]+$/)]],
+      username: [this.user.username, [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern(/^[A-Za-z0-9_]+$/)]],
       email: [{value: this.user.email, disabled: true}],
       // password: ['12w@waR4', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)]],
     });
@@ -143,8 +143,8 @@ export class ProfileComponent implements OnInit{
         const user = response;
         this.editProfileForm.patchValue(user);
         this.originalValues = this.editProfileForm.getRawValue();
-        console.log(user);
-        console.log(user.identificationnumber);
+        // console.log(user);
+        // console.log(user.identificationnumber);
         if(user.image !== '' && user.image !== 'default.jpg'){
           this.imageUrl = user.image;
         }
@@ -260,7 +260,7 @@ export class ProfileComponent implements OnInit{
     userInfo.userID = Number(this.code);
     userInfo.image = this.imageUrl;
     userInfo.username = userInfo.username;
-    console.log('Información del usuario a enviar:', userInfo);
+    // console.log('Información del usuario a enviar:', userInfo);
     this.apiService.putData('update/update-client-info', userInfo).subscribe(
       (response) => {
         // console.log(response)

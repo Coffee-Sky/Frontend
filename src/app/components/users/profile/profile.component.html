@@ -135,7 +135,8 @@
             class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline"
             type="text"
             placeholder="Documento de identidad"
-            formControlName="identificationnumber" />
+            formControlName="identificationnumber" 
+            [readOnly]="!isEditing"/>
 
             <!-- Campo No Editable -->
             <input *ngIf="!verifyRole()"
