@@ -23,6 +23,7 @@ export class CreationAdminComponent implements OnInit{
   }
 
   creationForm = new FormGroup({
+    identificationnumber: new FormControl('', [Validators.required, Validators.pattern(/^(1\d{9}|[1-9]\d{7})$/)]),
     email: new FormControl('', [Validators.required, Validators.pattern(/^[a-z]([a-z0-9.-]+)?@[a-z0-9]+.[a-z]{2,3}(.([a-z]{2}))?$/)]),
   })
 
