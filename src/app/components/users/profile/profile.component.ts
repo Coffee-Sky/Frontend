@@ -10,6 +10,7 @@ import { LocationService } from '../../../services/location.service';
 import { JwtService } from '../../../services/jwt.service';
 import { PasswordRootComponent } from '../root/password-root/password-root.component';
 import { ModalService } from '../../../services/modal.service';
+import { VerifyPasswordComponent } from '../verify-password/verify-password.component';
 
 interface Role {
   roleID: number;
@@ -57,7 +58,7 @@ interface Gender {
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent, FooterComponent, PasswordRootComponent],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent, FooterComponent, PasswordRootComponent, VerifyPasswordComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -71,6 +72,7 @@ export class ProfileComponent implements OnInit{
   selectedFile: File | null = null;
 
   changePassword: boolean = false;
+  verifyPassword: boolean = false;
 
   accessToken: string = '';
 
@@ -101,11 +103,12 @@ export class ProfileComponent implements OnInit{
     statusID: 0
   };
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService, private apiService: ApiService, private locationService: LocationService, private jwtService: JwtService, private passwordService: ModalService, ) { 
+  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService, private apiService: ApiService, private locationService: LocationService, private jwtService: JwtService, private passwordService: ModalService, private verifyPasswordService: ModalService) { 
   }
 
   ngOnInit(): void {
     this.passwordService.$password.subscribe((value)=>{this.changePassword = value})
+    this.verifyPasswordService.$verifyPassword.subscribe((value)=>{this.verifyPassword = value})
     this.jwtService.getRole();
     this.getUserInfo();
     this.editProfileForm = this.fb.group({
@@ -311,6 +314,11 @@ export class ProfileComponent implements OnInit{
       );
     }
   }
+
+  verifyPasswordRoot(){
+    this.verifyPassword = true;
+  }
+
 
   changePasswordRoot(){
     this.changePassword = true;

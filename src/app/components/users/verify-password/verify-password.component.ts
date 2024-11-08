@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ModalService } from '../../../../services/modal.service';
+import { ModalService } from '../../../services/modal.service';
 import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { ApiService } from '../../../../services/api.service';
-import { JwtService } from '../../../../services/jwt.service';
+import { ApiService } from '../../../services/api.service';
+import { JwtService } from '../../../services/jwt.service';
 
 @Component({
   selector: 'app-verify-password',
