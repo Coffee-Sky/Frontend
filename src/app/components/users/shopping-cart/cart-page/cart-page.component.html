@@ -1,0 +1,69 @@
+<div class="min-h-screen bg-gray-100">
+  <app-header/>
+  <div class="max-w-7xl mx-auto space-y-8 pt-6 p-6">
+    <div class="text-2xl font-bold flex justify-center">
+      <h2>Carrito de compras</h2>
+    </div>
+
+    <div class="bg-white border border-color4 px-3 py-3 flex justify-center shadow-md sm:rounded-lg overflow-hidden">
+      <div class="overflow-x-auto w-full">
+        <table class="w-full text-center text-sm text-black">
+          <thead class="uppercase px-6 py-3">
+            <tr class="border-b border-color4">
+              <th class="py-2 px-5">Código vuelo</th>
+              <th class="py-2 px-5">Origen</th>
+              <th class="py-2 px-5">Destino</th>
+              <th class="py-2 px-5">Tiquetes</th>
+              <th class="py-2 px-5">Subtotal</th>
+              <th class="py-2 px-5"></th>
+            </tr>
+          </thead>
+  
+          <tbody>
+            <tr *ngFor="let flight of flights" class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
+              <td class="py-3 px-5 whitespace-nowrap" *ngIf="flight.type == 'Nacional'">AN-{{ flight.flightID }}</td>
+              <td class="py-3 px-5 whitespace-nowrap" *ngIf="flight.type == 'Internacional'">AI-{{ flight.flightID }}</td>
+              <td class="py-3 px-5 whitespace-nowrap">{{ flight.origin }}</td>
+              <td class="py-3 px-5 whitespace-nowrap">{{ flight.destiny }}</td>
+              <td class="py-3 px-5 whitespace-nowrap">{{ flight.passengers }}</td>
+              <td class="py-3 px-5 whitespace-nowrap">{{ flight.price | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+              <td class="flex justify-center gap-4 px-5 py-3 whitespace-nowrap">
+                <button (click)="deleteFlightFunction(flight.flightID)"
+                  class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" type="submit">
+                  <span class="material-symbols-outlined" translate="no">
+                    delete
+                  </span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr class="border-b border-color4 font-semibold justify-end">
+              <td class="py-3 px-5 whitespace-nowrap"></td>
+              <td class="py-3 px-5 whitespace-nowrap"></td>
+              <td class="py-3 px-5 whitespace-nowrap"></td>
+              <th class="py-3 px-5 whitespace-nowrap">Total</th>
+              <td class="py-3 px-5 whitespace-nowrap">{{ total | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+            </tr>
+        </tfoot>
+        </table>
+      </div> 
+    </div> 
+
+    <div class="flex flex-1 items-center justify-center gap-4">
+      <button routerLink=""
+        class="w-40 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+        Salir
+      </button>
+      <button routerLink="/passenger-info"
+        class="w-40 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+        Reservar Tiquetes
+      </button>
+      <button routerLink="/passenger-info"
+        class="w-40 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade focus:outline-none focus:shadow-outline">
+        Comprar Tiquetes
+      </button>
+    </div>
+
+  </div>
+</div>
