@@ -16,6 +16,8 @@ export class VerifyPasswordComponent {
 
   token: string = '';
 
+  isLoading: boolean = false;
+
   verifyPassword = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.pattern(/^[a-z]([a-z0-9.-]+)?@[a-z0-9]+.[a-z]{2,3}(.([a-z]{2}))?$/)]),
     password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/<>+-])[A-Za-z\d@$!%*?&/<>+-]{8,20}$/)]),
@@ -34,6 +36,7 @@ export class VerifyPasswordComponent {
   }
   
   submitInfo() {
+    this.isLoading = true;
     this.apiService.postData("auth/login", this.verifyPassword.value).subscribe(
       (response) => {
         this.token = response['token'];

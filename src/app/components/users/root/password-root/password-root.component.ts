@@ -13,6 +13,9 @@ import { ApiService } from '../../../../services/api.service';
   styleUrl: './password-root.component.css'
 })
 export class PasswordRootComponent implements OnInit{
+
+  isLoading: boolean = false;
+
   constructor(private passwordService: ModalService, private jwtService: JwtService, private apiService: ApiService){}
 
   ngOnInit(): void {
@@ -25,6 +28,7 @@ export class PasswordRootComponent implements OnInit{
 
   save() {
     if (this.passwordForm.valid) {
+      this.isLoading = true;
       // console.log(this.passwordForm.value);
       // console.log(this.jwtService.decodeToken());
       const data = {

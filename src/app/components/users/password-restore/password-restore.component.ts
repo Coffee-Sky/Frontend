@@ -12,6 +12,9 @@ import { ApiService } from '../../../services/api.service';
   styleUrl: './password-restore.component.css'
 })
 export class PasswordRestoreComponent {
+
+  isLoading: boolean = false;
+
   constructor(private passwordService: ModalService, private apiService: ApiService){}
 
   ngOnInit(): void {
@@ -24,6 +27,7 @@ export class PasswordRestoreComponent {
 
   save() {
     if (this.emailForm.valid) {
+      this.isLoading = true;
       this.apiService.getData('update/recover-password?email='+this.emailForm.value.email).subscribe(
         (response) => {
           // console.log('Contraseña enviada al correo:', response);

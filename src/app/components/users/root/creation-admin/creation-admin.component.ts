@@ -13,6 +13,8 @@ import { ModalService } from '../../../../services/modal.service';
 })
 export class CreationAdminComponent implements OnInit{
 
+  isLoading: boolean = false;
+
   constructor(private createAdminService: ModalService,
               private apiService: ApiService
   ){
@@ -31,6 +33,7 @@ export class CreationAdminComponent implements OnInit{
     // console.log(this.creationForm.value);
     if (this.creationForm.valid) {
       // console.log(this.creationForm.value);
+      this.isLoading = true;
       this.apiService.postData('sign-up/register-admin', this.creationForm.value).subscribe(
         (response) => {
           // console.log(response);

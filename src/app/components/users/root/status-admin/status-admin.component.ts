@@ -18,12 +18,15 @@ export class StatusAdminComponent implements OnInit{
 
   error: boolean = false;
 
+  isLoading: boolean = false;
+
   constructor(private statusAdminService: ModalService, private apiService: ApiService) {}
 
   ngOnInit(): void {
   }
 
   actionAdmin() {
+    this.isLoading = true;
     this.apiService.putData('update/change-user-status?userID='+this.adminID, {userID: Number(this.adminID)}).subscribe(
       (response) => {
         this.close();
