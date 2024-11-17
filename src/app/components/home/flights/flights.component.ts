@@ -1,10 +1,11 @@
 import { CommonModule, registerLocaleData } from '@angular/common';
 import { Component, LOCALE_ID, OnInit } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import localeEs from '@angular/common/locales/es';
 import { SearchFlightService } from '../../../services/search-flight.service';
 import { SearchFlightsComponent } from '../search-flights/search-flights.component';
 import { ModalService } from '../../../services/modal.service';
+import { CartService } from '../../../services/cart.service';
 
 registerLocaleData(localeEs, 'es');
 
@@ -69,8 +70,10 @@ allFlights: FlightData = {
   }
 };
 
-  
-  constructor(private searchFlightService: SearchFlightService, private editSearchService: ModalService) { }
+  constructor(private searchFlightService: SearchFlightService, 
+              private editSearchService: ModalService,
+              private cartService: CartService,
+              private router: Router){ }
 
   ngOnInit(): void {
     this.editSearchService.$edit.subscribe((value)=>{this.editingSearch = value})
@@ -179,4 +182,68 @@ allFlights: FlightData = {
     return selectedClass === 'firstClass' ? vuelo.priceFirstClass : vuelo.priceEconomy;
   }
 
+  addToCart(): void {
+    if (this.tripType === 'roundtrip') {
+      if (this.selectedFlight && this.selectedReturnFlight) {
+        const roundTripFlights = [
+          {
+            flightID: this.selectedFlight.flightID,
+            tripType: this.tripType,
+            origin: this.selectedFlight.origin,
+            destiny: this.selectedFlight.destiny,
+            departure: this.selectedFlight.departure,
+            passengers: this.passengers,
+            selectedClass: this.selectedClassIda,
+            price: this.selectedClassIda === 'economy' ? this.selectedFlight.economyPrice : this.selectedFlight.businessPrice
+          },
+          {
+            flightID: this.selectedReturnFlight.flightID,
+            tripType: this.tripType,
+            origin: this.selectedReturnFlight.origin,
+            destiny: this.selectedReturnFlight.destiny,
+            departure: this.selectedReturnFlight.departure,
+            passengers: this.passengers,
+            selectedClass: this.selectedClassVuelta,
+            price: this.selectedClassVuelta === 'economy' ? this.selectedReturnFlight.economyPrice : this.selectedReturnFlight.businessPrice
+          }
+        ];
+        
+        this.cartService.addToCart(roundTripFlights, this.tripType);
+        console.log('Carrito: ', this.cartService.getCartData());
+        window.alert('Vuelos agregados al carrito exitosamente');
+        this.selectedFlight = null;
+        this.selectedReturnFlight = null;
+        this.selectedClassIda = null;
+        this.selectedClassVuelta = null;
+        // Navegar al carrito
+        this.router.navigate(['/cart']);
+      } else {
+        window.alert('Debe seleccionar un vuelo de ida y un vuelo de vuelta.');
+      }
+    } 
+    if (this.tripType === 'oneway') {
+      if (this.selectedFlight) {
+        const oneWayFlight = {
+          flightID: this.selectedFlight.flightID,
+          tripType: this.tripType,
+          origin: this.selectedFlight.origin,
+          destiny: this.selectedFlight.destiny,
+          departure: this.selectedFlight.departure,
+          passengers: this.passengers,
+          selectedClass: this.selectedClassIda,
+          price: this.selectedClassIda === 'economy' ? this.selectedFlight.economyPrice : this.selectedFlight.businessPrice
+        };
+        
+        this.cartService.addToCart([oneWayFlight], this.tripType);
+        console.log('Carrito: ', this.cartService.getCartData());
+        window.alert('Vuelo agregado al carrito exitosamente');
+        this.selectedFlight = null;
+        this.selectedClassIda = null;
+        // Navegar al carrito
+        this.router.navigate(['/cart']);
+      } else {
+        window.alert('Debe seleccionar un vuelo.');
+      }
+    }
+  }
 }
