@@ -122,7 +122,7 @@ export class ProfileComponent implements OnInit{
       bornstate: [this.user.bornstate, Validators.required],
       borncity: [this.user.borncity, Validators.required],
       bornDate: [this.user.bornDate, Validators.required],
-      username: [this.user.username, [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern(/^[A-Za-z0-9_]+$/)]],
+      username: [this.user.username, [Validators.required, Validators.minLength(5), Validators.maxLength(20), Validators.pattern(/^[A-Za-z0-9_.-]+$/)]],
       email: [{value: this.user.email, disabled: true}],
       // password: ['12w@waR4', [Validators.required, Validators.minLength(8), Validators.maxLength(20), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&/-])[A-Za-z\d@$!%*?&/-]{8,20}$/)]],
     });
