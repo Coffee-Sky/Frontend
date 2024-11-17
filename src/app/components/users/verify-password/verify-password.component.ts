@@ -5,6 +5,9 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ApiService } from '../../../services/api.service';
 import { JwtService } from '../../../services/jwt.service';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-verify-password',
   standalone: true,
@@ -31,7 +34,14 @@ export class VerifyPasswordComponent {
     }
     else{
       console.error('Formulario invalido');
-      window.alert('Ingrese la información correctamente.');
+      // window.alert('Ingrese la información correctamente.');
+      Swal.fire({
+        icon: "error",
+        title: "Verificar contraseña",
+        text: "Ingrese la información correctamente.",
+        showConfirmButton: false,
+        timer: 2000
+      });
     }
   }
   
@@ -39,22 +49,40 @@ export class VerifyPasswordComponent {
     this.isLoading = true;
     this.apiService.postData("auth/login", this.verifyPassword.value).subscribe(
       (response) => {
+        console.log(response)
         this.token = response['token'];
         if(this.jwtService.verifyIdRole(this.token)){
           this.close();
           this.passwordService.$password.emit(true);
         }
         else{
-          window.alert('No tiene permisos para acceder. Vuelva a iniciar sesión.');
-          this.jwtService.removeToken();
-          window.location.reload();
+          // window.alert('No tiene permisos para acceder. Vuelva a iniciar sesión.');
+          this.errorLogin();
         }
       },
       (error) => {
         console.error('Error iniciando sesión:', error);
-        window.alert('Credenciales incorrectas.');
+        this.errorLogin();
       }
     );
+  }
+
+  errorLogin() {
+    Swal.fire({
+      icon: "error",
+      title: "Verificar contraseña",
+      text: "No tiene permisos para acceder. Vuelva a iniciar sesión.",
+      // showCancelButton: false,
+      showConfirmButton: false,
+      // confirmButtonColor: "#0F766E",
+      // cancelButtonColor: "#d33",
+      // confirmButtonText: "Aceptar",
+      timer: 2500,
+      timerProgressBar: true
+    }).then(() => {
+      this.jwtService.removeToken();
+      window.location.reload();
+    });
   }
 
   close(){

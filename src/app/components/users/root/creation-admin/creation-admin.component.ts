@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../services/api.service';
 import { ModalService } from '../../../../services/modal.service';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-creation-admin',
   standalone: true,
@@ -37,12 +40,36 @@ export class CreationAdminComponent implements OnInit{
       this.apiService.postData('sign-up/register-admin', this.creationForm.value).subscribe(
         (response) => {
           // console.log(response);
-          window.alert('Administrador creado con éxito');
-          this.createAdminService.$create.emit(false);
-          window.location.reload();
+          // window.alert('Administrador creado con éxito');
+          // this.createAdminService.$create.emit(false);
+          // window.location.reload();
+          Swal.fire({
+            icon: "success",
+            title: "Crear administrador",
+            text: "Administrador creado con éxito.",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            this.close();
+            window.location.reload();
+          });
         },
         (error) => {
           console.error(error);
+          Swal.fire({
+            icon: "error",
+            title: "Crear administrador",
+            text: "Hubo un error. Inténtelo nuevamente.",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            this.close();
+            window.location.reload();
+          });
         }
       );
     } else {

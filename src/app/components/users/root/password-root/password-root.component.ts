@@ -5,6 +5,9 @@ import { ModalService } from '../../../../services/modal.service';
 import { JwtService } from '../../../../services/jwt.service';
 import { ApiService } from '../../../../services/api.service';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-password-root',
   standalone: true,
@@ -38,11 +41,33 @@ export class PasswordRootComponent implements OnInit{
       this.apiService.putData('update/change-password', data).subscribe(
         (response) => {
           // console.log(response);
-          window.alert('Contraseña actualizada');
-          this.passwordService.$password.emit(false);
+          // window.alert('Contraseña actualizada');
+          // this.passwordService.$password.emit(false);
+          Swal.fire({
+            icon: "success",
+            title: "Cambiar contraseña",
+            text: "Contraseña actualizada con éxito.",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            this.close();
+          });
         },
         (error) => {
           console.error(error);
+          Swal.fire({
+            icon: "error",
+            title: "Cambiar contraseña",
+            text: "Hubo un error. Vuélvalo a intentar",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            this.close();
+          });
         }
       )
     } else {

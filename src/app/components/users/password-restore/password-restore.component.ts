@@ -4,6 +4,9 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ModalService } from '../../../services/modal.service';
 import { ApiService } from '../../../services/api.service';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-password-restore',
   standalone: true,
@@ -31,11 +34,31 @@ export class PasswordRestoreComponent {
       this.apiService.getData('update/recover-password?email='+this.emailForm.value.email).subscribe(
         (response) => {
           // console.log('Contraseña enviada al correo:', response);
-          window.alert("Se ha enviado el correo para recuperar tu contraseña.")
+          Swal.fire({
+            icon: "success",
+            title: "Recuperar contraseña",
+            text: "Se ha enviado el correo para recuperar tu contraseña.",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            this.close();
+          });
         },
         (error) => {
           console.error('Error:', error);
-          window.alert('No se ha podido enviar la contraseña al correo, inténtelo nuevamente.');
+          // window.alert('No se ha podido enviar la contraseña al correo, inténtelo nuevamente.');
+          Swal.fire({
+            icon: "error",
+            title: "Recuperar contraseña",
+            text: "Vuelve a intentarlo.",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            this.close();
+          });
         }
       );
     } else {

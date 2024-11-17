@@ -5,6 +5,9 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ApiService } from '../../../../services/api.service';
 import { JwtService } from '../../../../services/jwt.service'; 
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-first-time-password',
   standalone: true,
@@ -26,7 +29,16 @@ export class FirstTimePasswordComponent {
     }
     else{
       console.error('Formulario invalido');
-      window.alert('Ingrese la información correctamente.');
+      // window.alert('Ingrese la información correctamente.');
+      Swal.fire({
+        icon: "error",
+        title: "Cambiar contraseña",
+        text: "Ingrese la información correctamente.",
+        confirmButtonColor: "#0F766E",
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      })
     }
   }
   
@@ -56,8 +68,19 @@ export class FirstTimePasswordComponent {
     this.apiService.putData('update/change-password', data).subscribe(
       (response) => {
         // console.log(response);
-        window.alert('Contraseña actualizada');
-        this.close();
+        // window.alert('Contraseña actualizada');
+        // this.close();
+        Swal.fire({
+          icon: "success",
+          title: "Cambiar contraseña",
+          text: "Contraseña actualizada correctamente.",
+          confirmButtonColor: "#0F766E",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
+        }).then(() => {
+          this.close();
+        });
       },
       (error) => {
         console.error(error);
