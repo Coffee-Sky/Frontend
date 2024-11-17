@@ -8,6 +8,9 @@ import { ApiService } from '../../../../services/api.service';
 import { Router } from '@angular/router';
 import { LocationService } from '../../../../services/location.service';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 interface Country {
   country_name: string;
   country_short_name: string;
@@ -162,12 +165,32 @@ export class AddCardComponent implements OnInit {
       this.apiService.postData('update/enroll-card', this.cardForm.value).subscribe(
         (response) => {
           // console.log(response);
-          window.alert('Tarjeta registrada correctamente.');
-          this.router.navigate(['/cards']);
+          // window.alert('Tarjeta registrada correctamente.');
+          // this.router.navigate(['/cards']);
+          Swal.fire({
+            icon: "success",
+            title: "Nueva tarjeta",
+            text: "Tarjeta registrada correctamente.",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            this.router.navigate(['/cards']);
+          });
         },
         (error) => {
           console.error(error);
-          window.alert('Error al registrar la tarjeta. Vuélvalo a intentar.');
+          // window.alert('Error al registrar la tarjeta. Vuélvalo a intentar.');
+          Swal.fire({
+            icon: "error",
+            title: "Nueva tarjeta",
+            text: "Error al registrar la tarjeta. Vuélvalo a intentar.",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          })
         }
       );
     } else {

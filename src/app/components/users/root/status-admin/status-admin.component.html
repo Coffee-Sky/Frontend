@@ -10,7 +10,10 @@
         <div class="mx-auto max-w-md text-left">
           <span class="text-sm">{{ error ? 'Ha ocurrido un error al cambiar el estado del administrador. Inténtalo de nuevo más tarde.' : (status === 1 ? '¿Está seguro que desea desactivar el administrador?' : status === 2 ? '¿Está seguro que desea activar el administrador?' : 'No se conoce el estado del administrador, intente de nuevo más tarde.')}}</span>
         </div>
-        <div class="mt-4 sm:flex sm:flex-row-reverse sm:px-6">
+        <div class="mx-auto max-w-md text-center">
+          <p class="text-sm text-gray-500" *ngIf="isLoading">Espere un momento...</p>
+        </div>
+        <div class="mt-4 sm:flex sm:flex-row-reverse sm:px-6" *ngIf="!isLoading">
           <button (click)="close()" class="inline-flex w-full justify-center rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-600 sm:ml-3 sm:w-auto">{{ error ? 'Cerrar' : 'Cancelar' }}</button>
           <button type="submit" *ngIf="(status === 1 || status === 2) && !error" (click)="actionAdmin()"
           class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-color1 hover:bg-color1 hover:text-white sm:mt-0 sm:w-auto">{{ status === 1 ? 'Desactivar' : status === 2 ? 'Activar' : 'Desconocido' }}</button>

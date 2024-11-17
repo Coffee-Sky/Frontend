@@ -8,6 +8,9 @@ import { DeleteCardComponent } from '../delete-card/delete-card.component';
 import { ApiService } from '../../../../services/api.service';
 import { LocationService } from '../../../../services/location.service';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 interface Country {
   country_name: string;
   country_short_name: string;
@@ -247,8 +250,19 @@ export class InfoCardsComponent implements OnInit {
       },
       (error) => {
         console.error('Error obteniendo la información de la tarjeta:', error);
-        window.alert('Error obteniendo la información de la tarjeta. Intente de nuevo más tarde.');
-        window.location.href = '/cards';
+        // window.alert('Error obteniendo la información de la tarjeta. Intente de nuevo más tarde.');
+        // window.location.href = '/cards';
+        Swal.fire({
+          icon: "error",
+          title: "Información tarjeta",
+          text: "Error obteniendo la información de la tarjeta. Intente de nuevo más tarde.",
+          confirmButtonColor: "#0F766E",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
+        }).then(() => {
+          window.location.href = '/cards';
+        });
       }
     );
   }
@@ -270,11 +284,29 @@ export class InfoCardsComponent implements OnInit {
       this.apiService.putData('update/edit-card', this.editCardForm.value).subscribe(
         (response) => {
           // console.log(response);
-          window.alert('Tarjeta actualizada correctamente.');
+          // window.alert('Tarjeta actualizada correctamente.');
+          Swal.fire({
+            icon: "success",
+            title: "Editar tarjeta",
+            text: "Tarjeta actualizada correctamente.",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          })
         },
         (error) => {
           console.error('Error actualizando la tarjeta:', error);
-          window.alert('Error actualizando la tarjeta. Intente de nuevo más tarde.');
+          // window.alert('Error actualizando la tarjeta. Intente de nuevo más tarde.');
+          Swal.fire({
+            icon: "error",
+            title: "Editar tarjeta",
+            text: "Error actualizando la tarjeta. Intente de nuevo más tarde.",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          })
         }
       );
     } else {

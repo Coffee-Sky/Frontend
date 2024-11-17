@@ -4,6 +4,9 @@ import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validatio
 import { RouterModule } from '@angular/router';
 import { ApiService } from '../../../../services/api.service';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-creation-flight',
   standalone: true,
@@ -233,12 +236,32 @@ export class CreationFlightComponent implements OnInit{
 
       this.apiService.postData('manage/create-flight', flightInfo).subscribe(
         (response) => {
-          window.alert('Vuelo creado exitosamente.');
-          window.location.href = '/admin';
+          // window.alert('Vuelo creado exitosamente.');
+          // window.location.href = '/admin';
+          Swal.fire({
+            icon: "success",
+            title: "Crear vuelo",
+            text: "Vuelo creado con éxito.",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            window.location.href = '/admin';
+          });
         },
         (error) => {
           console.error('Error creando el vuelo:', error);
-          window.alert('Error creando el vuelo. Inténtelo nuevamente.');
+          // window.alert('Error creando el vuelo. Inténtelo nuevamente.');
+          Swal.fire({
+            icon: "error",
+            title: "Crear vuelo",
+            text: "Error creando el vuelo. Inténtelo nuevamente.",
+            confirmButtonColor: "#0F766E",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          })
         }
       )
     } else {

@@ -8,7 +8,7 @@ import { StatusAdminComponent } from '../status-admin/status-admin.component';
 import { ApiService } from '../../../../services/api.service';
 import { JwtService } from '../../../../services/jwt.service';
 import { ModalService } from '../../../../services/modal.service';
-import { VerifyPasswordComponent } from '../verify-password/verify-password.component';
+import { VerifyPasswordComponent } from '../../verify-password/verify-password.component';
 
 interface Admins {
   userID: number;

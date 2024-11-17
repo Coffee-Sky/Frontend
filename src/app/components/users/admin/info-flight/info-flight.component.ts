@@ -8,6 +8,9 @@ import { EditFlightService } from '../../../../services/edit-flight.service';
 import { CancelFlightComponent } from '../cancel-flight/cancel-flight.component';
 import { ApiService } from '../../../../services/api.service';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 // Validación personalizada para comparar los precios
 export function priceComparisonValidator(): ValidatorFn {
   return (control: AbstractControl): ValidationErrors | null => {
@@ -174,11 +177,29 @@ export class InfoFlightComponent implements OnInit{
     this.apiService.putData('update/flight-price', { 'flightID': flightID, 'economyPrice': economyPrice, 'businessPrice': businessPrice }).subscribe(
       (response) => {
         // console.log('Respuesta:', response);
-        window.alert('Precios actualizados correctamente.')
+        // window.alert('Precios actualizados correctamente.')
+        Swal.fire({
+          icon: "success",
+          title: "Actualizar precios",
+          text: "Precios actualizados correctamente.",
+          confirmButtonColor: "#0F766E",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
+        })
       },
       (error) => {
         console.error('Error actualizando los precios del vuelo:', error);
-        window.alert('Error al actualizar los precios del vuelo. Inténtelo nuevamente.');
+        // window.alert('Error al actualizar los precios del vuelo. Inténtelo nuevamente.');
+        Swal.fire({
+          icon: "error",
+          title: "Actualizar precios",
+          text: "Error al actualizar los precios del vuelo. Inténtelo nuevamente.",
+          confirmButtonColor: "#0F766E",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
+        })
       }
     );
   }

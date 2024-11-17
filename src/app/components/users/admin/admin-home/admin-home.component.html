@@ -84,6 +84,10 @@
         <div class="" *ngIf="creationPromo==true">
           <app-promotion/>
         </div>
+
+        <div class="" *ngIf="changePassword==true">
+          <app-first-time-password/>
+        </div>
         
         <div class="" *ngIf="cancelFlight==true">
           <app-cancel-flight [flightCode]="flightCodeCancel" [flightDate]="flightDateCancel" [flightStatus]="flightStatusCancel"/>

@@ -7,6 +7,9 @@ import { JwtService } from '../../../services/jwt.service';
 import { ModalService } from '../../../services/modal.service';
 import { PasswordRestoreComponent } from '../password-restore/password-restore.component';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -47,7 +50,16 @@ export class LoginComponent {
       },
       (error) => {
         console.error('Error iniciando sesión:', error);
-        window.alert('Credenciales incorrectas.');
+        // window.alert('Credenciales incorrectas.');
+        Swal.fire({
+          icon: "error",
+          title: "Error al iniciar sesión",
+          text: "Vuelve a intentarlo.",
+          confirmButtonColor: "#0F766E",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
+        });
       }
     );
   }
