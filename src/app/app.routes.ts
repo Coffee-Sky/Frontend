@@ -19,6 +19,7 @@ import { FlightsComponent } from './components/home/flights/flights.component';
 import { ListCardsComponent } from './components/users/cards/list-cards/list-cards.component';
 import { InfoCardsComponent } from './components/users/cards/info-cards/info-cards.component';
 import { AddCardComponent } from './components/users/cards/add-card/add-card.component';
+import { SelectCardComponent } from './components/users/cards/select-card/select-card.component';
 
 export const routes: Routes = [
   { path: '', component: PageComponent, canActivate: [authGuard]}, 
@@ -33,7 +34,8 @@ export const routes: Routes = [
   { path: 'admin', component: AdminHomeComponent, canActivate: [adminGuard]},
   { path: 'cards', component: ListCardsComponent, canActivate: [clientGuard]},
   { path: 'add-card', component: AddCardComponent, canActivate: [clientGuard]},
-  { path: 'info-card/:code', component: InfoCardsComponent, canActivate: [clientGuard]}
+  { path: 'info-card/:code', component: InfoCardsComponent, canActivate: [clientGuard]},
+  { path: 'select-card', component: SelectCardComponent, canActivate: [clientGuard]}
 ];
 
 @NgModule({
