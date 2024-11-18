@@ -33,6 +33,12 @@
       </span>
       <p>Perfil</p>
     </button>
+    <button *ngIf="jwtService.tokenExistsAndValid()" routerLink="/cart">
+      <span class="material-symbols-outlined" translate="no">
+        shopping_cart
+      </span>
+      <p>Carrito</p>
+    </button>
     <button *ngIf="jwtService.tokenExistsAndValid()" (click)="logout()">
       <span class="material-symbols-outlined" translate="no">
         logout
@@ -67,6 +73,12 @@
         person
       </span>
       <p>Perfil</p>
+    </button>
+    <button *ngIf="jwtService.tokenExistsAndValid()" routerLink="/cart">
+      <span class="material-symbols-outlined" translate="no">
+        shopping_cart
+      </span>
+      <p>carrito</p>
     </button>
     <button *ngIf="jwtService.tokenExistsAndValid()" (click)="logout()">
       <span class="material-symbols-outlined" translate="no">

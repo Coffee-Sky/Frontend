@@ -1,0 +1,151 @@
+<div class="bg-color2 min-h-screen">
+  <app-header/>
+  <div class="max-w-4xl mx-auto p-6">
+    <div class="mb-6 text-2xl font-bold flex justify-center">
+      <h2>Información de Pasajeros</h2>
+    </div>
+
+    <!-- Iterar sobre cada item del carrito -->
+    <ng-container *ngFor="let item of cartItems">
+      <div [formGroup]="flightForms[item.id]" class="mb-8">
+        <!-- Información del vuelo -->
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4" formGroupName="flightInfo">
+          <div class="text-lg font-semibold mb-2 text-center">
+            <h3>Formularios para el trayecto</h3>
+          </div>
+          <div class="flex justify-center">
+            <p class="inline-block mr-2">{{ item.flights[0].origin }}</p>
+            <span class="material-symbols-outlined transform rotate-90" translate="no">flight</span>
+            <p class="inline-block ml-2 mr-2">{{ item.flights[0].destiny }}</p>
+            <span *ngIf="item.tripType === 'roundtrip'" class="material-symbols-outlined transform rotate-90" translate="no">flight</span>
+            <p *ngIf="item.tripType === 'roundtrip'" class="inline-block ml-2">{{ item.flights[0].origin }}</p>
+          </div>
+        </div>
+
+        <!-- Formularios de pasajeros -->
+        <div formArrayName="passengers">
+          <div *ngFor="let passenger of getPassengersArray(item.id).controls; let i = index" 
+               [formGroupName]="i"
+               class="mb-4 p-6 bg-white rounded-lg shadow-md">
+            
+            <h3 class="text-lg font-semibold text-black mb-4">Pasajero {{i + 1}}</h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Primer nombre <span class="text-red-500">*</span></label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="Primer nombre" formControlName="firstname">
+                <span *ngIf="passenger.get('firstname')?.errors?.['required'] && passenger.get('firstname')?.dirty" class="text-red-500 text-xs">El primer nombre es requerido</span>
+                <span *ngIf="passenger.get('firstname')?.errors?.['pattern']" class="text-red-500 text-xs">El nombre no es válido</span>
+              </div>
+
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Segundo nombre</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="Segundo nombre" formControlName="secondname">
+                <span *ngIf="passenger.get('secondname')?.errors?.['pattern']" class="text-red-500 text-xs">El nombre no es válido</span>
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Primer apellido <span class="text-red-500">*</span></label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="Primer apellido" formControlName="firstlastname">
+                <span *ngIf="passenger.get('firstlastname')?.errors?.['required'] && passenger.get('firstlastname')?.dirty" class="text-red-500 text-xs">El primer apellido es requerido</span>
+                <span *ngIf="passenger.get('firstlastname')?.errors?.['pattern']" class="text-red-500 text-xs">El apellido no es válido</span>
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Segundo apellido</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="Segundo apellido" formControlName="secondlastname">
+                <span *ngIf="passenger.get('secondlastname')?.errors?.['pattern']" class="text-red-500 text-xs">El apellido no es válido</span>
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Fecha de Nacimiento <span class="text-red-500">*</span></label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                formControlName="bornDate" type="date" [max]="maxDate">
+                <span *ngIf="passenger.get('bornDate')?.errors?.['required'] && passenger.get('bornDate')?.dirty" class="text-red-500 text-xs">La fecha es requerida</span>
+                <span *ngIf="isChild(passenger.get('bornDate')?.value)" class="text-blue-600 text-sm">Pasajero menor de edad </span>
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">País de Nacimiento <span class="text-red-500">*</span></label>
+                <!-- <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="borncountry" (change)="getStates($event)"> -->
+                <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="borncountry">
+                  <option value="" disabled selected>País de nacimiento</option>
+                  <option value="Colombia">Colombia PREDEFINIDA</option>
+                  <!-- <option *ngFor="let country of countries" [value]="country.country_name">
+                    {{ country.country_name }}
+                  </option> -->
+                </select>
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Tipo de Documento <span class="text-red-500">*</span></label>
+                <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="identificationtype">
+                  <option value="" disabled selected>Tipo de Documento</option>
+                  <!-- <option *ngFor="let gender of genders" [value]="gender.genderID">
+                    {{ gender.name }}
+                  </option> -->
+                  <option value=1>Cédula</option>
+                  <option value=2>Pasaporte</option>
+                </select>
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Número de Documento <span class="text-red-500">*</span></label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="Número de Documento" formControlName="identificationnumber">
+                <span *ngIf="passenger.get('identificationnumber')?.errors?.['required'] && passenger.get('identificationnumber')?.dirty" class="text-red-500 text-sm">El número de documento es requerido</span>
+                <span *ngIf="passenger.get('identificationnumber')?.errors?.['pattern']" class="text-red-500 text-sm">El número de documento no es válido</span>
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Género <span class="text-red-500">*</span></label>
+                <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="genderID">
+                  <option value="" disabled selected>Seleccione un género</option>
+                  <!-- <option *ngFor="let gender of genders" [value]="gender.genderID">
+                    {{ gender.name }}
+                  </option> -->
+                  <option value=1>Masculino</option>
+                  <option value=2>Femenino</option>
+                  <option value=3>Otro</option>
+                </select>
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Correo Electrónico <span class="text-red-500">*</span></label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="Correo electrónico" formControlName="email">
+                <span *ngIf="passenger.get('email')?.errors?.['required'] && passenger.get('email')?.dirty"class="text-red-500 text-sm">El correo es requerido</span>
+                <span *ngIf="passenger.get('email')?.errors?.['pattern']" class="text-red-500 text-sm">El correo no es válido</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!hasAdult(item.id)" class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          Debe haber al menos un pasajero adulto en el vuelo (mayor de 18 años)
+        </div>
+        <div *ngIf="hasDuplicateDocuments(item.id)" class="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+          No pueden haber dos pasajeros con el mismo número de documento en el vuelo
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="flex justify-center gap-4">
+      <button [routerLink]="['/cart']"
+        class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+        Regresar
+      </button>
+
+      <button (click)="save()"
+        [disabled]="!areAllFormsValid()"
+        class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline
+        disabled:opacity-50 disabled:cursor-not-allowed">
+        Continuar
+      </button>
+    </div>
+  </div>
+</div>
