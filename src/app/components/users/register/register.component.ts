@@ -7,6 +7,9 @@ import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../../services/api.service';
 import { RouterModule } from '@angular/router';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 interface Country {
   country_name: string;
   country_short_name: string;
@@ -147,12 +150,29 @@ export class RegisterComponent implements OnInit{
       this.apiService.postData("sign-up/register-client", this.registerForm.value).subscribe(
         (response) => {
           // console.log('Usuario registrado:', response);
-          window.alert('Usuario registrado exitosamente');
-          window.location.href = '/login';
+          // window.alert('Usuario registrado exitosamente');
+          Swal.fire({
+            icon: "success",
+            title: "Registro",
+            text: "Se ha registrado al usuario exitosamente.",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            window.location.href = '/login';
+          });
         },
         (error) => {
           console.error('Error registrando el usuario:', error);
-          window.alert('Error registrando el usuario');
+          // window.alert('Error registrando el usuario');
+          Swal.fire({
+            icon: "error",
+            title: "Registro",
+            text: "Error registrando el usuario. Vuelve a intentarlo más tarde",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          });
         }
       );
     } else {

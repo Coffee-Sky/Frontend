@@ -6,8 +6,13 @@ import { PromotionComponent } from '../promotion/promotion.component';
 import { ModalService } from '../../../../services/modal.service';
 import { EditFlightService } from '../../../../services/edit-flight.service';
 import { CancelFlightComponent } from '../cancel-flight/cancel-flight.component';
+import { FirstTimePasswordComponent } from '../first-time-password/first-time-password.component';
 import { JwtService } from '../../../../services/jwt.service';
 import { ApiService } from '../../../../services/api.service';
+
+interface FirstLogin {
+  firstLogin: boolean;
+}
 
 interface Role {
   roleID: number;
@@ -49,7 +54,7 @@ interface Flight {
 @Component({
   selector: 'app-admin-home',
   standalone: true,
-  imports: [RouterModule, CommonModule, CreationFlightComponent, PromotionComponent, CancelFlightComponent],
+  imports: [RouterModule, CommonModule, CreationFlightComponent, PromotionComponent, CancelFlightComponent, FirstTimePasswordComponent],
   templateUrl: './admin-home.component.html',
   styleUrl: './admin-home.component.css'
 })
@@ -57,6 +62,7 @@ export class AdminHomeComponent implements OnInit{
   creationFlight: boolean = false;
   cancelFlight: boolean = false;
   creationPromo: boolean = false;
+  changePassword: boolean = false;
   isEditing: boolean = false;
   isDropdownOpen: boolean = false;
   imageUrl: string = '';
@@ -94,19 +100,22 @@ export class AdminHomeComponent implements OnInit{
   constructor(private createPromoService: ModalService,
               private editFlightService: EditFlightService,
               private cancelFlightService: ModalService,
+              private firstTimePassword: ModalService,
               private jwtService: JwtService,
               private apiService: ApiService
             ){}
 
   ngOnInit(): void {
+    this.code = this.jwtService.getCode() ?? '';
     this.createPromoService.$promotion.subscribe((value)=>{this.creationPromo = value})
     this.cancelFlightService.$cancel.subscribe((value)=>{this.cancelFlight = value})
+    this.firstTimePassword.$firstTimePassword.subscribe((value)=>{this.changePassword = value})
+    this.verifyChangePassword();
     this.getAdminInfo();
     this.listFlights();
   }
 
   getAdminInfo() {
-    this.code = this.jwtService.getCode() ?? '';
     this.apiService.getData('data/get-user-info?userID='+this.code).subscribe(
       (response: Admin) => {
         this.admin = response;
@@ -118,6 +127,20 @@ export class AdminHomeComponent implements OnInit{
       (error) => {
         console.error('Error obteniendo la información del usuario:', error);
       }
+    );
+  }
+
+  verifyChangePassword(){
+    this.apiService.getData('data/get-is-first-login?userID='+this.code).subscribe(
+      (response: FirstLogin) => {
+        console.log(response.firstLogin);
+        if(response.firstLogin){
+          this.changeFirstTimePassword();
+        }
+      },
+      (error) => {
+        console.error('Error obteniendo la información del usuario:', error);
+      }  
     );
   }
 
@@ -141,6 +164,11 @@ export class AdminHomeComponent implements OnInit{
   createPromo(){
     this.creationPromo = true;
   }
+
+  changeFirstTimePassword(){
+    this.changePassword = true;
+  }
+
 
   editFlight(){
     this.editFlightService.toggleEditFlight();

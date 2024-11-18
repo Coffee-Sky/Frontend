@@ -3,6 +3,9 @@ import { ModalService } from '../../../../services/modal.service';
 import { ApiService } from '../../../../services/api.service';
 import { CommonModule } from '@angular/common';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-cancel-flight',
   standalone: true,
@@ -42,9 +45,19 @@ export class CancelFlightComponent implements OnInit{
 
     this.apiService.putData('manage/delete-flight?flightId='+this.flightCode, {flightID: Number(this.flightCode)}).subscribe(
       (response) => {
-        window.alert('Vuelo cancelado con éxito');
-        this.close();
-        window.location.reload();
+        // window.alert('Vuelo cancelado con éxito');
+        Swal.fire({
+          icon: "error",
+          title: "Cancelar vuelo",
+          text: "Vuelo cancelado con éxito.",
+          confirmButtonColor: "#0F766E",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
+        }).then(() => {
+          this.close();
+          window.location.reload();
+        });
       },
       (error) => {
         console.error(error);
