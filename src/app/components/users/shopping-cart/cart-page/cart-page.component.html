@@ -1,0 +1,121 @@
+<div class="min-h-screen bg-gray-100">
+  <app-header/>
+  <div class="max-w-7xl mx-auto space-y-8 pt-6 p-6">
+    <div class="text-2xl font-bold flex justify-center">
+      <h2>Carrito de compras</h2>
+    </div>
+
+    <div *ngIf="cartItems.length" class="bg-white border border-color4 px-3 py-3 flex justify-center shadow-md sm:rounded-lg overflow-hidden">
+      <div class="overflow-x-auto w-full">
+        <table class="w-full text-center text-sm text-black">
+          <thead class="uppercase px-6 py-3">
+            <tr class="border-b border-color4">
+              <th class="py-2 px-5">Tipo vuelo</th>
+              <th class="py-2 px-5">Origen</th>
+              <th class="py-2 px-5">Destino</th>
+              <th class="py-2 px-5">Fecha</th>
+              <th class="py-2 px-5">Tiquetes</th>
+              <th class="py-2 px-5">Clase</th>
+              <th class="py-2 px-5">Subtotal</th>
+              <th class="py-2 px-5"></th>
+            </tr>
+          </thead>
+  
+          <tbody>
+            <ng-container *ngFor="let item of cartItems">
+              <!-- Para vuelos de ida y vuelta -->
+              <ng-container *ngIf="item.tripType === 'roundtrip'">
+                <tr *ngFor="let flight of item.flights; let first = first" 
+                    class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
+                  <!-- Solo mostrar "Trayecto Completo" en la primera fila del grupo -->
+                  <td class="py-3 px-5 whitespace-nowrap">
+                    <ng-container *ngIf="first">Trayecto Completo</ng-container>
+                  </td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.origin }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.destiny }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.departure | date:'medium' }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.passengers }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">
+                    {{ flight.selectedClass === 'economy' ? 'Económica' : 'Primera Clase' }}
+                  </td>
+                  <td class="py-3 px-5 whitespace-nowrap">
+                    {{ (flight.price * flight.passengers) | currency:'COP':'symbol-narrow':'1.0-0' }}
+                  </td>
+                  <!-- Solo mostrar el botón de eliminar en la primera fila del grupo -->
+                  <td class="flex justify-center gap-4 px-5 py-3 whitespace-nowrap">
+                    <button *ngIf="first" (click)="removeFlight(item.id)"
+                      class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                      <span class="material-symbols-outlined" translate="no">delete</span>
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
+              
+              <!-- Para vuelos de solo ida -->
+              <ng-container *ngIf="item.tripType === 'oneway'">
+                <tr class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
+                  <td class="py-3 px-5 whitespace-nowrap">Solo Ida</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].origin }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].destiny }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].departure | date:'medium' }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].passengers }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">
+                    {{ item.flights[0].selectedClass === 'economy' ? 'Económica' : 'Primera Clase' }}
+                  </td>
+                  <td class="py-3 px-5 whitespace-nowrap">
+                    {{ (item.flights[0].price * item.flights[0].passengers) | currency:'COP':'symbol-narrow':'1.0-0' }}
+                  </td>
+                  <td class="flex justify-center gap-4 px-5 py-3 whitespace-nowrap">
+                    <button (click)="removeFlight(item.id)"
+                      class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                      <span class="material-symbols-outlined" translate="no">delete</span>
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </tbody>
+          <tfoot>
+            <tr class="border-b border-color4 font-semibold justify-end">
+              <td class="py-3 px-5 whitespace-nowrap"></td>
+              <td class="py-3 px-5 whitespace-nowrap"></td>
+              <td class="py-3 px-5 whitespace-nowrap"></td>
+              <td class="py-3 px-5 whitespace-nowrap"></td>
+              <td class="py-3 px-5 whitespace-nowrap"></td>
+              <th class="py-3 px-5 whitespace-nowrap">Total</th>
+              <td class="py-3 px-5 whitespace-nowrap">{{ total | currency:'COP':'symbol-narrow':'1.0-0' }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </div> 
+    </div> 
+
+    <ng-container *ngIf="cartItems.length === 0">
+      <div class="bg-white border border-color4 px-3 py-3 flex justify-center shadow-md sm:rounded-lg overflow-hidden">
+        <div class="text-center">
+          <p class="text-lg font-semibold text-black">No hay vuelos en el carrito</p>
+          <p class="text-sm text-gray-500">Explora y agrega vuelos a tu carrito para poder reservar o comprar</p>
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="flex flex-1 items-center justify-center gap-4">
+      <button routerLink=""
+        class="w-44 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+        Salir
+      </button>
+      <button [disabled]="cartItems.length === 0"
+        (click)="makeReservation()"
+        class="w-44 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline
+        disabled:opacity-50 disabled:cursor-not-allowed">
+        Reservar Tiquetes
+      </button>
+      <button [disabled]="cartItems.length === 0"
+        (click)="buycartItems()"
+        class="w-44 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade focus:outline-none focus:shadow-outline
+        disabled:opacity-50 disabled:cursor-not-allowed">
+        Comprar Tiquetes
+      </button>
+    </div>
+  </div>
+</div>
