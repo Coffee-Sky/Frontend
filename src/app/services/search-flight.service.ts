@@ -50,9 +50,31 @@ export class SearchFlightService {
   //   { id: '6', departureDate: '2024-11-02', departureTime: '17:00', arrivalTimeDestination: '18:04', origin: 'Cali',  destination: 'Bogotá', duration: '1h 4m', priceEconomy: 226170, priceFirstClass: 452340 },
   // ];
 
+  // setSearchCriteria(criteria: any) {
+  //   this.searchCriteria.next(criteria);
+  //   this.apiService.getData('data/search-flights?origin='+criteria.origin+'&destiny='+criteria.destiny+'&departure='+criteria.departure+'&arrival='+criteria.arrival+'&passengers='+criteria.passengers+'&tripType='+criteria.tripType).subscribe(
+  //     (response: FlightData) => {
+  //       this.flightsSubject.next(response);
+  //     },
+  //     (error) => {
+  //       console.error('Error obteniendo los vuelos:', error);
+  //       window.alert('Error obteniendo los vuelos');
+  //     }
+  //   );
+  //   // this.filterFlights(criteria);
+  // }
+
   setSearchCriteria(criteria: any) {
     this.searchCriteria.next(criteria);
-    this.apiService.getData('data/search-flights?origin='+criteria.origin+'&destiny='+criteria.destiny+'&departure='+criteria.departure+'&arrival='+criteria.arrival+'&passengers='+criteria.passengers+'&tripType='+criteria.tripType).subscribe(
+    const data = {
+      "origin": criteria.origin,
+      "destiny": criteria.destiny,
+      "departure": criteria.departure,
+      "arrival": criteria.arrival,
+      "passengers": criteria.passengers,
+      "tripType": criteria.tripType
+    }
+    this.apiService.postData('data/search-flights', data).subscribe(
       (response: FlightData) => {
         this.flightsSubject.next(response);
       },
@@ -61,7 +83,6 @@ export class SearchFlightService {
         window.alert('Error obteniendo los vuelos');
       }
     );
-    // this.filterFlights(criteria);
   }
 
   // private filterFlights(criteria: any) {
