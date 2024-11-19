@@ -3,6 +3,9 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ModalService } from '../../../../services/modal.service';
 import { ApiService } from '../../../../services/api.service';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 @Component({
   selector: 'app-status-admin',
   standalone: true,
@@ -26,10 +29,20 @@ export class StatusAdminComponent implements OnInit{
   }
 
   actionAdmin() {
-    this.isLoading = true;
+    this.error = true;
     this.apiService.putData('update/change-user-status?userID='+this.adminID, {userID: Number(this.adminID)}).subscribe(
       (response) => {
-        this.close();
+        Swal.fire({
+          icon: "success",
+          title: "Estado administrador",
+          text: "Se ha cambiado el estado del administrador.",
+          showConfirmButton: false,
+          timer: 2500,
+          timerProgressBar: true
+        }).then(() => {
+          this.close();
+          window.location.reload();
+        });
       },
       (error) => {
         this.error = true;
@@ -39,6 +52,5 @@ export class StatusAdminComponent implements OnInit{
 
   close(){
     this.statusAdminService.$status.emit(false);
-    window.location.reload();
   }
 }

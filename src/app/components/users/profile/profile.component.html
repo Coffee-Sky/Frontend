@@ -20,11 +20,14 @@
             <div class="modal relative transform overflow-hidden rounded-lg p-6 w-full bg-white shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
               <div class="modal_body">
                 <h2 class="mb-4 text-lg font-semibold">Cambiar imagen de perfil</h2>
-                <div class="mx-auto max-w-md text-left">
+                <div class="mx-auto max-w-md text-center">
+                  <p class="text-sm text-gray-500" *ngIf="isLoading">Espere un momento...</p>
+                </div>
+                <div class="mx-auto max-w-md text-left" *ngIf="!isLoading">
                   <span class="text-sm">Seleccione la imagen a subir en formato .jpg, .jpeg o .png</span>
                   <input class="mt-4" type="file" accept=".jpg, .jpeg, .png" (change)="onFileSelected($event)" />
                 </div>
-                <div class="mt-4 flex flex-row-reverse px-6 gap-4">
+                <div class="mt-4 flex flex-row-reverse px-6 gap-4" *ngIf="!isLoading">
                   <button (click)="close()" class="inline-flex w-full justify-center rounded-md bg-color1 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-color1-shade sm:w-auto">Cancelar</button>
                   <button (click)="uploadImage()" [disabled]="!selectedFile"
                   class="inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-color1 hover:bg-gray-300 sm:mt-0 sm:w-auto
