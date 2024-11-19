@@ -22,6 +22,7 @@ import { AddCardComponent } from './components/users/cards/add-card/add-card.com
 import { CartPageComponent } from './components/users/shopping-cart/cart-page/cart-page.component';
 import { PassengerInfoComponent } from './components/users/shopping-cart/passenger-info/passenger-info.component';
 import { SelectCardComponent } from './components/users/cards/select-card/select-card.component';
+import { BookingsComponent } from './components/users/bookings/bookings.component';
 
 export const routes: Routes = [
   { path: '', component: PageComponent, canActivate: [authGuard]}, 
@@ -39,7 +40,8 @@ export const routes: Routes = [
   { path: 'info-card/:code', component: InfoCardsComponent, canActivate: [clientGuard]},
   { path: 'cart', component: CartPageComponent, canActivate: [clientGuard]},
   { path: 'passenger-info', component: PassengerInfoComponent, canActivate: [clientGuard]},
-  { path: 'select-card', component: SelectCardComponent, canActivate: [clientGuard]}
+  { path: 'select-card', component: SelectCardComponent, canActivate: [clientGuard]},
+  { path: 'bookings', component: BookingsComponent, canActivate: [clientGuard]}
 ];
 
 @NgModule({
