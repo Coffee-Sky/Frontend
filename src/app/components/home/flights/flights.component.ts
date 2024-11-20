@@ -6,6 +6,7 @@ import { SearchFlightService } from '../../../services/search-flight.service';
 import { SearchFlightsComponent } from '../search-flights/search-flights.component';
 import { ModalService } from '../../../services/modal.service';
 import { CartService } from '../../../services/cart.service';
+import { JwtService } from '../../../services/jwt.service';
 
 registerLocaleData(localeEs, 'es');
 
@@ -57,8 +58,8 @@ export class FlightsComponent implements OnInit {
   tripType: string = 'roundtrip';
   selectedFlight: any = null;
   selectedReturnFlight: any = null;
-  selectedClassIda: 'economy' | 'firstClass' | null = null;
-  selectedClassVuelta: 'economy' | 'firstClass' | null = null;
+  selectedClassIda: 'economy' | 'business' | null = null;
+  selectedClassVuelta: 'economy' | 'business' | null = null;
   editingSearch: boolean = false;
 
 allFlights: FlightData = {
@@ -73,7 +74,9 @@ allFlights: FlightData = {
   constructor(private searchFlightService: SearchFlightService, 
               private editSearchService: ModalService,
               private cartService: CartService,
-              private router: Router){ }
+              private router: Router,
+              private jwtService: JwtService
+            ){ }
 
   ngOnInit(): void {
     this.editSearchService.$edit.subscribe((value)=>{this.editingSearch = value})
@@ -161,7 +164,7 @@ allFlights: FlightData = {
     // console.log('vuelo regreso: ', this.selectedReturnFlight);
   }
 
-  selectClass(classType: 'economy' | 'firstClass', tipo: 'ida' | 'vuelta'): void {
+  selectClass(classType: 'economy' | 'business', tipo: 'ida' | 'vuelta'): void {
     if (tipo === 'ida') {
       this.selectedClassIda = classType;
     } else {
@@ -179,8 +182,18 @@ allFlights: FlightData = {
 
   getSelectedPrice(vuelo: any, tipo: 'ida' | 'vuelta'): number {
     const selectedClass = tipo === 'ida' ? this.selectedClassIda : this.selectedClassVuelta;
-    return selectedClass === 'firstClass' ? vuelo.priceFirstClass : vuelo.priceEconomy;
+    return selectedClass === 'business' ? vuelo.priceFirstClass : vuelo.priceEconomy;
   }
+
+  // {
+  //   "clientId": 0,
+  //   "outboundFlightId": 0,
+  //   "outboundClassType": "string",
+  //   "quantity": 5,
+  //   "isRoundTrip": true,
+  //   "returnFlightId": 0,
+  //   "returnClassType": "string"
+  // }
 
   addToCart(): void {
     if (this.tripType === 'roundtrip') {
@@ -207,6 +220,20 @@ allFlights: FlightData = {
             price: this.selectedClassVuelta === 'economy' ? this.selectedReturnFlight.economyPrice : this.selectedReturnFlight.businessPrice
           }
         ];
+
+        const flightsCart = {
+          clientId: Number(this.jwtService.getCode()) || 0,
+          outboundFlightId: this.selectedFlight.flightID,
+          outboundClassType: this.selectedClassIda || '',
+          quantity: this.passengers,
+          isRoundTrip: true,
+          returnFlightId: this.selectedReturnFlight.flightID,
+          returnClassType: this.selectedClassVuelta || ''
+        }
+        
+        if(this.jwtService.tokenExistsAndValid()){
+          this.cartService.uplodadCartItems(flightsCart);
+        }
         
         this.cartService.addToCart(roundTripFlights, this.tripType);
         console.log('Carrito: ', this.cartService.getCartData());
@@ -233,6 +260,20 @@ allFlights: FlightData = {
           selectedClass: this.selectedClassIda,
           price: this.selectedClassIda === 'economy' ? this.selectedFlight.economyPrice : this.selectedFlight.businessPrice
         };
+
+        const flightsCart = {
+          clientId: Number(this.jwtService.getCode()) || 0,
+          outboundFlightId: this.selectedFlight.flightID,
+          outboundClassType: this.selectedClassIda || '',
+          quantity: this.passengers,
+          isRoundTrip: false,
+          returnFlightId: 0,
+          returnClassType: ''
+        }
+
+        if(this.jwtService.tokenExistsAndValid()){
+          this.cartService.uplodadCartItems(flightsCart);
+        }
         
         this.cartService.addToCart([oneWayFlight], this.tripType);
         console.log('Carrito: ', this.cartService.getCartData());
