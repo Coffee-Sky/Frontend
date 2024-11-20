@@ -1,0 +1,106 @@
+<div class="bg-color2 min-h-screen">
+  <app-header/>
+  <div class="max-w-4xl mx-auto p-6">
+    <div class="mb-6 text-2xl font-bold flex justify-center">
+      <h2>Información de Pasajeros</h2>
+    </div>
+
+    <ng-container>
+      <div *ngFor="let flight of flights" class="mb-8">
+
+        <div class="bg-white rounded-lg shadow-md p-4 mb-4" formGroupName="flightInfo">
+          <div class="flex flex-row justify-center gap-4">
+            <p class="text-xl sm:text-2xl font-bold">{{ flight[0].origin }}</p>
+            <span class="material-symbols-outlined transform rotate-90 text-teal-500 text-md sm:text-2xl" translate="no">flight</span>
+            <p class="text-xl sm:text-2xl font-bold">{{ flight[0].destiny }}</p>
+            <span *ngIf="flight[0].tripType === 'roundtrip'" class="material-symbols-outlined transform rotate-90 text-teal-500 text-md sm:text-2xl" translate="no">flight</span>
+            <p *ngIf="flight[0].tripType === 'roundtrip'" class="text-xl sm:text-2xl font-bold">{{ flight[0].origin }}</p>
+          </div>
+        </div>
+
+        <div formArrayName="passengers">
+          <div *ngFor="let passenger of passengers; let i = index" 
+               class="mb-4 p-6 bg-white rounded-lg shadow-md">
+
+            <h3 class="text-lg font-semibold text-black mb-4">Pasajero {{i + 1}}</h3>            
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Primer nombre</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="" formControlName="firstname" [value]="passenger.firstname" [readOnly]="true">
+              </div>
+
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Segundo nombre</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="" formControlName="secondname" [value]="passenger.secondname" [readOnly]="true">
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Primer apellido</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="" formControlName="firstlastname" [value]="passenger.firstlastname" [readOnly]="true">
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Segundo apellido</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="" formControlName="secondlastname" [value]="passenger.secondlastname" [readOnly]="true">
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Fecha de Nacimiento</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="date" formControlName="bornDate" [value]="passenger.bornDate" [readOnly]="true">
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">País de Nacimiento</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" formControlName="bornCountry" [value]="passenger.bornCountry" [readOnly]="true">
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Tipo de Documento</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" formControlName="identificationtype" [value]="passenger.identificationtype" [readOnly]="true">
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Número de Documento</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="" formControlName="identificationnumber" [value]="passenger.identificationnumber" [readOnly]="true">
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Género</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" formControlName="genderID" [value]="passenger.genderID" [readOnly]="true">
+              </div>
+    
+              <div class="form-group">
+                <label class="block text-sm font-medium text-black mb-2">Correo Electrónico</label>
+                <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
+                type="text" placeholder="" formControlName="email" [value]="passenger.email" [readOnly]="true">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <div class="flex justify-center gap-4">
+      <button [routerLink]="['/history']"
+        class="w-fit px-4 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+        Regresar
+      </button>
+
+      <button *ngIf="purchaseStatus === 1"
+        (click)="cancelPurchase(flights[0][0].flightID)"
+        class="w-fit px-4 py-2 mt-3 font-bold text-white bg-red-500 rounded-md hover:bg-red-600 transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+        Cancelar compra
+      </button>
+    </div>
+  </div>
+</div>
