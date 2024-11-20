@@ -61,7 +61,7 @@ interface Gender {
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent, FooterComponent, PasswordRootComponent, VerifyPasswordComponent],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent, PasswordRootComponent, VerifyPasswordComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -108,8 +108,16 @@ export class ProfileComponent implements OnInit{
     statusID: 0
   };
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService, private apiService: ApiService, private locationService: LocationService, private jwtService: JwtService, private passwordService: ModalService, private verifyPasswordService: ModalService) { 
-  }
+  constructor(
+    private fb: FormBuilder, 
+    private cdRef: ChangeDetectorRef, 
+    private cloudinary: CloudinaryService, 
+    private apiService: ApiService, 
+    private locationService: LocationService, 
+    private jwtService: JwtService, 
+    private passwordService: ModalService, 
+    private verifyPasswordService: ModalService
+  ){}
 
   ngOnInit(): void {
     this.passwordService.$password.subscribe((value)=>{this.changePassword = value})
