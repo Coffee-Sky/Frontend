@@ -67,10 +67,17 @@
           Realizar pago
         </button>
         <button (click)="cancelBooking(booking[0].flightID)"
-          class="w-40 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade focus:outline-none focus:shadow-outline">
+          class="w-40 py-2 mt-3 font-bold text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:shadow-outline">
           Cancelar reserva
         </button>
       </div>
+    </div>
+
+    <div class="flex justify-center gap-4">
+      <button [routerLink]="['/history']"
+        class="w-fit px-4 py-2 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+        Regresar
+      </button>
     </div>
   </div>
 </div>

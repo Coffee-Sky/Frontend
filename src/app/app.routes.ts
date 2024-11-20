@@ -23,6 +23,8 @@ import { CartPageComponent } from './components/users/shopping-cart/cart-page/ca
 import { PassengerInfoComponent } from './components/users/shopping-cart/passenger-info/passenger-info.component';
 import { SelectCardComponent } from './components/users/cards/select-card/select-card.component';
 import { BookingsComponent } from './components/users/bookings/bookings.component';
+import { HistoryComponent } from './components/users/purchase-history/history/history.component';
+import { PurchaseInfoComponent } from './components/users/purchase-history/purchase-info/purchase-info.component';
 
 export const routes: Routes = [
   { path: '', component: PageComponent, canActivate: [authGuard]}, 
@@ -41,7 +43,9 @@ export const routes: Routes = [
   { path: 'cart', component: CartPageComponent, canActivate: [clientGuard]},
   { path: 'passenger-info', component: PassengerInfoComponent, canActivate: [clientGuard]},
   { path: 'select-card', component: SelectCardComponent, canActivate: [clientGuard]},
-  { path: 'bookings', component: BookingsComponent, canActivate: [clientGuard]}
+  { path: 'bookings', component: BookingsComponent, canActivate: [clientGuard]},
+  { path: 'history', component: HistoryComponent, canActivate: [clientGuard]},
+  { path: 'purchase-info/:code', component: PurchaseInfoComponent, canActivate: [clientGuard]}
 ];
 
 @NgModule({

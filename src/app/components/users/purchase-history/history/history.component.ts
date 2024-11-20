@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from '../../home/header/header.component';
+import { HeaderComponent } from '../../../home/header/header.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+
 
 interface CartFlight {
   flightID: number;
@@ -15,17 +16,17 @@ interface CartFlight {
 }
 
 @Component({
-  selector: 'app-bookings',
+  selector: 'app-history',
   standalone: true,
   imports: [HeaderComponent, CommonModule, RouterModule],
-  templateUrl: './bookings.component.html',
-  styleUrl: './bookings.component.css'
+  templateUrl: './history.component.html',
+  styleUrl: './history.component.css'
 })
-export class BookingsComponent implements OnInit{
+export class HistoryComponent implements OnInit{
 
-  timeLeft: number = 24;
+  purchaseStatus = 1; // 1: Compra realizada, 2: Compra cancelada
 
-  bookings: CartFlight[][] = [
+  flights: CartFlight[][] = [
     [
       {flightID: 1, tripType: 'roundtrip', origin: 'Pereira', destiny: 'Miami', departure: '2024-12-06T14:00:00', passengers: 1, selectedClass: 'economy', price: 200},
       {flightID: 2, tripType: 'roundtrip', origin: 'Miami', destiny: 'Pereira', departure: '2024-12-06T14:00:00', passengers: 1, selectedClass: 'firstClass', price: 200},
@@ -40,11 +41,7 @@ export class BookingsComponent implements OnInit{
   ngOnInit(): void {
   }
 
-  payBooking(flightID: number) {
-    console.log('Pagar reserva con ID: ', flightID);
-  }
-
-  cancelBooking(flightID: number) {
-    this.bookings = this.bookings.filter(flight => flight[0].flightID !== flightID);
+  cancelPurchase(flightID: number) {
+    console.log('Cancelar compra de vuelo con ID: ', flightID);
   }
 }
