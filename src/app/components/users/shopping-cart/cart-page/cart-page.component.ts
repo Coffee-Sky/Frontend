@@ -25,6 +25,7 @@ interface CartItem {
 
 interface CartFlights {
   isRoundTrip: boolean;
+  id: string;
   flights: Flight[];
 }
 
@@ -74,22 +75,16 @@ export class CartPageComponent implements OnInit {
 
   calculateFlightsCartTotal(): void {
     this.total = this.flightsCart.reduce((sum, cartFlight) => {
-      return sum + cartFlight.flights.reduce((flightSum, flight) => flightSum + (flight.price * flight.quantity), 0);
+      return sum + cartFlight.flights.reduce((flightSum, flight) => flightSum + flight.price, 0);
     }, 0);
   }
 
   getFlights() {
-    this.apiService.getData('cart/get-cart-flights?clientId='+this.jwtService.getCode()).subscribe(
-      (response: CartFlights[]) => {
-        this.flightsCart = response;
-        this.calculateFlightsCartTotal();
-        console.log('Vuelos obtenidos:', this.flightsCart);
-        console.log('Total:', this.total);
-      },
-      (error) => {
-        console.error('Error obteniendo los vuelos:', error);
-      }
-    );
+    this.cartService.getCartItems().subscribe((flightsCart: CartFlights[]) => {
+      this.flightsCart = flightsCart;
+      console.log('flightsCart:', flightsCart);
+      this.calculateFlightsCartTotal();
+    });
   }
 
   removeFlight(flightId: number, isRoundTrip: boolean){

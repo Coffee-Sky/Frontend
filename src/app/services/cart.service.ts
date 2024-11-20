@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ApiService } from './api.service';
+import { JwtService } from './jwt.service';
 
 interface CartFlight {
   flightID: number;
@@ -29,13 +30,28 @@ interface FlightCart {
   returnClassType: string;
 }
 
+interface CartFlights {
+  isRoundTrip: boolean;
+  id: string;
+  flights: Flight[];
+}
+
+interface Flight {
+  flightId: number;
+  originCity: string;
+  destinationCity: string;
+  departure: string;
+  quantity: number;
+  classType: string;
+  price: number;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private jwtService: JwtService) { }
 
   private cartItems = new BehaviorSubject<any[]>([]);
   flightData$ = this.cartItems.asObservable();
@@ -64,6 +80,10 @@ export class CartService {
         }
       );
     }
+  }
+
+  getCartItems(): Observable<CartFlights[]> {
+    return this.apiService.getData('cart/get-cart-flights?clientId=' + this.jwtService.getCode());
   }
   
   getCartData() {

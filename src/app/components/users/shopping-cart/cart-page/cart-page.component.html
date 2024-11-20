@@ -34,8 +34,7 @@
                   <td class="py-3 px-5 whitespace-nowrap">{{ flight.originCity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ flight.destinationCity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ flight.departure | date:'short' }}</td>
-                  <td class="py-3 px-5 whitespace-nowrap">0</td>
-                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.quantity}}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.quantity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">
                     {{ flight.classType === 'economy' ? 'Económica' : 'Primera Clase' }}
                   </td>
@@ -60,13 +59,12 @@
                   <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].originCity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].destinationCity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].departure | date:'short' }}</td>
-                  <td class="py-3 px-5 whitespace-nowrap">0</td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].quantity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">
                     {{ item.flights[0].classType === 'economy' ? 'Económica' : 'Primera Clase' }}
                   </td>
                   <td class="py-3 px-5 whitespace-nowrap">
-                    {{ (item.flights[0].price * item.flights[0].quantity) | currency:'COP':'symbol-narrow':'1.0-0' }}
+                    {{ item.flights[0].price | currency:'COP':'symbol-narrow':'1.0-0' }}
                   </td>
                   <td class="flex justify-center gap-4 px-5 py-3 whitespace-nowrap">
                     <!-- <button (click)="removeFlight(item.id)" -->
