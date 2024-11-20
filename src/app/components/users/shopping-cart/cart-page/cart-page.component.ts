@@ -29,8 +29,10 @@ interface CartFlights {
 }
 
 interface Flight {
+  flightId: number;
   originCity: string;
   destinationCity: string;
+  departure: string;
   quantity: number;
   classType: string;
   price: number;

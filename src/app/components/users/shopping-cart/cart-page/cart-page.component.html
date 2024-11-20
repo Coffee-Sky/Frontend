@@ -33,7 +33,7 @@
                   </td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ flight.originCity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ flight.destinationCity }}</td>
-                  <!-- <td class="py-3 px-5 whitespace-nowrap">{{ flight.departure | date:'medium' }}</td> -->
+                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.departure | date:'short' }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">0</td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ flight.quantity}}</td>
                   <td class="py-3 px-5 whitespace-nowrap">
@@ -46,7 +46,7 @@
                   <td class="flex justify-center gap-4 px-5 py-3 whitespace-nowrap">
                     <!-- <button *ngIf="first" (click)="removeFlight(item.id)" -->
                     <button *ngIf="first"
-                      class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                      class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" (click)="removeFlight(flight.flightId, item.isRoundTrip)">
                       <span class="material-symbols-outlined" translate="no">delete</span>
                     </button>
                   </td>
@@ -59,7 +59,7 @@
                   <td class="py-3 px-5 whitespace-nowrap">Solo Ida</td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].originCity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].destinationCity }}</td>
-                  <!-- <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].departure | date:'medium' }}</td> -->
+                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].departure | date:'short' }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">0</td>
                   <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].quantity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">
@@ -71,7 +71,7 @@
                   <td class="flex justify-center gap-4 px-5 py-3 whitespace-nowrap">
                     <!-- <button (click)="removeFlight(item.id)" -->
                     <button
-                      class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                      class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" (click)="removeFlight(item.flights[0].flightId, item.isRoundTrip)">
                       <span class="material-symbols-outlined" translate="no">delete</span>
                     </button>
                   </td>
