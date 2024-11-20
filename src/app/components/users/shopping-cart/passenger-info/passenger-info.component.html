@@ -6,7 +6,7 @@
     </div>
 
     <!-- Iterar sobre cada item del carrito -->
-    <ng-container *ngFor="let item of cartItems">
+    <ng-container *ngFor="let item of flightsCart">
       <div [formGroup]="flightForms[item.id]" class="mb-8">
         <!-- Información del vuelo -->
         <div class="bg-white rounded-lg shadow-md p-4 mb-4" formGroupName="flightInfo">
@@ -14,11 +14,11 @@
             <h3>Formularios para el trayecto</h3>
           </div>
           <div class="flex justify-center">
-            <p class="inline-block mr-2">{{ item.flights[0].origin }}</p>
+            <p class="inline-block mr-2">{{ item.flights[0].originCity }}</p>
             <span class="material-symbols-outlined transform rotate-90" translate="no">flight</span>
-            <p class="inline-block ml-2 mr-2">{{ item.flights[0].destiny }}</p>
-            <span *ngIf="item.tripType === 'roundtrip'" class="material-symbols-outlined transform rotate-90" translate="no">flight</span>
-            <p *ngIf="item.tripType === 'roundtrip'" class="inline-block ml-2">{{ item.flights[0].origin }}</p>
+            <p class="inline-block ml-2 mr-2">{{ item.flights[0].destinationCity }}</p>
+            <span *ngIf="item.isRoundTrip === true" class="material-symbols-outlined transform rotate-90" translate="no">flight</span>
+            <p *ngIf="item.isRoundTrip === true" class="inline-block ml-2">{{ item.flights[0].originCity }}</p>
           </div>
         </div>
 

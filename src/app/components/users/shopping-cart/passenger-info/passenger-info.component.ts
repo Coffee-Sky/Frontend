@@ -22,6 +22,22 @@ interface CartItem {
   tripType: string;
 }
 
+interface CartFlights {
+  isRoundTrip: boolean;
+  id: string;
+  flights: Flight[];
+}
+
+interface Flight {
+  flightId: number;
+  originCity: string;
+  destinationCity: string;
+  departure: string;
+  quantity: number;
+  classType: string;
+  price: number;
+}
+
 @Component({
   selector: 'app-passenger-info',
   standalone: true,
@@ -33,27 +49,37 @@ export class PassengerInfoComponent implements OnInit {
   cartItems: CartItem[] = [];
   flightForms: { [key: string]: FormGroup } = {};
   maxDate: string = new Date().toISOString().split('T')[0];
+  flightsCart: CartFlights[] = [];
 
   constructor(private fb: FormBuilder, private cartService: CartService) {}
 
   ngOnInit() {
     this.cartItems = this.cartService.getCartData();
-    this.createFormsForFlights();
+    console.log('cartItems:', this.cartItems);
+    this.getFlights();
+  }
+
+  getFlights() {
+    this.cartService.getCartItems().subscribe((flightsCart: CartFlights[]) => {
+      this.flightsCart = flightsCart;
+      console.log('flightsCart in Reservas:', flightsCart);
+      this.createFormsForFlights();
+    });
   }
 
   createFormsForFlights() {
-    this.cartItems.forEach(item => {
+    this.flightsCart.forEach(item => {
       this.flightForms[item.id] = this.fb.group({
         flightInfo: this.fb.group({
-          tripType: [item.tripType],
-          origin: [item.flights[0].origin],
-          destiny: [item.flights[0].destiny],
+          tripType: [item.isRoundTrip],
+          origin: [item.flights[0].originCity],
+          destiny: [item.flights[0].destinationCity],
         }),
         passengers: this.fb.array([])
       });
 
       const passengersArray = this.getPassengersArray(item.id);
-      for (let i = 0; i < item.flights[0].passengers; i++) {
+      for (let i = 0; i < item.flights[0].quantity; i++) {
         passengersArray.push(this.createPassengerForm());
       }
     });
