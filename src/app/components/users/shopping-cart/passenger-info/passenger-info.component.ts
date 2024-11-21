@@ -76,7 +76,7 @@ export class PassengerInfoComponent implements OnInit {
   disabledViewCard: boolean = false;
   selectedCardId: number = -1;
 
-  loadingBuyTickets: boolean = true;
+  loadingBuyTickets: boolean = false;
 
   constructor(
     private locationService: LocationService, 
