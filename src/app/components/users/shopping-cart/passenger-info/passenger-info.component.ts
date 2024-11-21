@@ -12,6 +12,7 @@ import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 import { LocationService } from '../../../../services/location.service';
 import { SelectCardComponent } from '../../cards/select-card/select-card.component';
+import { LoadingBuyTicketsComponent } from '../loading-buy-tickets/loading-buy-tickets.component';
 
 interface Country {
   country_name: string;
@@ -57,7 +58,7 @@ interface Passenger {
 @Component({
   selector: 'app-passenger-info',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HeaderComponent, RouterModule, SelectCardComponent],
+  imports: [CommonModule, ReactiveFormsModule, HeaderComponent, RouterModule, SelectCardComponent, LoadingBuyTicketsComponent],
   templateUrl: './passenger-info.component.html',
   styleUrl: './passenger-info.component.css'
 })
@@ -74,6 +75,8 @@ export class PassengerInfoComponent implements OnInit {
 
   disabledViewCard: boolean = false;
   selectedCardId: number = -1;
+
+  loadingBuyTickets: boolean = true;
 
   constructor(
     private locationService: LocationService, 
@@ -365,6 +368,7 @@ export class PassengerInfoComponent implements OnInit {
             }).then((result) => {
               if (result.isConfirmed) {
                 console.log('Tarjeta seleccionada:', this.selectedCardId);
+                this.loadingBuyTickets = true;
                 this.apiService.postData('cart/buy-flights', updatedProcessedData).subscribe(
                   (response) => {
                     // window.alert('Tiquetes reservados')

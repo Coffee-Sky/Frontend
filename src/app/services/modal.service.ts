@@ -14,4 +14,5 @@ export class ModalService {
   $edit = new EventEmitter<any>();
   $verifyPassword = new EventEmitter<any>();
   $firstTimePassword = new EventEmitter<any>();
+  $loadingBuyTickets = new EventEmitter<any>();
 }
