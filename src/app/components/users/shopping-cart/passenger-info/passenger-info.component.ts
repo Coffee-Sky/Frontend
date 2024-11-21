@@ -4,22 +4,18 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import { HeaderComponent } from '../../../home/header/header.component';
 import { CartService } from '../../../../services/cart.service';
 import { RouterModule } from '@angular/router';
+import { ApiService } from '../../../../services/api.service';
+import { JwtService } from '../../../../services/jwt.service';
+import { Router } from '@angular/router';
 
-interface CartFlight {
-  flightID: number;
-  tripType: string;
-  origin: string;
-  destiny: string;
-  departure: string;
-  passengers: number;
-  selectedClass: 'economy' | 'firstClass';
-  price: number;
-}
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+import { LocationService } from '../../../../services/location.service';
 
-interface CartItem {
-  id: string;
-  flights: CartFlight[];
-  tripType: string;
+interface Country {
+  country_name: string;
+  country_short_name: string;
+  country_phone_code: number;
 }
 
 interface CartFlights {
@@ -38,6 +34,25 @@ interface Flight {
   price: number;
 }
 
+interface Gender {
+  genderID: number;
+  name: string;
+}
+
+interface Passenger {
+  bornDate: string;
+  borncountry: string;
+  email: string;
+  firstlastname: string;
+  firstname: string;
+  genderID: string;
+  identificationnumber: string;
+  identificationtype: string;
+  secondlastname: string;
+  secondname: string;
+  trip: string;
+}
+
 @Component({
   selector: 'app-passenger-info',
   standalone: true,
@@ -46,23 +61,74 @@ interface Flight {
   styleUrl: './passenger-info.component.css'
 })
 export class PassengerInfoComponent implements OnInit {
-  cartItems: CartItem[] = [];
+  accessToken: string = '';
+
+  countries: Country[] = [];
+
   flightForms: { [key: string]: FormGroup } = {};
   maxDate: string = new Date().toISOString().split('T')[0];
   flightsCart: CartFlights[] = [];
+  genders: Gender[] = [];
 
-  constructor(private fb: FormBuilder, private cartService: CartService) {}
+  constructor(
+    private locationService: LocationService, 
+    private fb: FormBuilder, 
+    private cartService: CartService, 
+    private apiService: ApiService, 
+    private jwtService: JwtService, 
+    private router: Router
+  ) {}
 
   ngOnInit() {
-    this.cartItems = this.cartService.getCartData();
-    console.log('cartItems:', this.cartItems);
+    this.getAccessToken();
     this.getFlights();
+    this.getGenders();
   }
+
+  getAccessToken() {
+    this.locationService.getAccessToken().subscribe(
+      (response) => {
+        this.accessToken = response.auth_token;
+        // console.log('Access Token:', this.accessToken);
+        this.getCountries();
+        // this.getStates('Colombia');
+        // this.getCities('Antioquia');
+      },
+      (error) => {
+        console.error('Error obteniendo el token de acceso:', error);
+      }
+    );
+  }
+
+  getCountries() {
+    this.locationService.getCountries(this.accessToken).subscribe(
+      (response) => {
+        this.countries = response;
+        // console.log(this.countries);
+      },
+      (error) => {
+        console.error('Error obteniendo los países:', error);
+      }
+    );
+  }
+
+  getGenders() {
+    this.apiService.getData("sign-up/get-genders").subscribe(
+      (response: Gender[]) => {
+        this.genders = response;
+        // console.log(this.genders);
+      },
+      (error) => {
+        console.error('Error obteniendo los géneros:', error);
+      }
+    )
+  }
+
 
   getFlights() {
     this.cartService.getCartItems().subscribe((flightsCart: CartFlights[]) => {
       this.flightsCart = flightsCart;
-      console.log('flightsCart in Reservas:', flightsCart);
+      // console.log('flightsCart in Reservas:', flightsCart);
       this.createFormsForFlights();
     });
   }
@@ -144,15 +210,124 @@ export class PassengerInfoComponent implements OnInit {
     return Object.keys(this.flightForms).every(id => this.isFormValid(id));
   }
 
-  save() {
-    if (this.areAllFormsValid()) {
-      const formData = Object.entries(this.flightForms).map(([id, form]) => ({
-        flightId: id,
-        ...form.value
+  processFlightData() {
+    const result = this.flightsCart.flatMap((cartItem) => {
+      const passengers = this.getPassengersArray(cartItem.id).value.map((passenger: Passenger) => ({
+        id: null, // Asigna el valor adecuado según tu lógica
+        ticketId: null, // Asigna el valor adecuado según tu lógica
+        firstname: passenger.firstname,
+        secondname: passenger.secondname || '',
+        firstlastname: passenger.firstlastname,
+        secondlastname: passenger.secondlastname || '',
+        documentType: passenger.identificationtype,
+        identificationnumber: passenger.identificationnumber,
+        bornDate: passenger.bornDate,
+        borncountry: passenger.borncountry,
+        gender: passenger.genderID,
+        email: passenger.email,
       }));
-      console.log('Datos de todos los formularios:', formData);
+
+      const isRoundTrip = cartItem.isRoundTrip;
+      const returnFlight = cartItem.flights[1] || { flightId: 0, classType: '' };
+
+      return [
+        {
+          flightId: cartItem.flights[0].flightId,
+          clientId: this.jwtService.getCode(), // Asigna el valor adecuado
+          classType: cartItem.flights[0].classType,
+          quantity: cartItem.flights[0].quantity,
+          isRoundTrip,
+          returnFlightId: returnFlight.flightId, // Usa 0 si no hay segundo vuelo
+          returnClassType: returnFlight.classType, // Usa '' si no hay segundo vuelo
+          passengers,
+        },
+      ];
+  
+      // if (cartItem.isRoundTrip) {
+      //   // Genera dos JSON para vuelos de ida y vuelta
+      //   return [
+      //     {
+      //       flightId: cartItem.flights[0].flightId,
+      //       clientId: this.jwtService.getCode(), // Asigna el valor adecuado
+      //       classType: cartItem.flights[0].classType,
+      //       quantity: cartItem.flights[0].quantity,
+      //       isRoundTrip: true,
+      //       returnFlightId: cartItem.flights[1].flightId,
+      //       returnClassType: cartItem.flights[1].classType,
+      //       passengers,
+      //     },
+      //     {
+      //       flightId: cartItem.flights[1].flightId,
+      //       clientId: this.jwtService.getCode(), // Asigna el valor adecuado
+      //       classType: cartItem.flights[1].classType,
+      //       quantity: cartItem.flights[1].quantity,
+      //       isRoundTrip: true,
+      //       returnFlightId: cartItem.flights[0].flightId,
+      //       returnClassType: cartItem.flights[0].classType,
+      //       passengers,
+      //     },
+      //   ];
+      // } else {
+      //   // Genera un único JSON para vuelos de ida
+      //   return [
+      //     {
+      //       flightId: cartItem.flights[0].flightId,
+      //       clientId: this.jwtService.getCode(), // Asigna el valor adecuado
+      //       classType: cartItem.flights[0].classType,
+      //       quantity: cartItem.flights[0].quantity,
+      //       isRoundTrip: false,
+      //       passengers,
+      //     },
+      //   ];
+      // }
+    });
+  
+    // console.log('Datos procesados:', result);
+    return result;
+  }  
+
+  save(): any {
+    if (this.areAllFormsValid()) {
+      const processedData = this.processFlightData();
+  
+      if (processedData.length !== 0) {
+        // console.log("Datos a enviar: ", processedData);
+        this.apiService.postData('cart/reserve-flights', processedData).subscribe(
+          (response) => {
+            // window.alert('Tiquetes reservados')
+            Swal.fire({
+              icon: "success",
+              title: "Reservar tiquetes",
+              text: "Se han reservado los tiquetes.",
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true
+            }).then(() => {
+              this.router.navigate(['/cart']);
+            });
+          },
+          (error) => {
+            console.error('Error reservando:', error);
+            // window.alert('Error reservando')
+            Swal.fire({
+              icon: "error",
+              title: "Reservar tiquetes",
+              text: "Hubo un error. Inténtalo de nuevo.",
+              showConfirmButton: false,
+              timer: 2000,
+              timerProgressBar: true
+            }).then(() => {
+              this.router.navigate(['/cart']);
+            });
+          }
+        )
+      } else {
+        console.error('No hay datos para procesar.');
+      }
     } else {
       console.log('Hay formularios inválidos');
     }
   }
+  
+  
 }

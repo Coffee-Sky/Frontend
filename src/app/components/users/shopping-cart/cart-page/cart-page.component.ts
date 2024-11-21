@@ -82,7 +82,7 @@ export class CartPageComponent implements OnInit {
   getFlights() {
     this.cartService.getCartItems().subscribe((flightsCart: CartFlights[]) => {
       this.flightsCart = flightsCart;
-      console.log('flightsCart:', flightsCart);
+      // console.log('flightsCart:', flightsCart);
       this.calculateFlightsCartTotal();
     });
   }

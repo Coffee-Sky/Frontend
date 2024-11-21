@@ -8,6 +8,9 @@ import { ModalService } from '../../../services/modal.service';
 import { CartService } from '../../../services/cart.service';
 import { JwtService } from '../../../services/jwt.service';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 registerLocaleData(localeEs, 'es');
 
 interface Flight {
@@ -233,17 +236,36 @@ allFlights: FlightData = {
         
         if(this.jwtService.tokenExistsAndValid()){
           this.cartService.uplodadCartItems(flightsCart);
+          this.cartService.addToCart(roundTripFlights, this.tripType);
+          // console.log('Carrito: ', this.cartService.getCartData());
+          // window.alert('Vuelos agregados al carrito exitosamente');
+          this.selectedFlight = null;
+          this.selectedReturnFlight = null;
+          this.selectedClassIda = null;
+          this.selectedClassVuelta = null;
+          // Navegar al carrito
+          Swal.fire({
+            icon: "success",
+            title: "Buscar vuelos",
+            text: "Vuelos agregados al carrito.",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+          }).then(() => {
+            this.router.navigate(['/cart']);
+          });
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Buscar vuelos",
+            text: "Debes iniciar sesión para añadir vuelos al carrito.",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+          }).then(() => {
+            this.router.navigate(['/login']);
+          });
         }
-        
-        this.cartService.addToCart(roundTripFlights, this.tripType);
-        console.log('Carrito: ', this.cartService.getCartData());
-        window.alert('Vuelos agregados al carrito exitosamente');
-        this.selectedFlight = null;
-        this.selectedReturnFlight = null;
-        this.selectedClassIda = null;
-        this.selectedClassVuelta = null;
-        // Navegar al carrito
-        this.router.navigate(['/cart']);
       } else {
         window.alert('Debe seleccionar un vuelo de ida y un vuelo de vuelta.');
       }
@@ -273,15 +295,35 @@ allFlights: FlightData = {
 
         if(this.jwtService.tokenExistsAndValid()){
           this.cartService.uplodadCartItems(flightsCart);
+
+          Swal.fire({
+            icon: "success",
+            title: "Buscar vuelos",
+            text: "Vuelos agregados al carrito.",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+          }).then(() => {
+            this.router.navigate(['/cart']);
+          });
+
+          this.cartService.addToCart([oneWayFlight], this.tripType);
+          // console.log('Carrito: ', this.cartService.getCartData());
+          // window.alert('Vuelo agregado al carrito exitosamente');
+          this.selectedFlight = null;
+          this.selectedClassIda = null;
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Buscar vuelos",
+            text: "Debes iniciar sesión para añadir vuelos al carrito.",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true
+          }).then(() => {
+            this.router.navigate(['/login']);
+          });
         }
-        
-        this.cartService.addToCart([oneWayFlight], this.tripType);
-        console.log('Carrito: ', this.cartService.getCartData());
-        window.alert('Vuelo agregado al carrito exitosamente');
-        this.selectedFlight = null;
-        this.selectedClassIda = null;
-        // Navegar al carrito
-        this.router.navigate(['/cart']);
       } else {
         window.alert('Debe seleccionar un vuelo.');
       }
