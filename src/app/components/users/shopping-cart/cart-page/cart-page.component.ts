@@ -113,11 +113,11 @@ export class CartPageComponent implements OnInit {
   // }
 
   buycartItems(){
-    this.router.navigate(['/passenger-info']);
+    this.router.navigate(['/passenger-info/0']);
   }
 
   makeReservation(){
-    this.router.navigate(['/passenger-info']);
+    this.router.navigate(['/passenger-info/1']);
   }
 
 }

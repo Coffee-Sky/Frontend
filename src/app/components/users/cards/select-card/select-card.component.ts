@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { HeaderComponent } from "../../../home/header/header.component";
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
@@ -27,7 +27,10 @@ interface Card {
 export class SelectCardComponent implements OnInit {
   code: string = '';
   cards: Card[] = [];
-  selectedCardId: number = -1; 
+  selectedCardId: number = -1;
+
+  // Define un EventEmitter para emitir el ID de la tarjeta seleccionada
+  @Output() cardSelected = new EventEmitter<number>();
 
   constructor(private router: Router, private apiService: ApiService, private jwtService: JwtService) {}
 
@@ -53,9 +56,9 @@ export class SelectCardComponent implements OnInit {
 
   confirmSelection(): void {
     if (this.selectedCardId !== -1) {
-      console.log('Tarjeta seleccionada:', this.selectedCardId);
+      // Emitir el ID de la tarjeta seleccionada al componente padre
+      this.cardSelected.emit(this.selectedCardId);
     } else {
-      console.warn('No se ha seleccionado ninguna tarjeta.');
       Swal.fire({
         icon: "error",
         title: "Seleccionar tarjeta",
@@ -64,7 +67,11 @@ export class SelectCardComponent implements OnInit {
         showConfirmButton: false,
         timer: 2500,
         timerProgressBar: true
-      })
+      });
     }
+  }
+
+  returnPassengerInfo(): void {
+    this.cardSelected.emit(-1);
   }
 }
