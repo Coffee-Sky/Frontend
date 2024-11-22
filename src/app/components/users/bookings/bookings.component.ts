@@ -72,6 +72,38 @@ export class BookingsComponent implements OnInit{
     );
   }
 
+  calculateRemainingTime(reservationDateStr: string, departureDateStr: string): string {
+    // Obtener la hora actual en Colombia
+    const currentTime = new Date().toLocaleString('en-US', { timeZone: 'America/Bogota' });
+    const currentDate = new Date(currentTime);
+  
+    // Convertir las fechas de cadena a objetos Date
+    const reservationDate = new Date(reservationDateStr);
+    const departureDate = new Date(departureDateStr);
+  
+    // Calcular diferencias de tiempo en milisegundos
+    const timeSinceReservation = currentDate.getTime() - reservationDate.getTime();
+    const timeUntilDeparture = departureDate.getTime() - currentDate.getTime();
+    const timeUntil24HoursFromReservation = (24 * 60 * 60 * 1000) - timeSinceReservation;
+  
+    let remainingTime: number;
+  
+    if ((departureDate.getTime() - reservationDate.getTime()) > (24 * 60 * 60 * 1000)) {
+      // Si el tiempo entre la reserva y la salida es mayor a 24 horas, mostrar el tiempo restante hasta completar 24 horas desde la reserva
+      remainingTime = timeUntil24HoursFromReservation;
+    } else {
+      // Mostrar el menor tiempo entre la salida y las 24 horas desde la reserva
+      remainingTime = Math.min(timeUntilDeparture, timeUntil24HoursFromReservation);
+    }
+  
+    // Convertir el tiempo restante a horas, minutos y segundos
+    const hours = Math.floor(remainingTime / (1000 * 60 * 60));
+    const minutes = Math.floor((remainingTime % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((remainingTime % (1000 * 60)) / 1000);
+  
+    return `${hours} horas y ${minutes} minutos`;
+  }
+
   onCardSelected(cardId: number): void {
     this.selectedCardId = cardId;
     if(this.selectedCardId !== -1){
