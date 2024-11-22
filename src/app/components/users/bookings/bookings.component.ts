@@ -161,7 +161,8 @@ export class BookingsComponent implements OnInit{
           timer: 2500,
           timerProgressBar: true
         }).then(() => {
-          window.location.reload();
+          this.getBookings();
+          this.loadingBuyTickets = false;
         });
       },
       (error) => {
@@ -205,7 +206,7 @@ export class BookingsComponent implements OnInit{
           timer: 2500,
           timerProgressBar: true
         }).then(() => {
-          window.location.reload();
+          this.getBookings();
         });
       }
 
@@ -215,7 +216,81 @@ export class BookingsComponent implements OnInit{
     }
   }
 
-  // cancelBooking(flightID: number) {
-  //   this.bookings = this.bookings.filter(flight => flight[0].flightID !== flightID);
-  // }
+  confirmCancelBooking(flightID: string): void {
+    Swal.fire({
+      icon: "question",
+      title: "Cancelar reserva",
+      text: "¿Está seguro que desea cancelar la reserva?",
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Sí",
+      cancelButtonText: "No",
+      confirmButtonColor: "#0F766E",
+      cancelButtonColor: "#EF4444"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.cancelBooking(flightID);
+      }
+    });
+  }
+
+  cancelBooking(flightID: string): void {
+    
+    const booking = this.bookings.find(booking => booking.id === flightID);
+
+    if (booking) {
+      // Realiza las acciones necesarias con el booking encontrado
+      console.log('Booking encontrado:', booking);
+
+      const returnReservationId = booking.isRoundTrip ? booking.reservations[1].reservationId : null;
+
+      const cancelBookingInfo = {
+        clientId: this.jwtService.getCode(),
+        originReservationId: booking.reservations[0].reservationId,
+        isRoundTrip: booking.isRoundTrip,
+        returnReservationId: returnReservationId
+      }
+
+      this.apiService.putData('cart/cancel-reservation', cancelBookingInfo).subscribe(
+        (response) => {
+          console.log('Respuesta de cancelación:', response);
+          Swal.fire({
+            icon: "success",
+            title: "Cancelar reserva",
+            text: "Se ha cancelado la reserva exitosamente.",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            this.getBookings();
+          });
+        },
+        (error) => {
+          console.error('Error cancelando la reserva:', error);
+          Swal.fire({
+            icon: "error",
+            title: "Cancelar reserva",
+            text: "Se ha producido un error cancelando la reserva. Vuelve a intentarlo.",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            this.getBookings();
+          });
+        }
+      );
+    } else {
+      console.warn('No se encontró un booking con el ID:', this.flightID);
+      Swal.fire({
+        icon: "error",
+        title: "Cancelar reserva",
+        text: "Se ha producido un error cancelando la reserva. Vuelve a intentarlo.",
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true
+      }).then(() => {
+        this.getBookings();
+      });
+    }
+  }
 }
