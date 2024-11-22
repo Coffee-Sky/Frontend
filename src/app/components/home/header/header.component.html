@@ -20,7 +20,7 @@
     </form>
   </div> -->
 
-  <nav class="hidden md:flex space-x-4">
+  <nav class="hidden md:flex">
     <!-- <button routerLink="">
       <span class="material-symbols-outlined" translate="no">
         home
@@ -32,6 +32,18 @@
         person
       </span>
       <p>Perfil</p>
+    </button>
+    <button *ngIf="jwtService.tokenExistsAndValid()">
+      <span class="material-symbols-outlined">
+        airplane_ticket
+      </span>
+      <p>Tiquetes</p>
+    </button>
+    <button *ngIf="jwtService.tokenExistsAndValid()" routerLink="/bookings">
+      <span class="material-symbols-outlined">
+        event_seat
+      </span>
+      <p>Reservas</p>
     </button>
     <button *ngIf="jwtService.tokenExistsAndValid()" routerLink="/cart">
       <span class="material-symbols-outlined" translate="no">
@@ -74,11 +86,23 @@
       </span>
       <p>Perfil</p>
     </button>
+    <button *ngIf="jwtService.tokenExistsAndValid()">
+      <span class="material-symbols-outlined">
+        airplane_ticket
+      </span>
+      <p>Tiquetes</p>
+    </button>
+    <button *ngIf="jwtService.tokenExistsAndValid()" routerLink="/bookings">
+      <span class="material-symbols-outlined">
+        event_seat
+      </span>
+      <p>Reservas</p>
+    </button>
     <button *ngIf="jwtService.tokenExistsAndValid()" routerLink="/cart">
       <span class="material-symbols-outlined" translate="no">
         shopping_cart
       </span>
-      <p>carrito</p>
+      <p>Carrito</p>
     </button>
     <button *ngIf="jwtService.tokenExistsAndValid()" (click)="logout()">
       <span class="material-symbols-outlined" translate="no">

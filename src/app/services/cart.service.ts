@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ApiService } from './api.service';
+import { JwtService } from './jwt.service';
 
 interface CartFlight {
   flightID: number;
@@ -8,7 +10,7 @@ interface CartFlight {
   destiny: string;
   departure: string;
   passengers: number;
-  selectedClass: 'economy' | 'firstClass' | null;
+  selectedClass: 'economy' | 'business' | null;
   price: number;
 }
 
@@ -18,12 +20,38 @@ interface CartItem {
   tripType: string;
 }
 
+interface FlightCart {
+  clientId: number;
+  outboundFlightId: number;
+  outboundClassType: string;
+  quantity: number;
+  isRoundTrip: boolean;
+  returnFlightId: number;
+  returnClassType: string;
+}
+
+interface CartFlights {
+  isRoundTrip: boolean;
+  id: string;
+  flights: Flight[];
+}
+
+interface Flight {
+  flightId: number;
+  originCity: string;
+  destinationCity: string;
+  departure: string;
+  quantity: number;
+  classType: string;
+  price: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class CartService {
 
-  constructor() { }
+  constructor(private apiService: ApiService, private jwtService: JwtService) { }
 
   private cartItems = new BehaviorSubject<any[]>([]);
   flightData$ = this.cartItems.asObservable();
@@ -38,6 +66,24 @@ export class CartService {
     
     const updatedCartItems = [...currentCartItems, cartItem];
     this.cartItems.next(updatedCartItems);
+  }
+
+  uplodadCartItems(flights: FlightCart) {
+    if(flights){
+      console.log('Vuelos:', flights);
+      this.apiService.postData('cart/add-flight', flights).subscribe(
+        (response) => {
+          console.log('Funcionaaa');
+        },
+        (error) => {
+          console.error('Error al subir los vuelos al carrito:', error);
+        }
+      );
+    }
+  }
+
+  getCartItems(): Observable<CartFlights[]> {
+    return this.apiService.getData('cart/get-cart-flights?clientId=' + this.jwtService.getCode());
   }
   
   getCartData() {

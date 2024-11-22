@@ -5,7 +5,7 @@
       <h2>Carrito de compras</h2>
     </div>
 
-    <div *ngIf="cartItems.length" class="bg-white border border-color4 px-3 py-3 flex justify-center shadow-md sm:rounded-lg overflow-hidden">
+    <div *ngIf="flightsCart.length" class="bg-white border border-color4 px-3 py-3 flex justify-center shadow-md sm:rounded-lg overflow-hidden">
       <div class="overflow-x-auto w-full">
         <table class="w-full text-center text-sm text-black">
           <thead class="uppercase px-6 py-3">
@@ -22,29 +22,30 @@
           </thead>
   
           <tbody>
-            <ng-container *ngFor="let item of cartItems">
+            <ng-container *ngFor="let item of flightsCart">
               <!-- Para vuelos de ida y vuelta -->
-              <ng-container *ngIf="item.tripType === 'roundtrip'">
+              <ng-container *ngIf="item.isRoundTrip === true">
                 <tr *ngFor="let flight of item.flights; let first = first" 
                     class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
                   <!-- Solo mostrar "Trayecto Completo" en la primera fila del grupo -->
                   <td class="py-3 px-5 whitespace-nowrap">
                     <ng-container *ngIf="first">Trayecto Completo</ng-container>
                   </td>
-                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.origin }}</td>
-                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.destiny }}</td>
-                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.departure | date:'medium' }}</td>
-                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.passengers }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.originCity }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.destinationCity }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.departure | date:'short' }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ flight.quantity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">
-                    {{ flight.selectedClass === 'economy' ? 'Económica' : 'Primera Clase' }}
+                    {{ flight.classType === 'economy' ? 'Económica' : 'Primera Clase' }}
                   </td>
                   <td class="py-3 px-5 whitespace-nowrap">
-                    {{ (flight.price * flight.passengers) | currency:'COP':'symbol-narrow':'1.0-0' }}
+                    {{ (flight.price * flight.quantity) | currency:'COP':'symbol-narrow':'1.0-0' }}
                   </td>
                   <!-- Solo mostrar el botón de eliminar en la primera fila del grupo -->
                   <td class="flex justify-center gap-4 px-5 py-3 whitespace-nowrap">
-                    <button *ngIf="first" (click)="removeFlight(item.id)"
-                      class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                    <!-- <button *ngIf="first" (click)="removeFlight(item.id)" -->
+                    <button *ngIf="first"
+                      class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" (click)="removeFlight(flight.flightId, item.isRoundTrip)">
                       <span class="material-symbols-outlined" translate="no">delete</span>
                     </button>
                   </td>
@@ -52,22 +53,23 @@
               </ng-container>
               
               <!-- Para vuelos de solo ida -->
-              <ng-container *ngIf="item.tripType === 'oneway'">
+              <ng-container *ngIf="item.isRoundTrip === false">
                 <tr class="border-b border-color4 hover:bg-color3-shade transition-all duration-300 ease-in-out">
                   <td class="py-3 px-5 whitespace-nowrap">Solo Ida</td>
-                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].origin }}</td>
-                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].destiny }}</td>
-                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].departure | date:'medium' }}</td>
-                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].passengers }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].originCity }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].destinationCity }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].departure | date:'short' }}</td>
+                  <td class="py-3 px-5 whitespace-nowrap">{{ item.flights[0].quantity }}</td>
                   <td class="py-3 px-5 whitespace-nowrap">
-                    {{ item.flights[0].selectedClass === 'economy' ? 'Económica' : 'Primera Clase' }}
+                    {{ item.flights[0].classType === 'economy' ? 'Económica' : 'Primera Clase' }}
                   </td>
                   <td class="py-3 px-5 whitespace-nowrap">
-                    {{ (item.flights[0].price * item.flights[0].passengers) | currency:'COP':'symbol-narrow':'1.0-0' }}
+                    {{ item.flights[0].price | currency:'COP':'symbol-narrow':'1.0-0' }}
                   </td>
                   <td class="flex justify-center gap-4 px-5 py-3 whitespace-nowrap">
-                    <button (click)="removeFlight(item.id)"
-                      class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none">
+                    <!-- <button (click)="removeFlight(item.id)" -->
+                    <button
+                      class="bg-red-500 text-gray-100 w-10 py-1 rounded-lg hover:bg-red-600 transition-all duration-300 ease-in-out flex items-center justify-center focus:shadow-outline focus:outline-none" (click)="removeFlight(item.flights[0].flightId, item.isRoundTrip)">
                       <span class="material-symbols-outlined" translate="no">delete</span>
                     </button>
                   </td>
@@ -90,7 +92,7 @@
       </div> 
     </div> 
 
-    <ng-container *ngIf="cartItems.length === 0">
+    <ng-container *ngIf="flightsCart.length === 0">
       <div class="bg-white border border-color4 px-3 py-3 flex justify-center shadow-md sm:rounded-lg overflow-hidden">
         <div class="text-center">
           <p class="text-lg font-semibold text-black">No hay vuelos en el carrito</p>
@@ -104,13 +106,13 @@
         class="w-44 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
         Salir
       </button>
-      <button [disabled]="cartItems.length === 0"
+      <button [disabled]="flightsCart.length === 0"
         (click)="makeReservation()"
         class="w-44 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline
         disabled:opacity-50 disabled:cursor-not-allowed">
         Reservar Tiquetes
       </button>
-      <button [disabled]="cartItems.length === 0"
+      <button [disabled]="flightsCart.length === 0"
         (click)="buycartItems()"
         class="w-44 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade focus:outline-none focus:shadow-outline
         disabled:opacity-50 disabled:cursor-not-allowed">

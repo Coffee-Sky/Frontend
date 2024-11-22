@@ -12,6 +12,9 @@ import { PasswordRootComponent } from '../root/password-root/password-root.compo
 import { ModalService } from '../../../services/modal.service';
 import { VerifyPasswordComponent } from '../verify-password/verify-password.component';
 
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+
 interface Role {
   roleID: number;
   name: string;
@@ -58,7 +61,7 @@ interface Gender {
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent, FooterComponent, PasswordRootComponent, VerifyPasswordComponent],
+  imports: [ReactiveFormsModule, CommonModule, RouterModule, HeaderComponent, PasswordRootComponent, VerifyPasswordComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css'
 })
@@ -75,6 +78,8 @@ export class ProfileComponent implements OnInit{
   verifyPassword: boolean = false;
 
   accessToken: string = '';
+
+  isLoading: boolean = false;
 
   countries: Country[] = [];
   states: State[] = [];
@@ -103,8 +108,16 @@ export class ProfileComponent implements OnInit{
     statusID: 0
   };
 
-  constructor(private fb: FormBuilder, private cdRef: ChangeDetectorRef, private cloudinary: CloudinaryService, private apiService: ApiService, private locationService: LocationService, private jwtService: JwtService, private passwordService: ModalService, private verifyPasswordService: ModalService) { 
-  }
+  constructor(
+    private fb: FormBuilder, 
+    private cdRef: ChangeDetectorRef, 
+    private cloudinary: CloudinaryService, 
+    private apiService: ApiService, 
+    private locationService: LocationService, 
+    private jwtService: JwtService, 
+    private passwordService: ModalService, 
+    private verifyPasswordService: ModalService
+  ){}
 
   ngOnInit(): void {
     this.passwordService.$password.subscribe((value)=>{this.changePassword = value})
@@ -301,6 +314,7 @@ export class ProfileComponent implements OnInit{
   // Método para subir la imagen
   uploadImage() {
     if (this.selectedFile) {
+      this.isLoading = true;
       this.cloudinary.uploadImage(this.selectedFile).subscribe(
         (response) => {
           // console.log('Imagen subida correctamente', response);
@@ -310,6 +324,16 @@ export class ProfileComponent implements OnInit{
         },
         (error) => {
           console.error('Error al subir la imagen', error);
+          Swal.fire({
+            icon: "error",
+            title: "Cambiar imagen",
+            text: "Se ha producido un error. Vuelva a intentarlo.",
+            showConfirmButton: false,
+            timer: 2500,
+            timerProgressBar: true
+          }).then(() => {
+            this.changingPicture = false;
+          });
         }
       );
     }

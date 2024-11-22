@@ -32,6 +32,16 @@
         </div>
       </div>
     </div>
+
+    <ng-container *ngIf="cards.length === 0">
+      <div class="bg-white border border-color4 px-3 py-3 flex justify-center shadow-md sm:rounded-lg overflow-hidden">
+        <div class="text-center">
+          <p class="text-lg font-semibold text-black">No tienes ningún método de pago.</p>
+          <p class="text-sm text-gray-500">Agrega un método de pago para realizar compra de tiquetes.</p>
+        </div>
+      </div>
+    </ng-container>
+
     <div class="flex flex-1 items-center justify-center gap-4">
       <button routerLink="/add-card"
         class="w-40 py-2 mt-3 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
