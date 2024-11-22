@@ -12,7 +12,7 @@ import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 import { LocationService } from '../../../../services/location.service';
 import { SelectCardComponent } from '../../cards/select-card/select-card.component';
-import { LoadingBuyTicketsComponent } from '../loading-buy-tickets/loading-buy-tickets.component';
+import { LoadingBuyTicketsComponent } from '../../../home/loading-buy-tickets/loading-buy-tickets.component';
 
 interface Country {
   country_name: string;
@@ -329,7 +329,7 @@ export class PassengerInfoComponent implements OnInit {
                 timer: 2000,
                 timerProgressBar: true
               }).then(() => {
-                this.router.navigate(['/cart']);
+                this.router.navigate(['/bookings']);
               });
             },
             (error) => {

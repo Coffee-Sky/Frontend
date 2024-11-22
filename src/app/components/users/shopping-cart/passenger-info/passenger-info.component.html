@@ -148,7 +148,7 @@
 </div>
 
 <div class="" *ngIf="loadingBuyTickets==true">
-  <app-loading-buy-tickets />
+  <app-loading-buy-tickets (title)="'Comprar tiquetes'" />
 </div> 
 
 <app-select-card *ngIf="disabledViewCard" (cardSelected)="onCardSelected($event)" />

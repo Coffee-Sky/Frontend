@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { ModalService } from '../../../../services/modal.service';
+import { Component, Input } from '@angular/core';
+import { ModalService } from '../../../services/modal.service';
 
 @Component({
   selector: 'app-loading-buy-tickets',
@@ -9,6 +9,8 @@ import { ModalService } from '../../../../services/modal.service';
   styleUrl: './loading-buy-tickets.component.css'
 })
 export class LoadingBuyTicketsComponent {
+
+  @Input() title: string = 'Cargando...';
   
     constructor(private loadingBuyTickets: ModalService) { }
   
