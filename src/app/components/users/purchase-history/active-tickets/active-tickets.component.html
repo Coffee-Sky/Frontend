@@ -2,7 +2,7 @@
   <app-header/>
   <div class="max-w-3xl mx-auto space-y-8 pt-6 p-6">
     <div class="text-2xl font-bold flex justify-center">
-      <h2>Historial de compras</h2>
+      <h2>Compras activas</h2>
     </div>
     <ng-container *ngFor="let purchase of purchases" >
       <div
@@ -79,14 +79,14 @@
     </ng-container>
 
     <div class="flex justify-center gap-4">
-      <button [routerLink]="['/profile']"
+      <button [routerLink]="['']"
         class="w-full sm:w-fit px-4 py-2 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
         Regresar
       </button>
 
-      <button [routerLink]="['/history']"
+      <button [routerLink]="['/bookings']"
         class="w-full sm:w-fit px-4 py-2 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
-        Ver historial
+        Ver reservas
       </button>
     </div>
   </div>
