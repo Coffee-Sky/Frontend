@@ -5,8 +5,9 @@
       <h2>Historial de compras</h2>
     </div>
     <ng-container *ngFor="let flight of flights" >
-      <div 
-        class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer" (click)="infoView(flight[0].flightID)">
+      <div
+      class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer"
+      (click)="infoView(flight[0].flightID)">
         <div class="flex flex-col sm:flex-row items-center justify-between">
           <div class="flex items-center justify-center sm:space-x-6 w-full sm:w-auto">
             <div class="text-left w-full sm:w-auto">
@@ -73,14 +74,14 @@
     </ng-container>
 
     <div class="flex justify-center gap-4">
-      <button [routerLink]="['']"
+      <button [routerLink]="['/profile']"
         class="w-full sm:w-fit px-4 py-2 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
         Regresar
       </button>
 
-      <button [routerLink]="['/bookings']"
+      <button [routerLink]="['/history']"
         class="w-full sm:w-fit px-4 py-2 font-bold text-white bg-color1 rounded-md hover:bg-color1-shade transition-all duration-300 ease-in-out focus:outline-none focus:shadow-outline">
-        Ver reservas
+        Ver historial
       </button>
     </div>
   </div>

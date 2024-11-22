@@ -16,16 +16,17 @@ interface CartFlight {
   price: number;
 }
 
+
 @Component({
-  selector: 'app-history',
+  selector: 'app-active-tickets',
   standalone: true,
   imports: [HeaderComponent, CommonModule, RouterModule, PurchaseInfoComponent],
-  templateUrl: './history.component.html',
-  styleUrl: './history.component.css'
+  templateUrl: './active-tickets.component.html',
+  styleUrl: './active-tickets.component.css'
 })
-export class HistoryComponent implements OnInit{
-
+export class ActiveTicketsComponent {
   purchaseStatus = 1; // 1: Compra realizada, 2: Compra cancelada
+
   purchaseInfoView = false;
 
   id: number = 0;
@@ -54,4 +55,5 @@ export class HistoryComponent implements OnInit{
   cancelPurchase(flightID: number) {
     console.log('Cancelar compra de vuelo con ID: ', flightID);
   }
+
 }

@@ -25,6 +25,7 @@ import { SelectCardComponent } from './components/users/cards/select-card/select
 import { BookingsComponent } from './components/users/bookings/bookings.component';
 import { HistoryComponent } from './components/users/purchase-history/history/history.component';
 import { PurchaseInfoComponent } from './components/users/purchase-history/purchase-info/purchase-info.component';
+import { ActiveTicketsComponent } from './components/users/purchase-history/active-tickets/active-tickets.component';
 
 export const routes: Routes = [
   { path: '', component: PageComponent, canActivate: [authGuard]}, 
@@ -44,7 +45,7 @@ export const routes: Routes = [
   { path: 'passenger-info/:type', component: PassengerInfoComponent, canActivate: [clientGuard]},
   { path: 'bookings', component: BookingsComponent, canActivate: [clientGuard]},
   { path: 'history', component: HistoryComponent, canActivate: [clientGuard]},
-  { path: 'purchase-info/:code', component: PurchaseInfoComponent, canActivate: [clientGuard]},
+  { path: 'active-tickets', component: ActiveTicketsComponent, canActivate: [clientGuard]},
   { path: '**', component: PageComponent, canActivate: [authGuard]}
 ];
 

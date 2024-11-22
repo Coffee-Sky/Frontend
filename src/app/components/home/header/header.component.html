@@ -33,7 +33,7 @@
       </span>
       <p>Perfil</p>
     </button>
-    <button *ngIf="jwtService.tokenExistsAndValid()">
+    <button *ngIf="jwtService.tokenExistsAndValid()" routerLink="/active-tickets">
       <span class="material-symbols-outlined">
         airplane_ticket
       </span>

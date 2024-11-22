@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, Input, OnInit } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
 import { HeaderComponent } from '../../../home/header/header.component';
 
 interface CartFlight {
@@ -23,7 +23,8 @@ interface CartFlight {
 })
 export class PurchaseInfoComponent implements OnInit{
 
-  purchaseStatus = 1; // 1: Compra realizada, 2: Compra cancelada
+  @Input() flightId: number = 0;
+  @Input() purchaseStatus: number = 0;
 
   flights: CartFlight[][] = [
     [
@@ -43,9 +44,13 @@ export class PurchaseInfoComponent implements OnInit{
     {firstname: 'Chil', secondname: '', firstlastname: 'Perez', secondlastname: '', genderID: 2, identificationtype: 1, identificationnumber: '123456700', bornDate: '2014-12-06', bornCountry: 'Colombia', email: 'chil@gmail.com'},
   ]
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit(): void {
+  }
+
+  goBack(): void {
+    window.location.reload();
   }
 
   cancelPurchase(flightID: number) {
