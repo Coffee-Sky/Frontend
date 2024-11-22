@@ -3,6 +3,8 @@ import { HeaderComponent } from '../../../home/header/header.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { PurchaseInfoComponent } from '../purchase-info/purchase-info.component';
+import { ApiService } from '../../../../services/api.service';
+import { JwtService } from '../../../../services/jwt.service';
 
 
 interface CartFlight {
@@ -16,6 +18,45 @@ interface CartFlight {
   price: number;
 }
 
+interface Flight {
+  flightId: number;
+  complementaryFlightId: number;
+  originCity: string;
+  destinationCity: string;
+  departure: string;
+  quantity: number;
+  classType: string;
+  price: number;
+  purchaseId: number;
+}
+
+interface Ticket {
+  ticketId: number;
+}
+
+interface Passenger {
+  id: number;
+  ticketId: number;
+  firstname: string;
+  secondname: string;
+  firstlastname: string;
+  secondlastname: string;
+  documentType: string;
+  identificationnumber: string;
+  bornDate: string;
+  borncountry: string;
+  gender: number;
+  email: string;
+}
+
+interface Purchase {
+  isRoundTrip: boolean;
+  reservations: Flight[];
+  ticketReservationIds: Ticket[];
+  passengers: Passenger[];
+  status: number;
+  id: string;
+}
 
 @Component({
   selector: 'app-active-tickets',
@@ -29,7 +70,9 @@ export class ActiveTicketsComponent {
 
   purchaseInfoView = false;
 
-  id: number = 0;
+  id: string = '';
+
+  passengersFlight: Passenger[] = []
 
   flights: CartFlight[][] = [
     [
@@ -41,14 +84,31 @@ export class ActiveTicketsComponent {
     ],
   ]
 
-  constructor() { }
+  purchases: Purchase[] = [];
+
+  constructor(private apiService: ApiService, private jwtService: JwtService) { }
 
   ngOnInit(): void {
+    this.getInfoPurchases();
   }
 
-  infoView(flightId: number): void {
+  getInfoPurchases(){
+    this.apiService.getData('cart/get-active-purchases?clientId='+this.jwtService.getCode()).subscribe(
+      (response: Purchase[]) => {
+        this.purchases = response;
+        console.log('Información de compras activas:', this.purchases);
+      },
+      (error) => {
+        console.error('Error obteniendo las compras activas:', error);
+      }
+    );
+
+  }
+
+  infoView(flightId: string, passengers: Passenger[]): void {
     console.log('Mostrar información de vuelo con ID: ', flightId);
     this.id = flightId;
+    this.passengersFlight = passengers;
     this.purchaseInfoView = !this.purchaseInfoView;
   }
 

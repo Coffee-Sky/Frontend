@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../home/header/header.component';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterLinkActive, RouterModule, Router } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { JwtService } from '../../../services/jwt.service';
 import { SelectCardComponent } from '../cards/select-card/select-card.component';
@@ -54,7 +54,7 @@ export class BookingsComponent implements OnInit{
 
   loadingBuyTickets: boolean = false;
 
-  constructor(private apiService: ApiService, private jwtService: JwtService) { }
+  constructor(private apiService: ApiService, private jwtService: JwtService, private router: Router) { }
 
   ngOnInit(): void {
     this.getBookings();
@@ -177,6 +177,7 @@ export class BookingsComponent implements OnInit{
         }).then(() => {
           this.viewSelectCard = false;
           this.flightID = '';
+          window.location.reload();
         });
       }
     );

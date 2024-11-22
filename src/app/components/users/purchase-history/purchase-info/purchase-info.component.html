@@ -6,20 +6,20 @@
     </div>
 
     <ng-container>
-      <div *ngFor="let flight of flights" class="mb-8">
+      <div class="mb-8">
 
         <div class="bg-white rounded-lg shadow-md p-4 mb-4" formGroupName="flightInfo">
           <div class="flex flex-row justify-center gap-4">
-            <p class="text-xl sm:text-2xl font-bold">{{ flight[0].origin }}</p>
+            <p class="text-xl sm:text-2xl font-bold">{{ selectedPurchase.reservations[0].originCity }}</p>
             <span class="material-symbols-outlined transform rotate-90 text-teal-500 text-md sm:text-2xl" translate="no">flight</span>
-            <p class="text-xl sm:text-2xl font-bold">{{ flight[0].destiny }}</p>
-            <span *ngIf="flight[0].tripType === 'roundtrip'" class="material-symbols-outlined transform rotate-90 text-teal-500 text-md sm:text-2xl" translate="no">flight</span>
-            <p *ngIf="flight[0].tripType === 'roundtrip'" class="text-xl sm:text-2xl font-bold">{{ flight[0].origin }}</p>
+            <p class="text-xl sm:text-2xl font-bold">{{ selectedPurchase.reservations[0].destinationCity }}</p>
+            <span *ngIf="selectedPurchase.isRoundTrip" class="material-symbols-outlined transform rotate-90 text-teal-500 text-md sm:text-2xl" translate="no">flight</span>
+            <p *ngIf="selectedPurchase.isRoundTrip" class="text-xl sm:text-2xl font-bold">{{ selectedPurchase.reservations[0].originCity }}</p>
           </div>
         </div>
 
         <div formArrayName="passengers">
-          <div *ngFor="let passenger of passengers; let i = index" 
+          <div *ngFor="let passenger of displayedPassengers; let i = index" 
                class="mb-4 p-6 bg-white rounded-lg shadow-md">
 
             <h3 class="text-lg font-semibold text-black mb-4">Pasajero {{i + 1}}</h3>            
@@ -58,13 +58,13 @@
               <div class="form-group">
                 <label class="block text-sm font-medium text-black mb-2">País de Nacimiento</label>
                 <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
-                type="text" formControlName="bornCountry" [value]="passenger.bornCountry" [readOnly]="true">
+                type="text" formControlName="bornCountry" [value]="passenger.borncountry" [readOnly]="true">
               </div>
     
               <div class="form-group">
                 <label class="block text-sm font-medium text-black mb-2">Tipo de Documento</label>
                 <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
-                type="text" formControlName="identificationtype" [value]="passenger.identificationtype" [readOnly]="true">
+                type="text" formControlName="identificationtype" [value]="passenger.documentType" [readOnly]="true">
               </div>
     
               <div class="form-group">
@@ -76,7 +76,7 @@
               <div class="form-group">
                 <label class="block text-sm font-medium text-black mb-2">Género</label>
                 <input class="w-full p-3 border rounded mb-1 text-sm leading-tight text-black shadow appearance-none focus:outline-color3 focus:shadow-outline"
-                type="text" formControlName="genderID" [value]="passenger.genderID" [readOnly]="true">
+                type="text" formControlName="genderID" [value]="passenger.gender" [readOnly]="true">
               </div>
     
               <div class="form-group">

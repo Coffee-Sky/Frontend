@@ -4,15 +4,17 @@
     <div class="text-2xl font-bold flex justify-center">
       <h2>Historial de compras</h2>
     </div>
-    <ng-container *ngFor="let flight of flights" >
+    <ng-container *ngFor="let purchase of purchases" >
       <div
       class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer"
-      (click)="infoView(flight[0].flightID)">
+      (click)="infoView(purchase.id, purchase.passengers)">
+      <!-- <div
+      class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-200 cursor-pointer"> -->
         <div class="flex flex-col sm:flex-row items-center justify-between">
           <div class="flex items-center justify-center sm:space-x-6 w-full sm:w-auto">
             <div class="text-left w-full sm:w-auto">
-              <p class="text-xs text-gray-500">{{ flight[0].tripType === 'roundtrip' ? 'Trayecto completo' : 'Solo ida' }}</p>
-              <p class="text-2xl font-bold">{{ flight[0].origin }}</p>
+              <p class="text-xs text-gray-500">{{ purchase.isRoundTrip ? 'Trayecto completo' : 'Solo ida' }}</p>
+              <p class="text-2xl font-bold">{{ purchase.reservations[0].originCity }}</p>
             </div>
             <div class="flex flex-col items-center w-full sm:w-auto">
               <div class="w-24 sm:w-32 h-px bg-teal-500 relative mt-5">
@@ -22,12 +24,15 @@
               </div>
             </div>
             <div class="text-right w-full sm:w-auto mt-4">
-              <p class="text-2xl font-bold">{{ flight[0].destiny }}</p>
+              <p class="text-2xl font-bold">{{ purchase.reservations[0].destinationCity }}</p>
             </div>
           </div>
           <div class="flex flex-col text-right w-full sm:w-auto sm:mt-4">
-            <p class="text-xl font-bold flex flex-row items-center justify-end">
-              COP ${{ flight[0].price * flight[0].passengers| number:'1.0-0'}}
+            <p class="text-xl font-bold flex flex-row items-center justify-end" *ngIf="!purchase.isRoundTrip">
+              COP ${{ purchase.reservations[0].price | number:'1.0-0'}}
+            </p>
+            <p class="text-xl font-bold flex flex-row items-center justify-end" *ngIf="purchase.isRoundTrip">
+              COP ${{ (purchase.reservations[0].price + purchase.reservations[1].price ) | number:'1.0-0'}}
             </p>
           </div>
         </div>
@@ -36,28 +41,28 @@
           <div class="sm:grid sm:grid-cols-3 gap-4 w-full">
             <div class="flex flex-col text-left w-full sm:w-auto">
               <p class="text-xs text-gray-500">Fecha de salida</p>
-              <p class="text-xl font-bold">{{ flight[0].departure | date:'short' }}</p>
+              <p class="text-xl font-bold">{{ purchase.reservations[0].departure | date:'short' }}</p>
             </div>
             <div class="flex flex-col text-left w-full sm:w-auto">
               <p class="text-xs text-gray-500">Clase</p>
-              <p class="text-xl font-bold">{{ flight[0].selectedClass === 'firstClass' ? 'Primera clase' : 'Clase económica' }}</p>
+              <p class="text-xl font-bold">{{ purchase.reservations[0].classType === 'business' ? 'Primera clase' : 'Clase económica' }}</p>
             </div>
             <div class="flex flex-col text-left w-full sm:w-auto">
               <p class="text-xs text-gray-500">Pasajeros</p>
-              <p class="text-xl font-bold">{{ flight[0].passengers }} {{ flight[0].passengers === 1 ? 'pasajero' : 'pasajeros' }}</p>
+              <p class="text-xl font-bold">{{ purchase.reservations[0].quantity }} {{ purchase.reservations[0].quantity === 1 ? 'pasajero' : 'pasajeros' }}</p>
             </div>
           </div>
         </div>
         
-        <div *ngIf="flight[0].tripType === 'roundtrip'" class="flex flex-col sm:flex-row items-start justify-between space-y-4 sm:space-y-0 mt-4">
+        <div *ngIf="purchase.isRoundTrip" class="flex flex-col sm:flex-row items-start justify-between space-y-4 sm:space-y-0 mt-4">
           <div class="sm:grid sm:grid-cols-3 gap-4 w-full">
             <div class="flex flex-col text-left w-full sm:w-auto">
               <p class="text-xs text-gray-500">Fecha de regreso</p>
-              <p class="text-xl font-bold">{{ flight[1].departure | date:'short' }}</p>
+              <p class="text-xl font-bold">{{ purchase.reservations[1].departure | date:'short' }}</p>
             </div>
             <div class="flex flex-col text-left w-full sm:w-auto">
               <p class="text-xs text-gray-500">Clase</p>
-              <p class="text-xl font-bold">{{ flight[1].selectedClass === 'firstClass' ? 'Primera clase' : 'Clase económica' }}</p>
+              <p class="text-xl font-bold">{{ purchase.reservations[1].classType === 'business' ? 'Primera clase' : 'Clase económica' }}</p>
             </div>
           </div>
         </div>
@@ -66,7 +71,7 @@
           <div class="sm:grid sm:grid-cols-3 gap-4 w-full">
             <div class="flex flex-col text-left w-full sm:w-auto">
               <p class="text-xs text-gray-500">Estado de la compra</p>
-              <p class="text-xl font-bold">{{ purchaseStatus === 1 ? 'Comprado' : 'Cancelada' }}</p>
+              <p class="text-xl font-bold">{{ purchase.status === 1 ? 'Comprado' : 'Cancelada' }}</p>
             </div>
           </div>
         </div>
@@ -87,4 +92,4 @@
   </div>
 </div>
 
-<app-purchase-info *ngIf="purchaseInfoView" [flightId]="id" [purchaseStatus]=1 />
+<app-purchase-info *ngIf="purchaseInfoView" [flightId]="id" [purchaseStatus]=1 [purchases]="purchases"/>

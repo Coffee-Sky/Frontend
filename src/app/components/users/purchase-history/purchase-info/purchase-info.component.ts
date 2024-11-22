@@ -14,6 +14,46 @@ interface CartFlight {
   price: number;
 }
 
+interface Flight {
+  flightId: number;
+  complementaryFlightId: number;
+  originCity: string;
+  destinationCity: string;
+  departure: string;
+  quantity: number;
+  classType: string;
+  price: number;
+  purchaseId: number;
+}
+
+interface Ticket {
+  ticketId: number;
+}
+
+interface Passenger {
+  id: number;
+  ticketId: number;
+  firstname: string;
+  secondname: string;
+  firstlastname: string;
+  secondlastname: string;
+  documentType: string;
+  identificationnumber: string;
+  bornDate: string;
+  borncountry: string;
+  gender: number;
+  email: string;
+}
+
+interface Purchase {
+  isRoundTrip: boolean;
+  reservations: Flight[];
+  ticketReservationIds: Ticket[];
+  passengers: Passenger[];
+  status: number;
+  id: string;
+}
+
 @Component({
   selector: 'app-purchase-info',
   standalone: true,
@@ -23,8 +63,20 @@ interface CartFlight {
 })
 export class PurchaseInfoComponent implements OnInit{
 
-  @Input() flightId: number = 0;
+  @Input() flightId: string = '';
   @Input() purchaseStatus: number = 0;
+  @Input() purchases: Purchase[] = [];
+
+  selectedPurchase: Purchase = {
+    isRoundTrip: false,
+    reservations: [],
+    ticketReservationIds: [],
+    passengers: [],
+    status: 0,
+    id: ''
+  };
+
+  displayedPassengers: Passenger[] = [];
 
   flights: CartFlight[][] = [
     [
@@ -47,6 +99,26 @@ export class PurchaseInfoComponent implements OnInit{
   constructor(private router: Router) { }
 
   ngOnInit(): void {
+    // Filtrar el arreglo purchases para obtener la compra con el flightId
+    this.selectedPurchase = this.purchases.find(purchase => purchase.id === this.flightId) || {
+      isRoundTrip: false,
+      reservations: [],
+      ticketReservationIds: [],
+      passengers: [],
+      status: 0,
+      id: ''
+    };
+
+    if (this.selectedPurchase) {
+      console.log('Compra seleccionada:', this.selectedPurchase);
+
+      const numberToDisplay = this.selectedPurchase.reservations[0].quantity;
+      this.displayedPassengers = this.selectedPurchase.passengers.slice(0, numberToDisplay);
+      
+      console.log('Pasajeros a mostrar:', this.displayedPassengers);
+    } else {
+      console.warn('No se encontró una compra con el ID proporcionado:', this.flightId);
+    }
   }
 
   goBack(): void {
