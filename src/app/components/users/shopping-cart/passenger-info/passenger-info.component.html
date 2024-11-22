@@ -74,10 +74,10 @@
                 <!-- <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="borncountry" (change)="getStates($event)"> -->
                 <select class="w-full px-3 py-3 text-sm leading-tight text-black border rounded shadow focus:outline-color3 focus:shadow-outline" formControlName="borncountry">
                   <option value="" disabled selected>País de nacimiento</option>
-                  <option value="Colombia">Colombia PREDEFINIDA</option>
-                  <!-- <option *ngFor="let country of countries" [value]="country.country_name">
+                  <!-- <option value="Colombia">Colombia PREDEFINIDA</option> -->
+                  <option *ngFor="let country of countries" [value]="country.country_name">
                     {{ country.country_name }}
-                  </option> -->
+                  </option>
                 </select>
               </div>
     
