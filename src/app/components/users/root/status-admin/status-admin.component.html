@@ -7,7 +7,7 @@
             error
         </span>
         <h2 class="mb-4 text-lg font-semibold text-red-600">{{ error ? 'ERROR' : (status === 1 ? 'Desactivar Administrador' : status === 2 ? 'Activar Administrador' : 'Estado desconocido del Administrador') }} </h2>
-        <div class="mx-auto max-w-md text-left">
+        <div class="mx-auto max-w-md text-left" *ngIf="!isLoading">
           <span class="text-sm">{{ error ? 'Ha ocurrido un error al cambiar el estado del administrador. Inténtalo de nuevo más tarde.' : (status === 1 ? '¿Está seguro que desea desactivar el administrador?' : status === 2 ? '¿Está seguro que desea activar el administrador?' : 'No se conoce el estado del administrador, intente de nuevo más tarde.')}}</span>
         </div>
         <div class="mx-auto max-w-md text-center">

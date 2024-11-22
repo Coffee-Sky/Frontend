@@ -4,56 +4,161 @@ import { FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators } fr
 import { HeaderComponent } from '../../../home/header/header.component';
 import { CartService } from '../../../../services/cart.service';
 import { RouterModule } from '@angular/router';
+import { ApiService } from '../../../../services/api.service';
+import { JwtService } from '../../../../services/jwt.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
-interface CartFlight {
-  flightID: number;
-  tripType: string;
-  origin: string;
-  destiny: string;
+import 'sweetalert2/src/sweetalert2.scss';
+import Swal from 'sweetalert2';
+import { LocationService } from '../../../../services/location.service';
+import { SelectCardComponent } from '../../cards/select-card/select-card.component';
+import { LoadingBuyTicketsComponent } from '../loading-buy-tickets/loading-buy-tickets.component';
+
+interface Country {
+  country_name: string;
+  country_short_name: string;
+  country_phone_code: number;
+}
+
+interface CartFlights {
+  isRoundTrip: boolean;
+  id: string;
+  flights: Flight[];
+}
+
+interface Flight {
+  flightId: number;
+  originCity: string;
+  destinationCity: string;
   departure: string;
-  passengers: number;
-  selectedClass: 'economy' | 'firstClass';
+  quantity: number;
+  classType: string;
   price: number;
 }
 
-interface CartItem {
-  id: string;
-  flights: CartFlight[];
-  tripType: string;
+interface Gender {
+  genderID: number;
+  name: string;
+}
+
+interface Passenger {
+  bornDate: string;
+  borncountry: string;
+  email: string;
+  firstlastname: string;
+  firstname: string;
+  genderID: string;
+  identificationnumber: string;
+  identificationtype: string;
+  secondlastname: string;
+  secondname: string;
+  trip: string;
 }
 
 @Component({
   selector: 'app-passenger-info',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, HeaderComponent, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, HeaderComponent, RouterModule, SelectCardComponent, LoadingBuyTicketsComponent],
   templateUrl: './passenger-info.component.html',
   styleUrl: './passenger-info.component.css'
 })
 export class PassengerInfoComponent implements OnInit {
-  cartItems: CartItem[] = [];
+  type: string = ''
+  accessToken: string = '';
+
+  countries: Country[] = [];
+
   flightForms: { [key: string]: FormGroup } = {};
   maxDate: string = new Date().toISOString().split('T')[0];
+  flightsCart: CartFlights[] = [];
+  genders: Gender[] = [];
 
-  constructor(private fb: FormBuilder, private cartService: CartService) {}
+  disabledViewCard: boolean = false;
+  selectedCardId: number = -1;
+
+  loadingBuyTickets: boolean = false;
+
+  constructor(
+    private locationService: LocationService, 
+    private fb: FormBuilder, 
+    private cartService: CartService, 
+    private apiService: ApiService, 
+    private jwtService: JwtService, 
+    private router: Router,
+    private route: ActivatedRoute
+  ) {}
 
   ngOnInit() {
-    this.cartItems = this.cartService.getCartData();
-    this.createFormsForFlights();
+    this.route.paramMap.subscribe(params => {
+      this.type = params.get('type') ?? '';
+      if (!this.type || (this.type !== '0' && this.type !== '1')) this.router.navigate(['cart']);
+    });
+    this.getAccessToken();
+    this.getFlights();
+    this.getGenders();
+  }
+
+  getAccessToken() {
+    this.locationService.getAccessToken().subscribe(
+      (response) => {
+        this.accessToken = response.auth_token;
+        // console.log('Access Token:', this.accessToken);
+        this.getCountries();
+        // this.getStates('Colombia');
+        // this.getCities('Antioquia');
+      },
+      (error) => {
+        console.error('Error obteniendo el token de acceso:', error);
+      }
+    );
+  }
+
+  getCountries() {
+    this.locationService.getCountries(this.accessToken).subscribe(
+      (response) => {
+        this.countries = response;
+        // console.log(this.countries);
+      },
+      (error) => {
+        console.error('Error obteniendo los países:', error);
+      }
+    );
+  }
+
+  getGenders() {
+    this.apiService.getData("sign-up/get-genders").subscribe(
+      (response: Gender[]) => {
+        this.genders = response;
+        // console.log(this.genders);
+      },
+      (error) => {
+        console.error('Error obteniendo los géneros:', error);
+      }
+    )
+  }
+
+
+  getFlights() {
+    this.cartService.getCartItems().subscribe((flightsCart: CartFlights[]) => {
+      this.flightsCart = flightsCart;
+      // console.log('flightsCart in Reservas:', flightsCart);
+      this.createFormsForFlights();
+    });
   }
 
   createFormsForFlights() {
-    this.cartItems.forEach(item => {
+    this.flightsCart.forEach(item => {
       this.flightForms[item.id] = this.fb.group({
         flightInfo: this.fb.group({
-          tripType: [item.tripType],
-          origin: [item.flights[0].origin],
-          destiny: [item.flights[0].destiny],
+          tripType: [item.isRoundTrip],
+          origin: [item.flights[0].originCity],
+          destiny: [item.flights[0].destinationCity],
         }),
         passengers: this.fb.array([])
       });
 
       const passengersArray = this.getPassengersArray(item.id);
-      for (let i = 0; i < item.flights[0].passengers; i++) {
+      for (let i = 0; i < item.flights[0].quantity; i++) {
         passengersArray.push(this.createPassengerForm());
       }
     });
@@ -118,15 +223,199 @@ export class PassengerInfoComponent implements OnInit {
     return Object.keys(this.flightForms).every(id => this.isFormValid(id));
   }
 
-  save() {
-    if (this.areAllFormsValid()) {
-      const formData = Object.entries(this.flightForms).map(([id, form]) => ({
-        flightId: id,
-        ...form.value
+  onCardSelected(cardId: number): void {
+    this.selectedCardId = cardId;
+    console.log('Tarjeta seleccionada en PassengerInfoComponent:', this.selectedCardId);
+    if(this.selectedCardId !== -1){
+      this.save();
+    } else {
+      this.disabledViewCard = false;
+    }
+
+    // Realiza aquí la lógica adicional que necesites
+  }
+
+  processFlightData() {
+    const result = this.flightsCart.flatMap((cartItem) => {
+      const passengers = this.getPassengersArray(cartItem.id).value.map((passenger: Passenger) => ({
+        id: null, // Asigna el valor adecuado según tu lógica
+        ticketId: null, // Asigna el valor adecuado según tu lógica
+        firstname: passenger.firstname,
+        secondname: passenger.secondname || '',
+        firstlastname: passenger.firstlastname,
+        secondlastname: passenger.secondlastname || '',
+        documentType: passenger.identificationtype,
+        identificationnumber: passenger.identificationnumber,
+        bornDate: passenger.bornDate,
+        borncountry: passenger.borncountry,
+        gender: passenger.genderID,
+        email: passenger.email,
       }));
-      console.log('Datos de todos los formularios:', formData);
+
+      const isRoundTrip = cartItem.isRoundTrip;
+      const returnFlight = cartItem.flights[1] || { flightId: 0, classType: '' };
+
+      return [
+        {
+          flightId: cartItem.flights[0].flightId,
+          clientId: this.jwtService.getCode(), // Asigna el valor adecuado
+          classType: cartItem.flights[0].classType,
+          quantity: cartItem.flights[0].quantity,
+          isRoundTrip,
+          returnFlightId: returnFlight.flightId, // Usa 0 si no hay segundo vuelo
+          returnClassType: returnFlight.classType, // Usa '' si no hay segundo vuelo
+          passengers,
+        },
+      ];
+  
+      // if (cartItem.isRoundTrip) {
+      //   // Genera dos JSON para vuelos de ida y vuelta
+      //   return [
+      //     {
+      //       flightId: cartItem.flights[0].flightId,
+      //       clientId: this.jwtService.getCode(), // Asigna el valor adecuado
+      //       classType: cartItem.flights[0].classType,
+      //       quantity: cartItem.flights[0].quantity,
+      //       isRoundTrip: true,
+      //       returnFlightId: cartItem.flights[1].flightId,
+      //       returnClassType: cartItem.flights[1].classType,
+      //       passengers,
+      //     },
+      //     {
+      //       flightId: cartItem.flights[1].flightId,
+      //       clientId: this.jwtService.getCode(), // Asigna el valor adecuado
+      //       classType: cartItem.flights[1].classType,
+      //       quantity: cartItem.flights[1].quantity,
+      //       isRoundTrip: true,
+      //       returnFlightId: cartItem.flights[0].flightId,
+      //       returnClassType: cartItem.flights[0].classType,
+      //       passengers,
+      //     },
+      //   ];
+      // } else {
+      //   // Genera un único JSON para vuelos de ida
+      //   return [
+      //     {
+      //       flightId: cartItem.flights[0].flightId,
+      //       clientId: this.jwtService.getCode(), // Asigna el valor adecuado
+      //       classType: cartItem.flights[0].classType,
+      //       quantity: cartItem.flights[0].quantity,
+      //       isRoundTrip: false,
+      //       passengers,
+      //     },
+      //   ];
+      // }
+    });
+  
+    // console.log('Datos procesados:', result);
+    return result;
+  }  
+
+  save(): any {
+    if (this.areAllFormsValid()) {
+      const processedData = this.processFlightData();
+  
+      console.log("Datos a enviar: ", processedData);
+      if (processedData.length !== 0) {
+        if(this.type === '1'){
+          this.apiService.postData('cart/reserve-flights', processedData).subscribe(
+            (response) => {
+              // window.alert('Tiquetes reservados')
+              Swal.fire({
+                icon: "success",
+                title: "Reservar tiquetes",
+                text: "Se han reservado los tiquetes.",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
+              }).then(() => {
+                this.router.navigate(['/cart']);
+              });
+            },
+            (error) => {
+              console.error('Error reservando:', error);
+              // window.alert('Error reservando')
+              Swal.fire({
+                icon: "error",
+                title: "Reservar tiquetes",
+                text: "Hubo un error. Inténtalo de nuevo.",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
+              }).then(() => {
+                this.router.navigate(['/cart']);
+              });
+            }
+          )
+        } else if (this.type === '0') {
+          if(this.selectedCardId !== -1){
+            console.log('Entré con la tarjeta seleccionada:', this.selectedCardId);
+            const updatedProcessedData = processedData.map(item => ({
+              ...item,
+              cardId: this.selectedCardId // Usa la variable o el valor que corresponda
+            }));
+            console.log('Datos a enviar con tarjeta:', updatedProcessedData);
+            Swal.fire({
+              icon: "question",
+              title: "Comprar tiquetes",
+              text: "¿Está seguro que desea comprar los tiquetes con la tarjeta seleccionada?",
+              showConfirmButton: true,
+              showCancelButton: true,
+              confirmButtonText: "Sí",
+              cancelButtonText: "No",
+              confirmButtonColor: "#0F766E",
+              cancelButtonColor: "#EF4444"
+            }).then((result) => {
+              if (result.isConfirmed) {
+                console.log('Tarjeta seleccionada:', this.selectedCardId);
+                this.loadingBuyTickets = true;
+                this.apiService.postData('cart/buy-flights', updatedProcessedData).subscribe(
+                  (response) => {
+                    // window.alert('Tiquetes reservados')
+                    Swal.fire({
+                      icon: "success",
+                      title: "Comprar tiquetes",
+                      text: "Se han comprado los tiquetes.",
+                      showConfirmButton: false,
+                      timer: 2000,
+                      timerProgressBar: true
+                    }).then(() => {
+                      this.router.navigate(['/cart']);
+                    });
+                  },
+                  (error) => {
+                    console.error('Error comprando:', error);
+                    // window.alert('Error reservando')
+                    Swal.fire({
+                      icon: "error",
+                      title: "Comprar tiquetes",
+                      text: "Hubo un error. Inténtalo de nuevo.",
+                      showConfirmButton: false,
+                      timer: 2000,
+                      timerProgressBar: true
+                    }).then(() => {
+                      this.router.navigate(['/cart']);
+                    });
+                  }
+                )
+              }
+              else {
+                this.selectedCardId = -1;
+                this.disabledViewCard = true;
+              }
+            });
+          }
+          else {
+            this.disabledViewCard = true;
+          }
+        }
+      } else {
+        console.error('No hay datos para procesar.');
+      }
     } else {
       console.log('Hay formularios inválidos');
     }
   }
+  
+  
 }

@@ -41,11 +41,11 @@ export const routes: Routes = [
   { path: 'add-card', component: AddCardComponent, canActivate: [clientGuard]},
   { path: 'info-card/:code', component: InfoCardsComponent, canActivate: [clientGuard]},
   { path: 'cart', component: CartPageComponent, canActivate: [clientGuard]},
-  { path: 'passenger-info', component: PassengerInfoComponent, canActivate: [clientGuard]},
-  { path: 'select-card', component: SelectCardComponent, canActivate: [clientGuard]},
+  { path: 'passenger-info/:type', component: PassengerInfoComponent, canActivate: [clientGuard]},
   { path: 'bookings', component: BookingsComponent, canActivate: [clientGuard]},
   { path: 'history', component: HistoryComponent, canActivate: [clientGuard]},
-  { path: 'purchase-info/:code', component: PurchaseInfoComponent, canActivate: [clientGuard]}
+  { path: 'purchase-info/:code', component: PurchaseInfoComponent, canActivate: [clientGuard]},
+  { path: '**', component: PageComponent, canActivate: [authGuard]}
 ];
 
 @NgModule({

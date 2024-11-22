@@ -49,7 +49,7 @@ export class VerifyPasswordComponent {
     this.isLoading = true;
     this.apiService.postData("auth/login", this.verifyPassword.value).subscribe(
       (response) => {
-        console.log(response)
+        // console.log(response)
         this.token = response['token'];
         if(this.jwtService.verifyIdRole(this.token)){
           this.close();
