@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from '../../../home/header/header.component';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { PurchaseInfoComponent } from '../purchase-info/purchase-info.component';
 
 
 interface CartFlight {
@@ -18,13 +19,16 @@ interface CartFlight {
 @Component({
   selector: 'app-history',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, RouterModule],
+  imports: [HeaderComponent, CommonModule, RouterModule, PurchaseInfoComponent],
   templateUrl: './history.component.html',
   styleUrl: './history.component.css'
 })
 export class HistoryComponent implements OnInit{
 
   purchaseStatus = 1; // 1: Compra realizada, 2: Compra cancelada
+  purchaseInfoView = false;
+
+  id: number = 0;
 
   flights: CartFlight[][] = [
     [
@@ -39,6 +43,12 @@ export class HistoryComponent implements OnInit{
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  infoView(flightId: number): void {
+    console.log('Mostrar información de vuelo con ID: ', flightId);
+    this.id = flightId;
+    this.purchaseInfoView = !this.purchaseInfoView;
   }
 
   cancelPurchase(flightID: number) {

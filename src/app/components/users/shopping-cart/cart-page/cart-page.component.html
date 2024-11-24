@@ -39,7 +39,7 @@
                     {{ flight.classType === 'economy' ? 'Económica' : 'Primera Clase' }}
                   </td>
                   <td class="py-3 px-5 whitespace-nowrap">
-                    {{ (flight.price * flight.quantity) | currency:'COP':'symbol-narrow':'1.0-0' }}
+                    {{ flight.price | currency:'COP':'symbol-narrow':'1.0-0' }}
                   </td>
                   <!-- Solo mostrar el botón de eliminar en la primera fila del grupo -->
                   <td class="flex justify-center gap-4 px-5 py-3 whitespace-nowrap">
