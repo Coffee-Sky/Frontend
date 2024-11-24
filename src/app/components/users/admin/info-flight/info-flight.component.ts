@@ -136,6 +136,16 @@ export class InfoFlightComponent implements OnInit{
     );
   }
 
+  onPriceInput(event: Event, controlName: string) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/[^\d]/g, ''); // Remover todo excepto números
+    if (value) {
+      this.editFlightForm.get(controlName)?.setValue(Number(value), { emitEvent: false });
+    } else {
+      this.editFlightForm.get(controlName)?.setValue('', { emitEvent: false });
+    }
+  }
+
   toggleEdit() {
     this.isEditing = true;
     this.cdRef.detectChanges();

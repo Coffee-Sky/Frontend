@@ -80,7 +80,7 @@
         <div class="flex flex-col text-right w-full sm:w-auto">
           <p class="text-xs text-gray-500">Desde</p>
           <p class="text-xl font-bold flex flex-row items-center justify-end">
-            COP {{(selectedFlight === flight && selectedClassIda ? getSelectedPrice(flight, 'ida') : flight.economyPrice) | number}}
+            COP ${{(selectedFlight === flight && selectedClassIda ? getSelectedPrice(flight, 'ida') : flight.economyPrice) | number:'1.0-0'}}
             <span class="material-symbols-outlined ml-1" translate="no">keyboard_arrow_down</span>
           </p>
         </div>
@@ -106,7 +106,7 @@
               </ul>
             </div>
             <div class="text-center mt-2 sm:mt-0">
-              <p class="text-md sm:text-2xl font-bold text-teal-600">COP {{flight.economyPrice| number}}</p>
+              <p class="text-md sm:text-2xl font-bold text-teal-600">COP ${{flight.economyPrice| number:'1.0-0'}}</p>
               <button class="mt-2 bg-teal-600 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors duration-200"
                 [ngClass]="{'ring-2 ring-offset-2 ring-teal-500': selectedClassIda === 'economy'}"
                 (click)="selectClass('economy', 'ida'); $event.stopPropagation()">
@@ -148,7 +148,7 @@
               </ul>
             </div>
             <div class="text-center mt-2 sm:mt-0">
-              <p class="text-md sm:text-2xl font-bold text-teal-600">COP {{flight.businessPrice| number}}</p>
+              <p class="text-md sm:text-2xl font-bold text-teal-600">COP ${{flight.businessPrice| number:'1.0-0'}}</p>
               <button class="mt-2 bg-teal-600 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors duration-200"
                 [ngClass]="{'ring-2 ring-offset-2 ring-teal-500': selectedClassIda === 'business'}" 
                 (click)="selectClass('business', 'ida'); $event.stopPropagation()">
@@ -196,7 +196,7 @@
         <div class="text-right w-full sm:w-auto">
           <p class="text-xs text-gray-500">Desde</p>
           <p class="text-xl font-bold flex items-center justify-end">
-            COP {{(selectedReturnFlight === flight && selectedClassVuelta ? getSelectedPrice(flight, 'vuelta') : flight.economyPrice) | number}}
+            COP ${{(selectedReturnFlight === flight && selectedClassVuelta ? getSelectedPrice(flight, 'vuelta') : flight.economyPrice) | number:'1.0-0'}}
             <span class="material-symbols-outlined ml-1 text-md sm:text-2xl" translate="no">keyboard_arrow_down</span>
           </p>
         </div>
@@ -222,7 +222,7 @@
               </ul>
             </div>
             <div class="text-center mt-2 sm:mt-0">
-              <p class="text-md sm:text-2xl font-bold text-teal-600">COP {{flight.economyPrice| number}}</p>
+              <p class="text-md sm:text-2xl font-bold text-teal-600">COP ${{flight.economyPrice| number:'1.0-0'}}</p>
               <button class="mt-2 bg-teal-600 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors duration-200"
                 [ngClass]="{'ring-2 ring-offset-2 ring-teal-500': selectedClassVuelta === 'economy'}" 
                 (click)="selectClass('economy', 'vuelta'); $event.stopPropagation()">
@@ -264,7 +264,7 @@
               </ul>
             </div>
             <div class="text-center mt-2 sm:mt-0">
-              <p class="text-md sm:text-2xl font-bold text-teal-600">COP {{flight.businessPrice| number}}</p>
+              <p class="text-md sm:text-2xl font-bold text-teal-600">COP ${{flight.businessPrice| number:'1.0-0'}}</p>
               <button class="mt-2 bg-teal-600 text-white px-4 sm:px-6 py-2 rounded-lg hover:bg-teal-700 transition-colors duration-200"
                 [ngClass]="{'ring-2 ring-offset-2 ring-teal-500': selectedClassVuelta === 'business'}" 
                 (click)="selectClass('business', 'vuelta'); $event.stopPropagation()">

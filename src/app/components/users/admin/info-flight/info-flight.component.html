@@ -87,7 +87,7 @@
               </span>
             </div>
             <input class="w-full px-7 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="number" placeholder="" formControlName="priceFirstClass" [readOnly]="!isEditing"/>
+            type="text" placeholder="" formControlName="priceFirstClass" [value]="editFlightForm.get('priceFirstClass')?.value | number:'1.0-0'" (input)="onPriceInput($event, 'priceFirstClass')" [readOnly]="!isEditing"/>
             <span *ngIf="editFlightForm.hasError('required','priceFirstClass') && editFlightForm.controls['priceFirstClass'].dirty" class="text-red-500 text-xs">El precio es requerido</span>
           </div>
           <div class="mb-2 w-full relative">
@@ -98,7 +98,7 @@
               </span>
             </div>
             <input class="w-full px-7 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="number" placeholder="" formControlName="priceEconomy" [readOnly]="!isEditing"/>
+            type="text" placeholder="" formControlName="priceEconomy" [value]="editFlightForm.get('priceEconomy')?.value | number:'1.0-0'" (input)="onPriceInput($event, 'priceEconomy')" [readOnly]="!isEditing"/>
             <span *ngIf="editFlightForm.hasError('required','priceEconomy') && editFlightForm.controls['priceEconomy'].dirty" class="text-red-500 text-xs">El precio es requerido</span>
 
             <span *ngIf="editFlightForm.errors?.['priceComparison']" class="text-red-500 text-xs">El precio en clase económica debe ser menor que el de primera clase.</span>
