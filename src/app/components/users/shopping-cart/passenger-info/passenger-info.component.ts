@@ -380,7 +380,7 @@ export class PassengerInfoComponent implements OnInit {
                       timer: 2000,
                       timerProgressBar: true
                     }).then(() => {
-                      this.router.navigate(['/cart']);
+                      this.router.navigate(['/active-tickets']);
                     });
                   },
                   (error) => {

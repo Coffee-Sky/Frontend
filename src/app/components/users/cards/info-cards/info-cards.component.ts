@@ -267,6 +267,16 @@ export class InfoCardsComponent implements OnInit {
     );
   }
 
+  onPriceInput(event: Event, controlName: string) {
+    const input = event.target as HTMLInputElement;
+    let value = input.value.replace(/[^\d]/g, ''); // Remover todo excepto números
+    if (value) {
+      this.editCardForm.get(controlName)?.setValue(Number(value), { emitEvent: false });
+    } else {
+      this.editCardForm.get(controlName)?.setValue('', { emitEvent: false });
+    }
+  }
+
   toggleEdit() {
     this.isEditing = true;
     this.cdRef.detectChanges();

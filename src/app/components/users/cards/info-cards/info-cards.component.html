@@ -45,6 +45,7 @@
             type="month" placeholder="" formControlName=expirationDate [readOnly]="!isEditing"/>
             <span *ngIf="editCardForm.hasError('required','expirationDate') && editCardForm.controls['expirationDate'].dirty" class="text-red-500 text-xs">La fecha es requerida</span>
           </div>
+
           <div class="mb-2 w-full relative">
             <label class="block mb-2 text-sm font-bold text-black">
               {{ editCardForm.get('type')?.value === 'credit' ? 'Cupo' : 'Saldo' }} 
@@ -56,10 +57,11 @@
               </span>
             </div>
             <input class="w-full px-8 py-3 mb-1 text-sm leading-tight text-black border rounded shadow appearance-none focus:outline-color3 focus:shadow-outline" 
-            type="text" placeholder="" formControlName="balance" [readOnly]="!isEditing"/>
+            type="text" placeholder="" formControlName="balance" [value]="editCardForm.get('balance')?.value | number:'1.0-0'" (input)="onPriceInput($event, 'balance')" [readOnly]="!isEditing"/>
             <span *ngIf="editCardForm.hasError('required','balance') && editCardForm.controls['balance'].dirty" class="text-red-500 text-xs">El valor es requerido</span>
             <span *ngIf="editCardForm.hasError('pattern','balance')" class="text-red-500 text-xs">El valor no es válido</span>
           </div>
+          
           <div class="mb-2 w-full">
           </div>
         </div>
