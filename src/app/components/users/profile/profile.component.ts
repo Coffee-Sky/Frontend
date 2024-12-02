@@ -12,7 +12,7 @@ import { PasswordRootComponent } from '../root/password-root/password-root.compo
 import { ModalService } from '../../../services/modal.service';
 import { VerifyPasswordComponent } from '../verify-password/verify-password.component';
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 
 interface Role {

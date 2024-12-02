@@ -5,7 +5,7 @@ import { FormControl, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { ApiService } from '../../../../services/api.service';
 import { JwtService } from '../../../../services/jwt.service'; 
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 
 @Component({

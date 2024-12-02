@@ -8,7 +8,7 @@ import { ApiService } from '../../../../services/api.service';
 import { JwtService } from '../../../../services/jwt.service';
 import { Router, ActivatedRoute } from '@angular/router';
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 import { LocationService } from '../../../../services/location.service';
 import { SelectCardComponent } from '../../cards/select-card/select-card.component';

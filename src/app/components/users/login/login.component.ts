@@ -7,7 +7,7 @@ import { JwtService } from '../../../services/jwt.service';
 import { ModalService } from '../../../services/modal.service';
 import { PasswordRestoreComponent } from '../password-restore/password-restore.component';
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 
 @Component({

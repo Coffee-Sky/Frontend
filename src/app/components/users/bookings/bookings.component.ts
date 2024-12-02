@@ -6,7 +6,7 @@ import { ApiService } from '../../../services/api.service';
 import { JwtService } from '../../../services/jwt.service';
 import { SelectCardComponent } from '../cards/select-card/select-card.component';
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 import { LoadingBuyTicketsComponent } from '../../home/loading-buy-tickets/loading-buy-tickets.component';
 
