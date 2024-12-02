@@ -4,7 +4,7 @@ import { ApiService } from '../../../../services/api.service';
 import { RouterModule, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 
 @Component({

@@ -8,7 +8,7 @@ import { DeleteCardComponent } from '../delete-card/delete-card.component';
 import { ApiService } from '../../../../services/api.service';
 import { LocationService } from '../../../../services/location.service';
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 
 interface Country {

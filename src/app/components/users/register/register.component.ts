@@ -7,7 +7,7 @@ import { HttpClient } from '@angular/common/http';
 import { ApiService } from '../../../services/api.service';
 import { RouterModule } from '@angular/router';
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 
 interface Country {

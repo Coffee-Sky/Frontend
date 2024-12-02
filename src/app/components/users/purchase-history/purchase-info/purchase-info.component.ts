@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { HeaderComponent } from '../../../home/header/header.component';
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 import { ApiService } from '../../../../services/api.service';
 import { JwtService } from '../../../../services/jwt.service';

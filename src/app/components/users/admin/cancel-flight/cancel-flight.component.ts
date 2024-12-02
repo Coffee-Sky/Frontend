@@ -3,7 +3,7 @@ import { ModalService } from '../../../../services/modal.service';
 import { ApiService } from '../../../../services/api.service';
 import { CommonModule } from '@angular/common';
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 
 @Component({

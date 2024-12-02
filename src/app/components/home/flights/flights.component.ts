@@ -8,7 +8,7 @@ import { ModalService } from '../../../services/modal.service';
 import { CartService } from '../../../services/cart.service';
 import { JwtService } from '../../../services/jwt.service';
 
-import 'sweetalert2/src/sweetalert2.scss';
+// import 'sweetalert2/src/sweetalert2.scss';
 import Swal from 'sweetalert2';
 
 registerLocaleData(localeEs, 'es');
